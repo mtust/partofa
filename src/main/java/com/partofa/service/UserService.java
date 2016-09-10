@@ -1,5 +1,7 @@
 package com.partofa.service;
 
+import com.partofa.domain.User;
+import com.partofa.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,4 +9,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
+
+    User getUserByEmail(String email);
+
+
 }

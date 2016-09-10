@@ -3,10 +3,7 @@ package com.partofa.domain;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Set;
+import javax.persistence.*;
 
 /**
  * Created by tust on 09.09.2016.
@@ -15,14 +12,19 @@ import java.util.Set;
 @Slf4j
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "partofa_user")
 public class User {
 
     @Id
     private Long id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    private String email;
     private String password;
-    private Set<Role> roles;
+    private Boolean isEnabled;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }
