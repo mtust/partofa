@@ -1,0 +1,74 @@
+<div id="sign-up-page">
+
+    <div layout="column" class="container">
+        <header id="sign-up-page-header">
+            <a href="/" id="logo"></a>
+            <h1 class="title">create <span class="text-green">owner</span> account</h1>
+            <h3>Please fill the form below</h3>
+        </header>
+
+        <section id="page-body" class="material-input create-account">
+            <div class="input-field">
+                <input id="company-name" type="text" ng-model="companyname">
+                <label for="company-name">COMPANY NAME</label>
+            </div>
+
+            <div layout="row">
+                <div class="input-field" flex>
+                    <input id="first-name" type="text" ng-model="first_name">
+                    <label for="first-name">FIRST NAME</label>
+                </div>
+                <div class="input-field" flex flex-offset="5">
+                    <input id="email" type="text" ng-model="email">
+                    <label for="email">E-MAIL ADDRESS/USER ID</label>
+                </div>
+            </div>
+
+            <div layout="row">
+                <div class="input-field" flex>
+                    <input id="last-name" type="text" ng-model="last_name">
+                    <label for="last-name">LAST NAME</label>
+                </div>
+                <div class="input-field" flex flex-offset="5">
+                    <input id="office-phone" type="text" ng-model="officePhone">
+                    <label for="office-phone">OFFICE PHONE</label>
+                </div>
+            </div>
+
+            <div layout="row">
+                <div class="input-field" flex>
+                    <input id="job-title" type="text" ng-model="job">
+                    <label for="job-title">JOB TITLE</label>
+                </div>
+                <div class="input-field" flex flex-offset="5">
+                    <input id="mobile-phone" type="text" ng-model="mobilePhone">
+                    <label for="mobile-phone">MOBILE PHONE</label>
+                </div>
+            </div>
+
+            <div layout="row">
+                <div class="input-field" flex>
+                    <input id="password" type="password" class="validate" ng-model="password">
+                    <label for="password">ENTER PASSWORD</label>
+                </div>
+                <div class="input-field" flex flex-offset="5">
+                    <input id="confirm-password" type="password" class="validate" ng-model="password_confirm">
+                    <label for="confirm-password">CONFIRM PASSWORD</label>
+                </div>
+            </div>
+
+            <div class="center-checkbox">
+                <md-checkbox id="by-sing-up">By signing up, you agree with the <span
+                        class="text-green">terms and conditions</span></md-checkbox>
+
+            </div>
+
+            <!--<input type="submit" value="Log In" class="btn btn-success" id="owner-btn">-->
+            <button class="btn btn-green sign-up-btn" id="owner-btn"
+                    ng-click="singUp(companyname, first_name, last_name,email,password, password_confirm,job,mobilePhone,officePhone)">
+                Log in
+            </button>
+        </section>
+    </div>
+
+</div>

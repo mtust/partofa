@@ -1,6 +1,7 @@
 package com.partofa.service.impl;
 
 import com.partofa.domain.Data;
+import com.partofa.dto.RestMessageDTO;
 import com.partofa.repository.DataRepository;
 import com.partofa.service.DataService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,24 @@ public class DataServiceImpl implements DataService{
     DataRepository dataRepository;
 
     @Transactional
+    @Override
     public List<Data> getAllData(){
         dataRepository.findAll().forEach(x -> log.info(x.toString()));
         return dataRepository.findAll();
     }
 
+    @Transactional
+    @Override
+    public RestMessageDTO editData(Data data) {
+        dataRepository.save(data);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO deleteData(Long dataId) {
+        Data data = dataRepository.findOne(dataId);
+        data.setStatus("deleted");
+        dataRepository.save(data);
+        return new RestMessageDTO("Success", true);
+    }
 }

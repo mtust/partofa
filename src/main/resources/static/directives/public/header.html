@@ -1,0 +1,30 @@
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <a class="logo">
+                </a>
+                <a ng-click="showSandwich = !showSandwich" class="sidebar-btn visible-xs-block visible-sm-block pull-right">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <ul ng-show="showSandwich" class="sandwich-menu hidden-md hidden-lg ng-hide">
+                    <li ng-if="loginPage">
+                        <a ui-sref="signup">
+                            Sign up
+                        </a>
+                    </li>
+                    <li ng-if="!loginPage">
+                        <a  ui-sref="landing">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-8 hidden-xs hidden-sm">
+
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-success btn-rounded registration">Sign up</button>
+            </div>
+        </div>
+    </div>
+</div>

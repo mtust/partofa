@@ -1,0 +1,21 @@
+<main class="page-content landing-container">
+    <header></header>
+    <div class="page-inner" layout="row" layout-align="center center">
+        <div class="login-box" flex-xs="100" flex-sm="66" flex-md="40" flex="25">
+            <a class="logo-name text-lg text-center">Efficiency Pro</a>
+            <p class="text-center m-t-md">Please login into your account.</p>
+            <div class="m-t-md">
+                <form role="form" ng-submit="login(email,password)">
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" ng-model="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input name="password"  type="password" class="form-control" ng-model="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit"  class="btn btn-success btn-block">Login</button>
+                </form>
+                <a ui-sref="forgot" class="display-block text-center m-t-md text-sm">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</main>
