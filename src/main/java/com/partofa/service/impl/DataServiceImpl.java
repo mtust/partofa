@@ -18,14 +18,14 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class DataServiceImpl implements DataService{
+public class DataServiceImpl implements DataService {
 
     @Autowired
     DataRepository dataRepository;
 
     @Transactional
     @Override
-    public List<Data> getAllData(){
+    public List<Data> getAllData() {
         dataRepository.findAll().forEach(x -> log.info(x.toString()));
         return dataRepository.findAll();
     }
@@ -56,12 +56,12 @@ public class DataServiceImpl implements DataService{
     @Transactional
     @Override
     public List<Data> getNonDeletedData() {
-        return dataRepository.findByDelDateIsNotNull();
+        return dataRepository.findByDelDateIsNull();
     }
 
     @Transactional
     @Override
     public List<Data> getDeletedData() {
-        return dataRepository.findByDelDateIsNull();
+        return dataRepository.findByDelDateIsNotNull();
     }
 }

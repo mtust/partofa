@@ -8,13 +8,18 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+
     <style>
     </style>
 </head>
@@ -37,43 +42,90 @@
 <div class="container">
 
 
-    <button id="addData" onclick="" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#dataAddModal">
-        Додати запис
-    </button>
-    <button id="editData" onclick="" class="btn btn-primary btn-lg disabled" data-toggle="modal"
-            data-target="#editDataModal">Редагувати
-    </button>
-    <button id="deleteData" onclick="" class="btn btn-primary btn-lg disabled">Видалити</button>
-    <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA"
-           data-pagination="true" data-url="/private/home/actualData">
-        <thead>
-        <tr>
-            <th data-field="state" data-checkbox="true">
-            </th>
-            <th data-field="id" data-visible="false"></th>
-            <th data-sortable="true" data-field="chpId">№</th>
-            <th data-sortable="true" data-field="subjectName">Найменування суб'єкта господарювання</th>
-            <th data-sortable="true" data-field="addressWork">Адреса</th>
-            <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ або ІН</th>
-            <th data-sortable="true" data-field="gosWorkType">Вид господарської діяльності</th>
-            <th data-sortable="true" data-field="status">Ступінь ризику</th>
-            <th data-sortable="true" data-field="startDate">Дата початку проведення заходу</th>
-            <th data-sortable="true" data-field="deadlines">Строки проведення заходу</th>
-            <th data-sortable="true" data-field="riscDesc">Підстава призначення ризику</th>
-            <th data-sortable="true" data-field="checkResult">Результат перевірки</th>
-            <th data-sortable="true" data-field="reactMeasure">Вжити заходів реагування</th>
-            <th data-sortable="true" data-field="controlName">Найменуваня органу держ. нагляду</th>
-            <th data-sortable="true" data-field="addDate">Дата внесення до реєстру</th>
-            <th data-sortable="true" data-field="updDate">Дата останнсього реагування</th>
-            <th data-sortable="true" data-field="comment">Коментар</th>
-        </tr>
-        </thead>
-    </table>
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Головна</a></li>
+        <li role="presentation"><a href="#archive" role="tab" data-toggle="tab">Архів</a></li>
+    </ul>
 
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            <div id="toolbar">
+                <button id="addData" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#dataAddModal">
+                    Додати запис
+                </button>
+                <button id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
+                        data-target="#editDataModal">Редагувати
+                </button>
+                <button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
+            </div>
+            <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
+                   data-locale="uk-UA"
+                   data-pagination="true" data-url="/private/home/actualData">
+                <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true">
+                    </th>
+                    <th data-field="id" data-visible="false"></th>
+                    <th data-sortable="true" data-field="chpId">№</th>
+                    <th data-sortable="true" data-field="subjectName">Найменування суб'єкта господарювання</th>
+                    <th data-sortable="true" data-field="addressWork">Адреса</th>
+                    <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ або ІН</th>
+                    <th data-sortable="true" data-field="gosWorkType">Вид господарської діяльності</th>
+                    <th data-sortable="true" data-field="status">Ступінь ризику</th>
+                    <th data-sortable="true" data-field="startDate">Дата початку проведення заходу</th>
+                    <th data-sortable="true" data-field="deadlines">Строки проведення заходу</th>
+                    <th data-sortable="true" data-field="riscDesc">Підстава призначення ризику</th>
+                    <th data-sortable="true" data-field="checkResult">Результат перевірки</th>
+                    <th data-sortable="true" data-field="reactMeasure">Вжити заходів реагування</th>
+                    <th data-sortable="true" data-field="controlName">Найменуваня органу держ. нагляду</th>
+                    <th data-sortable="true" data-field="addDate">Дата внесення до реєстру</th>
+                    <th data-sortable="true" data-field="updDate">Дата останнсього реагування</th>
+                    <th data-sortable="true" data-field="comment">Коментар</th>
+                </tr>
+                </thead>
+            </table>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="archive">
+            <table id="archiveTable" data-single-select="true" data-toggle="table"
+                   data-locale="uk-UA"
+                   data-pagination="true" data-url="/private/home/deletedData">
+                <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true">
+                    </th>
+                    <th data-field="id" data-visible="false"></th>
+                    <th data-sortable="true" data-field="chpId">№</th>
+                    <th data-sortable="true" data-field="subjectName">Найменування суб'єкта господарювання</th>
+                    <th data-sortable="true" data-field="addressWork">Адреса</th>
+                    <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ або ІН</th>
+                    <th data-sortable="true" data-field="gosWorkType">Вид господарської діяльності</th>
+                    <th data-sortable="true" data-field="status">Ступінь ризику</th>
+                    <th data-sortable="true" data-field="startDate">Дата початку проведення заходу</th>
+                    <th data-sortable="true" data-field="deadlines">Строки проведення заходу</th>
+                    <th data-sortable="true" data-field="riscDesc">Підстава призначення ризику</th>
+                    <th data-sortable="true" data-field="checkResult">Результат перевірки</th>
+                    <th data-sortable="true" data-field="reactMeasure">Вжити заходів реагування</th>
+                    <th data-sortable="true" data-field="controlName">Найменуваня органу держ. нагляду</th>
+                    <th data-sortable="true" data-field="addDate">Дата внесення до реєстру</th>
+                    <th data-sortable="true" data-field="updDate">Дата останнсього реагування</th>
+                    <th data-sortable="true" data-field="delDate">Дата видалення</th>
+                    <th data-sortable="true" data-field="comment">Коментар</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
+
 
 </body>
 <script>
+
+    //    $('#myTabs a').click(function (e) {
+    //        e.preventDefault()
+    //        $(this).tab('show')
+    //    })
 
     (function ($) {
         'use strict';
@@ -139,6 +191,45 @@
                 }
             }
         })
+    });
+
+
+    $('#dataTable').on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table', function () {
+        $("#deleteData").prop('disabled', !$('#dataTable').bootstrapTable('getSelections').length);
+        // save your data, here just save the current page
+        selections = getIdSelections();
+        // push or splice the selections if you want to save all data selections
+    });
+
+    function getIdSelections() {
+        return $.map($('#dataTable').bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+
+
+    $("#deleteData").click(function () {
+        var ids = getIdSelections();
+
+        $.ajax({
+            type: "delete",
+            url : "private/delete" + '?' + $.param({"id": ids[0]}),
+            success : function () {
+                toastr["success"]("Дані успішно видалено та перенесено у архів");
+                $('#deleteData').bootstrapTable('remove', {
+                    field: 'id',
+                    values: ids
+                });
+                $("#deleteData").prop('disabled', true);
+                $('#dataTable').bootstrapTable('refresh');
+                $('#archiveTable').bootstrapTable('refresh');
+            },
+            error : function () {
+                toastr["error"]("Неиожливо видалити цей запис");
+            }
+        })
+
     });
 
 

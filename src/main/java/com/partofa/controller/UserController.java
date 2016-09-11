@@ -9,9 +9,7 @@ import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.security.Principal;
@@ -35,7 +33,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "admin/create/user", method = RequestMethod.POST)
+    @RequestMapping(value = {"admin/page/admin/create/user","admin/create/user"}, method = RequestMethod.POST)
     public RestMessageDTO addUser(UserCreateDTO userCreateDTO){
         return  userService.createUser(userCreateDTO);
     }
@@ -63,6 +61,13 @@ public class UserController {
             return "error";
         }
 
+    }
+
+
+    @RequestMapping(value = {"admin/page/admin/delete/user", "admin/delete/user"}, method = RequestMethod.DELETE)
+    public RestMessageDTO deleteUser(@RequestParam(value = "id") Long userId){
+        log.info("userID for delete:" + userId);
+        return userService.deleteUser(userId);
     }
 
     @RequestMapping(value = "private/user/is-authenticated", method = RequestMethod.GET)

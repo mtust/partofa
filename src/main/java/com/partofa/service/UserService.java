@@ -28,4 +28,6 @@ public interface UserService {
     User getLoginUser();
 
     RestMessageDTO createUser(UserCreateDTO userRegistrationDTO);
+
+    RestMessageDTO deleteUser(Long userId);
 }

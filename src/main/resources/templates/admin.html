@@ -45,8 +45,8 @@
 <div class="container">
     <div id="toolbar">
     <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal" data-target="#userAddModal">Додати користувача</button>
-    <button id="editUser" onclick="" class="btn btn-default disabled" data-toggle="modal" data-target="#editAddModal"  disabled="disabled">Редагувати</button>
-    <button id="deleteUser" onclick="" class="btn btn-default disabled" >Видалити користувача</button>
+    <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal" data-target="#editAddModal"  disabled="disabled">Редагувати</button>
+    <button id="deleteUser" onclick="" class="btn btn-default" disabled="disabled" >Видалити користувача</button>
 </div>
     <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
         <thead>
@@ -168,14 +168,6 @@
     }
 
 
-    $('#userTable').on('check.bs.table uncheck.bs.table ' +
-            'check-all.bs.table uncheck-all.bs.table', function () {
-        $("#deleteUser").prop('disabled', ! $('#userTable').bootstrapTable('getSelections').length);
-        // save your data, here just save the current page
-        selections = getIdSelections();
-        // push or splice the selections if you want to save all data selections
-    });
-
     function getIdSelections() {
         return $.map($('#userTable').bootstrapTable('getSelections'), function (row) {
             return row.id
@@ -183,26 +175,26 @@
     }
 
 
-    $('#userTable').on('check.bs.table uncheck.bs.table ' +
-            'check-all.bs.table uncheck-all.bs.table', function () {
-        $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
-        // save your data, here just save the current page
-        selections = getIdSelections();
-        // push or splice the selections if you want to save all data selections
-    });
 
     $("#deleteUser").click(function () {
         var ids = getIdSelections();
-        $('#userTable').bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-        });
-        $("#deleteUser").prop('disabled', true);
-    });
-    $(window).resize(function () {
-        $('#userTable').bootstrapTable('resetView', {
-            height: getHeight()
-        });
+
+        $.ajax({
+            type: "delete",
+            url : "admin/delete/user" + '?' + $.param({"id": ids[0]}),
+            success : function () {
+                toastr["success"]("Користувача успішно видалено");
+                $('#userTable').bootstrapTable('remove', {
+                    field: 'id',
+                    values: ids
+                });
+                $("#deleteUser").prop('disabled', true);
+            },
+            error : function () {
+                toastr["error"]("Неиожливо видалити цього користувача");
+            }
+        })
+
     });
 
 
@@ -215,13 +207,6 @@
     });
 
 
-//    $(document).ready(function () {
-//       $.ajax({
-//           type: "get",
-//           url: "/admin/users"
-//
-//       })
-//    });
 
     $("#addUserSave").click(function (e) {
         $.ajax({

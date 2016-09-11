@@ -100,9 +100,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User getLoginUser() {
-        Authentication authentication = SecurityUtils.getAuthentication();
+        String  userLogin = SecurityUtils.getCurrentUserLogin();
 
-        return userRepository.findByEmail(authentication.getName());
+        return userRepository.findByEmail(userLogin);
 
     }
 
@@ -124,6 +124,14 @@ public class UserServiceImpl implements UserService {
         user.setIsEnabled(true);
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO deleteUser(Long userId) {
+
+        userRepository.delete(userId);
+
         return new RestMessageDTO("Success", true);
     }
 }

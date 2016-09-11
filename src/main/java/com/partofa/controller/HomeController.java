@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,17 +41,17 @@ public class HomeController {
         return dataService.getDeletedData();
     }
 
-    @RequestMapping(value = "private/edit", method = RequestMethod.PUT)
+    @RequestMapping(value = {"private/page/private/edit", "private/edit"}, method = RequestMethod.PUT)
     public RestMessageDTO editData(Data data){
         return dataService.editData(data);
     }
 
-    @RequestMapping(value = "private/delete", method = RequestMethod.DELETE)
-    public RestMessageDTO deleteData(Long dataId){
+    @RequestMapping(value = {"private/page/private/delete", "private/delete"}, method = RequestMethod.DELETE)
+    public RestMessageDTO deleteData(@RequestParam(value = "id") Long dataId){
         return dataService.deleteData(dataId);
     }
 
-    @RequestMapping(value = "private/add", method = RequestMethod.POST)
+    @RequestMapping(value = {"private/page/private/add", "private/add"}, method = RequestMethod.POST)
     public RestMessageDTO createData(Data data){
         return dataService.createData(data);
     }
