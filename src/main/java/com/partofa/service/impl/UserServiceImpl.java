@@ -2,10 +2,7 @@ package com.partofa.service.impl;
 
 import com.partofa.domain.Role;
 import com.partofa.domain.User;
-import com.partofa.dto.RestMessageDTO;
-import com.partofa.dto.UserCreateDTO;
-import com.partofa.dto.UserDTO;
-import com.partofa.dto.UserRegistrationDTO;
+import com.partofa.dto.*;
 import com.partofa.exception.ObjectAlreadyExistException;
 import com.partofa.repository.UserRepository;
 import com.partofa.security.SecurityUtils;
@@ -93,7 +90,7 @@ public class UserServiceImpl implements UserService {
         users.forEach(user -> userDTOs.add(
                 new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
                         user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
-                        user.getIsEnabled() == false ? "Активний" : "Неактивний")));
+                        user.getIsEnabled() == true ? "Активний" : "Неактивний")));
         return userDTOs;
     }
 
@@ -131,6 +128,23 @@ public class UserServiceImpl implements UserService {
     public RestMessageDTO deleteUser(Long userId) {
 
         userRepository.delete(userId);
+
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO editUser(UserEditDTO userEditDTO) {
+
+        User user = userRepository.findOne(userEditDTO.getId());
+        log.info("user:" + user);
+        log.info("userDTO" + userEditDTO);
+        user.setEmail(userEditDTO.getEmail());
+        user.setLastName(userEditDTO.getLastName());
+        user.setRole(Role.getRole(userEditDTO.getRole()));
+        user.setIsEnabled(userEditDTO.getIsEnabled());
+        user.setFirstName(userEditDTO.getFirstName());
+
+        userRepository.save(user);
 
         return new RestMessageDTO("Success", true);
     }

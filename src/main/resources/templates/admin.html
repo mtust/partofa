@@ -45,7 +45,7 @@
 <div class="container">
     <div id="toolbar">
     <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal" data-target="#userAddModal">Додати користувача</button>
-    <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal" data-target="#editAddModal"  disabled="disabled">Редагувати</button>
+    <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal" data-target="#editUserModal"  disabled="disabled">Редагувати</button>
     <button id="deleteUser" onclick="" class="btn btn-default" disabled="disabled" >Видалити користувача</button>
 </div>
     <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
@@ -110,6 +110,57 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+<div class="modal fade"  id="editUserModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редагування користувача</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <div class="form-group">
+                        <label for="editEmail">Електрона пошта</label>
+                        <input type="email" class="form-control" id="editEmail"  placeholder="Електрона пошта" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFirstName">Ім'я</label>
+                        <input   class="form-control" id="editFirstName"  placeholder="Ім'я" required="required"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Прізвище</label>
+                        <input   class="form-control" id="editLastName"  placeholder="Прізвище" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRole">Роль:</label>
+                        <select class="form-control" id="editRole">
+                            <option value="ROLE_USER">Оператор</option>
+                            <option value="ROLE_ADMIN">Адмністратор</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editIsEnabled">Роль:</label>
+                        <select class="form-control" id="editIsEnabled">
+                            <option value="true">Активний</option>
+                            <option value="false">Неактивний</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="editUserSave" class="btn btn-primary">Редагувати</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 </body>
 <script>
@@ -201,10 +252,46 @@
     $('#userTable').on('check.bs.table uncheck.bs.table ' +
             'check-all.bs.table uncheck-all.bs.table', function () {
         $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+        $("#editUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
         // save your data, here just save the current page
         selections = getIdSelections();
         // push or splice the selections if you want to save all data selections
     });
+
+
+    $("#editUser").click(function (e) {
+       var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
+        $("#editEmail").val(selectedRow.email)
+        $("#editFirstName").val(selectedRow.firstName)
+        $("#editLastName").val(selectedRow.lastName)
+        $("#editRole option[text=" + selectedRow.role + "]").attr('selected', 'selected');
+        $("#editIsEnabled option[text=" + selectedRow.status + "]").attr('selected', 'selected');
+    })
+
+    $("#editUserSave").click(function (e)  {
+        var ids = getIdSelections();
+        $.ajax({
+            type: "put",
+            url : "/admin/edit/user" + '?' + $.param({"id": ids[0]}),
+            data : {
+                email : $("#editEmail").val(),
+                firstName : $("#editFirstName").val(),
+                lastName : $("#editLastName").val(),
+                role : $("#editRole").val(),
+                isEnabled : $("#editIsEnabled").val()
+            },
+            success : function () {
+                $("#editUserModal").modal('hide')
+                toastr["success"]("Користувача редаговано");
+                $('#userTable').bootstrapTable('refresh');
+            },
+            error : function () {
+                toastr["error"]("Неможливо редагувати користувача");
+            }
+
+
+        })
+    })
 
 
 

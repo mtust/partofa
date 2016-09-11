@@ -185,26 +185,26 @@
                                     <span id="error" style="align-content: center; color: red"></span>
                                 </div>
                             </div>
-                            <form id="register-form" action="/public/user/signup" method="post"
-                                  role="form" style="display: none;">
+                            <div id="register-form" role="form"
+                                  style="display: none;">
                                 <div class="form-group">
-                                    <input type="text" name="firstName" id="firstName" tabindex="1" class="form-control"
+                                    <input type="text" name="firstName" id="firstNameR" tabindex="1" class="form-control"
                                            placeholder="Ім'я" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="LastName" id="lastName" tabindex="1" class="form-control"
+                                    <input type="text" name="LastName" id="lastNameR" tabindex="1" class="form-control"
                                            placeholder="Прізвище" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" name="email" id="email" tabindex="1" class="form-control"
+                                    <input type="email" name="email" id="emailR" tabindex="1" class="form-control"
                                            placeholder="Електрона адреса" value=""/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" id="password" tabindex="2"
+                                    <input type="password" name="password" id="passwordR" tabindex="2"
                                            class="form-control" placeholder="Пароль"/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="passwordConfirm" id="passwordConfirm" tabindex="2"
+                                    <input type="password" name="passwordConfirm" id="passwordConfirmR" tabindex="2"
                                            class="form-control" placeholder="Підтвердіть пароль"/>
                                 </div>
                                 <div class="form-group">
@@ -216,7 +216,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -268,6 +268,29 @@
 
     });
 
+
+    $("#register-submit").click(function () {
+        $.ajax({
+            type : 'post'
+            url: "/public/user/signup"
+            data : {
+                firstName : $("#firstNameR").val(),
+                lastName : $("#lastNameR").val(),
+                email : $("#emailR").val(),
+                password : $("#passwordR").val(),
+                passwordConfirm : $("#passwordConfirmR").val()
+            }
+
+            success : function (data) {
+                toastr[success]("Ви зареєстрованні")
+            },
+            error : function () {
+                toastr[error]("Помилка")
+            }
+
+        })
+    })
+
     $("#login-submit").click(function(e){
         var dataPost = $("#login-form")
         $.ajax({
@@ -285,6 +308,9 @@
             }
         });
     });
+
+
+
 
 
 //    $("#register-form").submit(function () {

@@ -1,10 +1,7 @@
 package com.partofa.service;
 
 import com.partofa.domain.User;
-import com.partofa.dto.RestMessageDTO;
-import com.partofa.dto.UserCreateDTO;
-import com.partofa.dto.UserDTO;
-import com.partofa.dto.UserRegistrationDTO;
+import com.partofa.dto.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,4 +27,6 @@ public interface UserService {
     RestMessageDTO createUser(UserCreateDTO userRegistrationDTO);
 
     RestMessageDTO deleteUser(Long userId);
+
+    RestMessageDTO editUser(UserEditDTO userEditDTO);
 }

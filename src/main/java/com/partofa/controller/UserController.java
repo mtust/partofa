@@ -1,10 +1,7 @@
 package com.partofa.controller;
 
 import com.partofa.domain.User;
-import com.partofa.dto.RestMessageDTO;
-import com.partofa.dto.UserCreateDTO;
-import com.partofa.dto.UserDTO;
-import com.partofa.dto.UserRegistrationDTO;
+import com.partofa.dto.*;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,11 @@ public class UserController {
     @RequestMapping(value = {"admin/page/admin/create/user","admin/create/user"}, method = RequestMethod.POST)
     public RestMessageDTO addUser(UserCreateDTO userCreateDTO){
         return  userService.createUser(userCreateDTO);
+    }
+
+    @RequestMapping(value = {"admin/page/admin/edit/user","admin/edit/user"}, method = RequestMethod.PUT)
+    public RestMessageDTO editUser(UserEditDTO userEditDTO){
+        return  userService.editUser(userEditDTO);
     }
 
 
