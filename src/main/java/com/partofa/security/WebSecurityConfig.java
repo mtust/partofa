@@ -2,6 +2,7 @@ package com.partofa.security;
 
 
 import com.partofa.domain.Role;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 
 
 @Configuration
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -38,11 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/", "/index").permitAll()
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/private/**").authenticated()
                 .antMatchers("/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.getParamName())
                 .and()
-                .formLogin()
+                .formLogin().usernameParameter( "email" ).passwordParameter( "password" )
+               // .loginPage("/login")
+                .permitAll()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
                 .and()
@@ -52,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void registerGlobalAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        log.info(auth.toString());
         auth
                 .userDetailsService(userDetailService)
                 .passwordEncoder(passwordEncoder);

@@ -1,0 +1,151 @@
+<html>
+<head>
+    <title>Hello AngularJS</title>
+    <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                <li id="adminTab" style="visibility: hidden"><a href="/admin/page/users">Адмін панель</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="logout"><a href="/logout">Вийти</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+
+
+    <button id="addData" onclick="" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#dataAddModal">
+        Додати запис
+    </button>
+    <button id="editData" onclick="" class="btn btn-primary btn-lg disabled" data-toggle="modal"
+            data-target="#editDataModal">Редагувати
+    </button>
+    <button id="deleteData" onclick="" class="btn btn-primary btn-lg disabled">Видалити</button>
+    <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA"
+           data-pagination="true" data-url="/private/home/actualData">
+        <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true">
+            </th>
+            <th data-field="id" data-visible="false"></th>
+            <th data-sortable="true" data-field="chpId">№</th>
+            <th data-sortable="true" data-field="subjectName">Найменування суб'єкта господарювання</th>
+            <th data-sortable="true" data-field="addressWork">Адреса</th>
+            <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ або ІН</th>
+            <th data-sortable="true" data-field="gosWorkType">Вид господарської діяльності</th>
+            <th data-sortable="true" data-field="status">Ступінь ризику</th>
+            <th data-sortable="true" data-field="startDate">Дата початку проведення заходу</th>
+            <th data-sortable="true" data-field="deadlines">Строки проведення заходу</th>
+            <th data-sortable="true" data-field="riscDesc">Підстава призначення ризику</th>
+            <th data-sortable="true" data-field="checkResult">Результат перевірки</th>
+            <th data-sortable="true" data-field="reactMeasure">Вжити заходів реагування</th>
+            <th data-sortable="true" data-field="controlName">Найменуваня органу держ. нагляду</th>
+            <th data-sortable="true" data-field="addDate">Дата внесення до реєстру</th>
+            <th data-sortable="true" data-field="updDate">Дата останнсього реагування</th>
+            <th data-sortable="true" data-field="comment">Коментар</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+</body>
+<script>
+
+    (function ($) {
+        'use strict';
+
+        $.fn.bootstrapTable.locales['uk-UA'] = {
+            formatLoadingMessage: function () {
+                return 'Завантаження, будь ласка, зачекайте...';
+            },
+            formatRecordsPerPage: function (pageNumber) {
+                return pageNumber + ' записів на сторінку';
+            },
+            formatShowingRows: function (pageFrom, pageTo, totalRows) {
+                return 'Показано з ' + pageFrom + ' по ' + pageTo + '. Всього: ' + totalRows;
+            },
+            formatSearch: function () {
+                return 'Пошук';
+            },
+            formatNoMatches: function () {
+                return 'Не знайдено жодного запису';
+            },
+            formatRefresh: function () {
+                return 'Оновити';
+            },
+            formatToggle: function () {
+                return 'Змінити';
+            },
+            formatColumns: function () {
+                return 'Стовпці';
+            }
+        };
+
+        $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['uk-UA']);
+
+    })(jQuery);
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "get",
+            url: "/private/getCurrentUserRole",
+            success: function (data) {
+                if (data === "ROLE_ADMIN") {
+                    $("#adminTab").css("visibility", "visible");
+                }
+            }
+        })
+    });
+
+
+    $('#myTable').on('click', '.clickable-row', function (event) {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+
+
+</script>
+</html>

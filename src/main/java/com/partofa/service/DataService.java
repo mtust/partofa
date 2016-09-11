@@ -17,4 +17,10 @@ public interface DataService {
     RestMessageDTO editData(Data data);
 
     RestMessageDTO deleteData(Long dataId);
+
+    RestMessageDTO createData(Data data);
+
+    List<Data> getNonDeletedData();
+
+    List<Data> getDeletedData();
 }

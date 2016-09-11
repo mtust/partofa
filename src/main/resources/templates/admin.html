@@ -1,0 +1,252 @@
+<html>
+<head>
+    <title>Hello AngularJS</title>
+    <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                <li id="home"><a href="/private/page/home">Головна таблиця</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="logout"><a href="/logout">Вийти</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+    <div id="toolbar">
+    <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal" data-target="#userAddModal">Додати користувача</button>
+    <button id="editUser" onclick="" class="btn btn-default disabled" data-toggle="modal" data-target="#editAddModal"  disabled="disabled">Редагувати</button>
+    <button id="deleteUser" onclick="" class="btn btn-default disabled" >Видалити користувача</button>
+</div>
+    <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
+        <thead>
+        <tr>
+            <th data-field = "state" data-checkbox="true">
+            </th>
+            <th data-field="id" data-visible="false"></th>
+            <th data-sortable="true" data-field="firstName">Ім'я</th>
+            <th data-sortable="true" data-field="lastName">Прізвище</th>
+            <th data-sortable="true" data-field="email">Eлектрона пошта</th>
+            <th data-sortable="true" data-field="role">Роль</th>
+            <th data-sortable="true" data-field="status">Статус</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+
+<div class="modal fade"  id="userAddModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Додавання користувача</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createUser">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Електрона пошта</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1"  placeholder="Електрона пошта" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">Ім'я</label>
+                        <input   class="form-control" id="firstName"  placeholder="Ім'я" required="required"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Прізвище</label>
+                        <input   class="form-control" id="lastName"  placeholder="Прізвище" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Пароль</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Роль:</label>
+                        <select class="form-control" id="role">
+                            <option value="ROLE_USER">Оператор</option>
+                            <option value="ROLE_ADMIN">Адмністратор</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="addUserSave" class="btn btn-primary">Створити</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+<script>
+
+    (function ($) {
+        'use strict';
+
+        $.fn.bootstrapTable.locales['uk-UA'] = {
+            formatLoadingMessage: function () {
+                return 'Завантаження, будь ласка, зачекайте...';
+            },
+            formatRecordsPerPage: function (pageNumber) {
+                return pageNumber + ' записів на сторінку';
+            },
+            formatShowingRows: function (pageFrom, pageTo, totalRows) {
+                return 'Показано з ' + pageFrom + ' по ' + pageTo + '. Всього: ' + totalRows;
+            },
+            formatSearch: function () {
+                return 'Пошук';
+            },
+            formatNoMatches: function () {
+                return 'Не знайдено жодного запису';
+            },
+            formatRefresh: function () {
+                return 'Оновити';
+            },
+            formatToggle: function () {
+                return 'Змінити';
+            },
+            formatColumns: function () {
+                return 'Стовпці';
+            }
+        };
+
+        $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['uk-UA']);
+
+    })(jQuery);
+
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+
+    $('#userTable').on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table', function () {
+        $("#deleteUser").prop('disabled', ! $('#userTable').bootstrapTable('getSelections').length);
+        // save your data, here just save the current page
+        selections = getIdSelections();
+        // push or splice the selections if you want to save all data selections
+    });
+
+    function getIdSelections() {
+        return $.map($('#userTable').bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+
+
+    $('#userTable').on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table', function () {
+        $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+        // save your data, here just save the current page
+        selections = getIdSelections();
+        // push or splice the selections if you want to save all data selections
+    });
+
+    $("#deleteUser").click(function () {
+        var ids = getIdSelections();
+        $('#userTable').bootstrapTable('remove', {
+            field: 'id',
+            values: ids
+        });
+        $("#deleteUser").prop('disabled', true);
+    });
+    $(window).resize(function () {
+        $('#userTable').bootstrapTable('resetView', {
+            height: getHeight()
+        });
+    });
+
+
+    $('#userTable').on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table', function () {
+        $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+        // save your data, here just save the current page
+        selections = getIdSelections();
+        // push or splice the selections if you want to save all data selections
+    });
+
+
+//    $(document).ready(function () {
+//       $.ajax({
+//           type: "get",
+//           url: "/admin/users"
+//
+//       })
+//    });
+
+    $("#addUserSave").click(function (e) {
+        $.ajax({
+            type: "post",
+            url : "/admin/create/user",
+            data : {
+                email : $("#exampleInputEmail1").val(),
+                firstName : $("#firstName").val(),
+                lastName : $("#lastName").val(),
+                password : $("#exampleInputPassword1").val(),
+                role : $("#role").val(),
+            },
+            success : function () {
+                $("#userAddModal").modal('hide')
+                toastr["success"]("Користувача додано");
+                $('#userTable').bootstrapTable('refresh');
+            },
+            error : function () {
+                toastr["error"]("Такий користувач уже існує");
+            }
+
+
+        })
+    })
+
+
+</script>
+</html>

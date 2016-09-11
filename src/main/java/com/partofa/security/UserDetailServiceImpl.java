@@ -36,6 +36,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         final Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(role.getParamName()));
         springUser = new User(user.getEmail(), user.getPassword(), user.getIsEnabled(), true, true, true, authorities);
+        log.info("user:" + springUser.toString());
         return springUser;
     }
 }

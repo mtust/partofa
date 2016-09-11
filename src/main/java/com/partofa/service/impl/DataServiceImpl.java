@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,11 +37,31 @@ public class DataServiceImpl implements DataService{
         return new RestMessageDTO("Success", true);
     }
 
+    @Transactional
     @Override
     public RestMessageDTO deleteData(Long dataId) {
         Data data = dataRepository.findOne(dataId);
-        data.setStatus("deleted");
+        data.setDelDate(new Timestamp(new Date().getTime()));
         dataRepository.save(data);
         return new RestMessageDTO("Success", true);
+    }
+
+    @Transactional
+    @Override
+    public RestMessageDTO createData(Data data) {
+        dataRepository.save(data);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Transactional
+    @Override
+    public List<Data> getNonDeletedData() {
+        return dataRepository.findByDelDateIsNotNull();
+    }
+
+    @Transactional
+    @Override
+    public List<Data> getDeletedData() {
+        return dataRepository.findByDelDateIsNull();
     }
 }

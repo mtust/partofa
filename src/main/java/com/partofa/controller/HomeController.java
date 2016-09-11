@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by tust on 09.09.2016.
  */
-@Controller
+@RestController
 @Slf4j
 public class HomeController {
 
@@ -30,6 +30,16 @@ public class HomeController {
         return dataService.getAllData();
     }
 
+    @RequestMapping(value = "private/home/actualData", method = RequestMethod.GET)
+    public List<Data> getNonDeletedData(){
+        return dataService.getNonDeletedData();
+    }
+
+    @RequestMapping(value = "private/home/deletedData", method = RequestMethod.GET)
+    public List<Data> getDeletedData(){
+        return dataService.getDeletedData();
+    }
+
     @RequestMapping(value = "private/edit", method = RequestMethod.PUT)
     public RestMessageDTO editData(Data data){
         return dataService.editData(data);
@@ -38,6 +48,11 @@ public class HomeController {
     @RequestMapping(value = "private/delete", method = RequestMethod.DELETE)
     public RestMessageDTO deleteData(Long dataId){
         return dataService.deleteData(dataId);
+    }
+
+    @RequestMapping(value = "private/add", method = RequestMethod.POST)
+    public RestMessageDTO createData(Data data){
+        return dataService.createData(data);
     }
 
 

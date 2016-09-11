@@ -2,6 +2,8 @@ package com.partofa.controller;
 
 import com.partofa.domain.User;
 import com.partofa.dto.RestMessageDTO;
+import com.partofa.dto.UserCreateDTO;
+import com.partofa.dto.UserDTO;
 import com.partofa.dto.UserRegistrationDTO;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,7 @@ import java.util.List;
  * Created by tust on 10.09.2016.
  */
 @Slf4j
-@Controller
+@RestController
 public class UserController {
 
 
@@ -28,8 +30,14 @@ public class UserController {
 
 
     @RequestMapping(value = "admin/users", method = RequestMethod.GET)
-    public List<User> getUsers() {
+    public List<UserDTO> getUsers() {
         return userService.getAllUsers();
+    }
+
+
+    @RequestMapping(value = "admin/create/user", method = RequestMethod.POST)
+    public RestMessageDTO addUser(UserCreateDTO userCreateDTO){
+        return  userService.createUser(userCreateDTO);
     }
 
 
@@ -37,6 +45,24 @@ public class UserController {
     public RestMessageDTO createUser(UserRegistrationDTO userRegistrationDTO){
         log.info(userRegistrationDTO.toString());
         return userService.signUp(userRegistrationDTO);
+    }
+
+
+    @RequestMapping(name = "private/getCurrentUserRole", method = RequestMethod.GET)
+    public String getCurrentUserRole(){
+        User user = null;
+        try {
+            user = userService.getLoginUser();
+        } catch (NullPointerException e){
+            log.info("anonymus user");
+        }
+
+        if(user != null){
+            return user.getRole().getParamName();
+        } else {
+            return "error";
+        }
+
     }
 
     @RequestMapping(value = "private/user/is-authenticated", method = RequestMethod.GET)
