@@ -19,13 +19,15 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    protected RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserDetailServiceImpl userDetailService;
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
     @Autowired
     private MySavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private UserDetailServiceImpl userDetailService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,10 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
-                .antMatchers("/public/**").permitAll()
-                .antMatchers("/private/**").authenticated()
-                .antMatchers("/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.getParamName())
+                .antMatchers("","/","/index", "index").permitAll()
+                .antMatchers("/public/**","public/**").permitAll()
+                .antMatchers("/private/**", "private/**").authenticated()
+                .antMatchers("/admin/**","admin/**").hasAnyAuthority(Role.ROLE_ADMIN.getParamName())
                 .and()
                 .formLogin().usernameParameter( "email" ).passwordParameter( "password" )
                // .loginPage("/login")
@@ -63,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
+
+
     @Bean
     public MySavedRequestAwareAuthenticationSuccessHandler mySuccessHandler() {
         return new MySavedRequestAwareAuthenticationSuccessHandler();
@@ -72,5 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SimpleUrlAuthenticationFailureHandler myFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler();
     }
+
+
 
 }

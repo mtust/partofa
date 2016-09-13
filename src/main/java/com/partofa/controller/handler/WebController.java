@@ -38,7 +38,7 @@ public class WebController extends WebMvcConfigurerAdapter {
         registry.addViewController("/form").setViewName("form");
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String getHomePage() {
         User user = null;
         try {
@@ -73,12 +73,12 @@ public class WebController extends WebMvcConfigurerAdapter {
 
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     public String logout(@RequestParam("logout") String logout) {
         return "index";
     }
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = {"/partofa-0.1/public/user/index", "/partofa-0.1/index"}, method = RequestMethod.GET)
     public String getIndexPage() {
         return this.getHomePage();
     }

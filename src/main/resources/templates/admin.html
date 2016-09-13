@@ -232,7 +232,7 @@
 
         $.ajax({
             type: "delete",
-            url : "admin/delete/user" + '?' + $.param({"id": ids[0]}),
+            url : "/partofa-0.1admin/delete/user" + '?' + $.param({"id": ids[0]}),
             success : function () {
                 toastr["success"]("Користувача успішно видалено");
                 $('#userTable').bootstrapTable('remove', {
@@ -271,9 +271,10 @@
     $("#editUserSave").click(function (e)  {
         var ids = getIdSelections();
         $.ajax({
-            type: "put",
-            url : "/admin/edit/user" + '?' + $.param({"id": ids[0]}),
+            type: "post",
+            url : "/partofa-0.1/admin/edit/user",
             data : {
+                id : ids[0],
                 email : $("#editEmail").val(),
                 firstName : $("#editFirstName").val(),
                 lastName : $("#editLastName").val(),
@@ -298,7 +299,7 @@
     $("#addUserSave").click(function (e) {
         $.ajax({
             type: "post",
-            url : "/admin/create/user",
+            url : "/partofa-0.1/admin/create/user",
             data : {
                 email : $("#exampleInputEmail1").val(),
                 firstName : $("#firstName").val(),

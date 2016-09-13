@@ -47,11 +47,11 @@ public class Data {
     @Column(name = "check_result")
     private String checkResult;
     @Column(name = "add_date")
-    private Timestamp addDate;
+    private Date addDate;
     @Column(name = "upd_date")
-    private Timestamp updDate;
+    private Date updDate;
     @Column(name = "del_date")
-    private Timestamp delDate;
+    private Date delDate;
     @Column(name = "commentary")
     private String comment;
     @Column(name = "key_column_rev")

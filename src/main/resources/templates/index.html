@@ -16,6 +16,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+    <script src="static/js/login.js"></script>
+    <script src="/static/js/login.js"></script>
+    <script src="js/login.js"></script>
     <style>
         .panel-login {
             border-color: #ccc;
@@ -169,7 +172,7 @@
                                     <span id="error" style="align-content: center; color: red"></span>
                                 </div>
                             </div>
-                            <div id="register-form" role="form"
+                            <form action="public/user/signup" method="post" id="register-form" role="form"
                                  style="display: none;">
                                 <div class="form-group">
                                     <input type="text" name="firstName" id="firstName" tabindex="1" class="form-control"
@@ -194,13 +197,13 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="button"  name="register-submit" id="register-submit"
+                                            <input type="submit"  name="register-submit" id="register-submit"
                                                    tabindex="4" class="form-control btn btn-register"
                                                    value="Зареєструвати"/>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -244,41 +247,47 @@
             e.preventDefault();
         });
     });
-    $("#register-submit").click(function () {
-        $.ajax({
-            type : 'post',
-            url: "/public/user/signup",
-            data : {
-                firstName : $("#firstName").val(),
-                lastName : $("#lastName").val(),
-                email : $("#email").val(),
-                password : $("#password").val(),
-                passwordConfirm : $("#passwordConfirm").val()
-            }
-            success : function (data) {
-                toastr[success]("Ви зареєстрованні")
-            },
-            error : function () {
-                toastr[error]("Помилка")
-            }
-        })
-    })
+
+//    $("#register-submit").click(function () {
+//        $.ajax({
+//            type : 'post',
+//            url: "/public/user/signup",
+//            data : {
+//                firstName : $("#firstName").val(),
+//                lastName : $("#lastName").val(),
+//                email : $("#email").val(),
+//                password : $("#password").val(),
+//                passwordConfirm : $("#passwordConfirm").val()
+//            }
+//            success : function (data) {
+//                toastr[success]("Ви зареєстрованні")
+//            },
+//            error : function () {
+//                toastr[error]("Помилка")
+//            }
+//        })
+//    })
     $("#login-submit").click(function(e){
         var dataPost = $("#login-form")
         $.ajax({
             type: 'post',
-            url: '/login',
+            url: 'login',
             data: {
                 email: $("#username").val(),
                 password: $("#passwordLogin").val()
             },
             success: function (data) {
-                window.location.href = "/   ";
+                window.location.href = "";
             },
             error: function(data) {
                 toastr["error"]("Неправильно веддений логін або пароль")
             }
         });
+    });
+
+    $('#register-form').on('submit', function(e) {
+        (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 800 )
+
     });
 </script>
 </html>
