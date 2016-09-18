@@ -24,9 +24,12 @@ public interface UserService {
     List<UserDTO> getAllUsers();
     User getLoginUser();
 
+    UserDTO getLoginUserDTO();
+
     RestMessageDTO createUser(UserCreateDTO userRegistrationDTO);
 
     RestMessageDTO deleteUser(Long userId);
 
     RestMessageDTO editUser(UserEditDTO userEditDTO);
+
 }

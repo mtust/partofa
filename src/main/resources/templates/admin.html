@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Hello AngularJS</title>
+    <title>Partofa</title>
     <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -33,7 +33,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-left">
-                <li id="home"><a href="/private/page/home">Головна таблиця</a></li>
+                <li id="home"><a class="btn" href="/private/page/home">Головна таблиця</a></li>
+                <li id="myPage"><a class="btn" href="private/page/me">Моя сторінка</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li id="logout"><a href="/logout">Вийти</a></li>
@@ -44,10 +45,10 @@
 
 <div class="container">
     <div id="toolbar">
-    <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal" data-target="#userAddModal">Додати користувача</button>
-    <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal" data-target="#editUserModal"  disabled="disabled">Редагувати</button>
-    <button id="deleteUser" onclick="" class="btn btn-default" disabled="disabled" >Видалити користувача</button>
-</div>
+        <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal" data-target="#userAddModal">Додати користувача</button>
+        <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal" data-target="#editUserModal"  disabled="disabled">Редагувати</button>
+        <button id="deleteUser" onclick="" class="btn btn-default" disabled="disabled" >Видалити користувача</button>
+    </div>
     <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
         <thead>
         <tr>
@@ -165,6 +166,16 @@
 </body>
 <script>
 
+    var currentUserId;
+
+    $.ajax({
+        type : 'get',
+        url : 'private/user/is-authenticated',
+        success : function(e){
+            currentUserId = e.id;
+        }
+    });
+
     (function ($) {
         'use strict';
 
@@ -249,18 +260,33 @@
     });
 
 
-    $('#userTable').on('check.bs.table uncheck.bs.table ' +
-            'check-all.bs.table uncheck-all.bs.table', function () {
-        $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
-        $("#editUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+    $('#userTable').on('uncheck.bs.table ' +
+            ' uncheck-all.bs.table', function () {
+
+            $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+            $("#editUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+
         // save your data, here just save the current page
         selections = getIdSelections();
         // push or splice the selections if you want to save all data selections
     });
 
+    $('#userTable').on('check.bs.table ' +
+            'check-all.bs.table ', function () {
+        selections = getIdSelections();
+        var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
+        if (currentUserId != selectedRow.id) {
+            $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+            $("#editUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+        }
+        // save your data, here just save the current page
+
+        // push or splice the selections if you want to save all data selections
+    });
+
 
     $("#editUser").click(function (e) {
-       var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
+        var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
         $("#editEmail").val(selectedRow.email)
         $("#editFirstName").val(selectedRow.firstName)
         $("#editLastName").val(selectedRow.lastName)

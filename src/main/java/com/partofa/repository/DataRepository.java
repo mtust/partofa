@@ -4,12 +4,14 @@ import com.partofa.domain.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by tust on 10.09.2016.
  */
+@Repository
 public interface DataRepository extends JpaRepository<Data, Long> {
 
 

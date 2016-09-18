@@ -5,6 +5,7 @@ import com.partofa.dto.*;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +26,7 @@ public class UserController {
     UserService userService;
 
 
+
     @RequestMapping(value = "admin/users", method = RequestMethod.GET)
     public List<UserDTO> getUsers() {
         return userService.getAllUsers();
@@ -41,6 +43,12 @@ public class UserController {
         return  userService.editUser(userEditDTO);
     }
 
+
+//    @RequestMapping(name = "login", method = RequestMethod.POST)
+//    public RestMessageDTO  login(UserLoginDTO userLoginDTO){
+//
+//        return userService.login(userLoginDTO);
+//    }
 
     @RequestMapping(name = "public/user/signup", method = RequestMethod.POST)
     public ModelAndView createUser(UserRegistrationDTO userRegistrationDTO){
@@ -74,9 +82,11 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
-    @RequestMapping(value = "partofa-0.1/private/user/is-authenticated", method = RequestMethod.GET)
-    public User isUserAuthenticated() {
-        return userService.getLoginUser();
+    @RequestMapping(value = "private/user/is-authenticated", method = RequestMethod.GET)
+    public UserDTO isUserAuthenticated() {
+        return userService.getLoginUserDTO();
     }
+
+
 }
 

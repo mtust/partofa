@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @Configuration
-@EnableAutoConfiguration
 @ComponentScan
 public class PartofaApplication extends SpringBootServletInitializer {
 
@@ -19,6 +18,8 @@ public class PartofaApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(PartofaApplication.class);
 	}
+
+
 
 
 	public static void main(String[] args) {

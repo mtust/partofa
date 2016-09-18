@@ -11,10 +11,15 @@ import com.partofa.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.el.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    private AuthenticationManager authManager;
 
     @Transactional
     @Override
@@ -98,9 +109,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getLoginUser() {
         String  userLogin = SecurityUtils.getCurrentUserLogin();
-
         return userRepository.findByEmail(userLogin);
 
+    }
+
+    @Override
+    public UserDTO getLoginUserDTO() {
+        User user = getLoginUser();
+        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
+                user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
+                user.getIsEnabled() == true ? "Активний" : "Неактивний");
     }
 
     @Transactional

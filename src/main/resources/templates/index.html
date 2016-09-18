@@ -1,6 +1,9 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Hello AngularJS</title>
+    <title>Partofa</title>
     <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -9,6 +12,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
+    <link rel="stylesheet" href="../static/css/login.css"
+          th:href="@{/css/login.css}"/>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -16,9 +23,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script src="static/js/login.js"></script>
-    <script src="/static/js/login.js"></script>
-    <script src="js/login.js"></script>
+
+    <script th:src="@{static/js/2.js}"></script>
+    <script th:src="@{/static/js/3.js}"></script>
+    <script th:src="@{/js/4.js}"></script>
+    <script th:src="@{js/5.js}"></script>
+    <script type="text/javascript" th:src="@{/js/6.js}"></script>
+    <script src="js/5.js"></script>
+    <script src="../static/js/5.js" th:src="@{/js/5.js}"></script>
     <style>
         .panel-login {
             border-color: #ccc;
@@ -271,16 +283,20 @@
         var dataPost = $("#login-form")
         $.ajax({
             type: 'post',
-            url: 'login',
+            url: '/login',
             data: {
                 email: $("#username").val(),
                 password: $("#passwordLogin").val()
             },
             success: function (data) {
-                window.location.href = "";
+                window.location.href = "/";
             },
             error: function(data) {
-                toastr["error"]("Неправильно веддений логін або пароль")
+                if(data.responseJSON.message == "Authentication Failed: User is disabled"){
+                    toastr["error"]("Користувач ще не активований адміністраторм")
+                } else {
+                    toastr["error"]("Неправильно веддений логін або пароль")
+                }
             }
         });
     });
@@ -289,5 +305,6 @@
         (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 800 )
 
     });
+
 </script>
 </html>
