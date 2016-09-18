@@ -293,7 +293,7 @@
             },
             error: function(data) {
                 if(data.responseJSON.message == "Authentication Failed: User is disabled"){
-                    toastr["error"]("Користувач ще не активований адміністраторм")
+                    toastr["error"]("Цей користувач заблокований")
                 } else {
                     toastr["error"]("Неправильно веддений логін або пароль")
                 }

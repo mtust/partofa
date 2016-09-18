@@ -82,7 +82,7 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
-    @RequestMapping(value = "private/user/is-authenticated", method = RequestMethod.GET)
+    @RequestMapping(value = {"admin/page/private/user/is-authenticated", "private/user/is-authenticated"}, method = RequestMethod.GET)
     public UserDTO isUserAuthenticated() {
         return userService.getLoginUserDTO();
     }

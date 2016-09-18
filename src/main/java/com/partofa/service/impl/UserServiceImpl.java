@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         users.forEach(user -> userDTOs.add(
                 new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
                         user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
-                        user.getIsEnabled() == true ? "Активний" : "Неактивний")));
+                        user.getIsEnabled() == true ? "Активний" : "Заблокований")));
         return userDTOs;
     }
 
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
         User user = getLoginUser();
         return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
                 user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
-                user.getIsEnabled() == true ? "Активний" : "Неактивний");
+                user.getIsEnabled() == true ? "Активний" : "Заблокований");
     }
 
     @Transactional

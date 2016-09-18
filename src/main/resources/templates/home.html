@@ -10,8 +10,9 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"/>
-    <link rel="stylesheet"
-          href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -19,17 +20,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
 
-    <script type="text/javascript"
-            src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js">
     </script>
-    <script type="text/javascript"
-            src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
-    </script>
+
 
     <!-- Latest compiled and minified Locales -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
 
     <style>
+
+
+        #ui-datepicker-div{
+            z-index: 10000 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -40,7 +45,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-left">
-                <li id="adminTab" style="visibility: hidden"><a class="btn" href="/admin/page/users">Адмін панель</a></li>
+                <li id="adminTab" style="visibility: hidden"><a class="btn" href="/admin/page/users">Адмін панель</a>
+                </li>
                 <li id="myPage"><a class="btn" href="private/page/me">Моя сторінка</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -89,7 +95,7 @@
                     <th data-sortable="true" data-field="reactMeasure">Вжити заходів реагування</th>
                     <th data-sortable="true" data-field="controlName">Найменуваня органу держ. нагляду</th>
                     <th data-sortable="true" data-field="addDate">Дата внесення до реєстру</th>
-                    <th data-sortable="true" data-field="updDate">Дата останнсього реагування</th>
+                    <th data-sortable="true" data-field="updDate">Дата останнсього редагування</th>
                     <th data-sortable="true" data-field="comment">Коментар</th>
                 </tr>
                 </thead>
@@ -136,7 +142,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Додавання користувача</h4>
+                <h4 class="modal-title">Додавання суб'єкта господарування</h4>
             </div>
             <div class="modal-body">
                 <form id="createData">
@@ -167,16 +173,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="addRisk">Дата початку проведення заходу:</label>
-                        <div class='input-group date' id='startDateP'>
-                            <input type='text' class="form-control"/>
-                            <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                        </div>
+                        <label for="startDateP">Дата початку проведення заходу:</label>
+                            <input id='startDateP' type='text' class="form-control"/>
                     </div>
                     <div class="form-group">
-                        <label for="addTerm">Ступінь риску:</label>
+                        <label for="addTerm">Ступінь ризику:</label>
                         <select class="form-control" id="addTerm">
                             <option value="5 днів">5 днів</option>
                             <option value="15 днів">15 днів</option>
@@ -193,22 +194,27 @@
                         <input type="" class="form-control" id="addRskReason"
                                placeholder="Підстава призначення ступеня ризику"/>
                     </div>
-
                     <div class="form-group">
                         <label for="addResults">Результат перевірки</label>
                         <input type="" class="form-control" id="addResults"
                                placeholder="Результат перевірки"/>
                     </div>
                     <div class="form-group">
-                        <label for="addzaxid">Вжити заходів реагування</label>
+                        <label for="addzaxid">Вжити заходів редагування</label>
                         <select class="form-control" id="addzaxid">
                             <option value="суд">суд</option>
                             <option value="штраф">штраф</option>
                         </select>
                     </div>
-
-
-
+                    <div class="form-group">
+                        <label for="addOrgan">Найменуваня органу держ. нагляду</label>
+                        <input type="" class="form-control" id="addOrgan"
+                               placeholder="Найменуваня органу держ. нагляду"/>
+                    </div>
+                    <div>
+                        <label for="addComent">Коментар</label>
+                        <input type="" class="form-control" id="addComent" placeholder="Коментар"/>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -223,8 +229,13 @@
 </body>
 <script>
 
+    $.datepicker.setDefaults(
+                    $.datepicker.regional['uk']
+
+    );
+
     $(function () {
-        $('#startDateP').datetimepicker();
+        $('#startDateP').datepicker();
     });
 
     //    $('#myTabs a').click(function (e) {
@@ -232,39 +243,10 @@
     //        $(this).tab('show')
     //    })
 
-    (function ($) {
-        'use strict';
 
-        $.fn.bootstrapTable.locales['uk-UA'] = {
-            formatLoadingMessage: function () {
-                return 'Завантаження, будь ласка, зачекайте...';
-            },
-            formatRecordsPerPage: function (pageNumber) {
-                return pageNumber + ' записів на сторінку';
-            },
-            formatShowingRows: function (pageFrom, pageTo, totalRows) {
-                return 'Показано з ' + pageFrom + ' по ' + pageTo + '. Всього: ' + totalRows;
-            },
-            formatSearch: function () {
-                return 'Пошук';
-            },
-            formatNoMatches: function () {
-                return 'Не знайдено жодного запису';
-            },
-            formatRefresh: function () {
-                return 'Оновити';
-            },
-            formatToggle: function () {
-                return 'Змінити';
-            },
-            formatColumns: function () {
-                return 'Стовпці';
-            }
-        };
 
-        $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['uk-UA']);
 
-    })(jQuery);
+
 
     toastr.options = {
         "closeButton": false,
@@ -289,7 +271,7 @@
 
         $.ajax({
             type: "get",
-            url: "/partofa-0.1/private/getCurrentUserRole",
+            url: "/getCurrentUserRole",
             success: function (data) {
                 if (data === "ROLE_ADMIN") {
                     $("#adminTab").css("visibility", "visible");
@@ -320,7 +302,7 @@
 
         $.ajax({
             type: "delete",
-            url: "/partofa-0.1private/delete" + '?' + $.param({"id": ids[0]}),
+            url: "/private/delete" + '?' + $.param({"id": ids[0]}),
             success: function () {
                 toastr["success"]("Дані успішно видалено та перенесено у архів");
                 $('#deleteData').bootstrapTable('remove', {

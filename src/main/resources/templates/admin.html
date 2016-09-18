@@ -21,7 +21,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
 
     <!-- Latest compiled and minified Locales -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
     <style>
 
     </style>
@@ -146,10 +146,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="editIsEnabled">Роль:</label>
+                        <label for="editIsEnabled">Статус:</label>
                         <select class="form-control" id="editIsEnabled">
                             <option value="true">Активний</option>
-                            <option value="false">Неактивний</option>
+                            <option value="false">Заблокований</option>
                         </select>
                     </div>
                 </form>
@@ -168,47 +168,17 @@
 
     var currentUserId;
 
-    $.ajax({
-        type : 'get',
-        url : 'private/user/is-authenticated',
-        success : function(e){
-            currentUserId = e.id;
-        }
-    });
-
     (function ($) {
         'use strict';
-
-        $.fn.bootstrapTable.locales['uk-UA'] = {
-            formatLoadingMessage: function () {
-                return 'Завантаження, будь ласка, зачекайте...';
-            },
-            formatRecordsPerPage: function (pageNumber) {
-                return pageNumber + ' записів на сторінку';
-            },
-            formatShowingRows: function (pageFrom, pageTo, totalRows) {
-                return 'Показано з ' + pageFrom + ' по ' + pageTo + '. Всього: ' + totalRows;
-            },
-            formatSearch: function () {
-                return 'Пошук';
-            },
-            formatNoMatches: function () {
-                return 'Не знайдено жодного запису';
-            },
-            formatRefresh: function () {
-                return 'Оновити';
-            },
-            formatToggle: function () {
-                return 'Змінити';
-            },
-            formatColumns: function () {
-                return 'Стовпці';
+        $.ajax({
+            type : 'get',
+            url : 'private/user/is-authenticated',
+            success : function(e){
+                currentUserId = e.id;
             }
-        };
-
-        $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['uk-UA']);
-
+        });
     })(jQuery);
+
 
 
     toastr.options = {
@@ -243,7 +213,7 @@
 
         $.ajax({
             type: "delete",
-            url : "/partofa-0.1admin/delete/user" + '?' + $.param({"id": ids[0]}),
+            url : "/delete/user" + '?' + $.param({"id": ids[0]}),
             success : function () {
                 toastr["success"]("Користувача успішно видалено");
                 $('#userTable').bootstrapTable('remove', {
@@ -273,6 +243,7 @@
 
     $('#userTable').on('check.bs.table ' +
             'check-all.bs.table ', function () {
+
         selections = getIdSelections();
         var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
         if (currentUserId != selectedRow.id) {
@@ -298,7 +269,7 @@
         var ids = getIdSelections();
         $.ajax({
             type: "post",
-            url : "/partofa-0.1/admin/edit/user",
+            url : "/admin/edit/user",
             data : {
                 id : ids[0],
                 email : $("#editEmail").val(),
@@ -325,7 +296,7 @@
     $("#addUserSave").click(function (e) {
         $.ajax({
             type: "post",
-            url : "/partofa-0.1/admin/create/user",
+            url : "/admin/create/user",
             data : {
                 email : $("#exampleInputEmail1").val(),
                 firstName : $("#firstName").val(),
