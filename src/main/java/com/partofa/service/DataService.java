@@ -2,6 +2,7 @@ package com.partofa.service;
 
 import com.partofa.domain.Data;
 import com.partofa.dto.CreateDataDTO;
+import com.partofa.dto.DataDTO;
 import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.exception.BadRequestParametersException;
@@ -24,7 +25,9 @@ public interface DataService {
 
     RestMessageDTO createData(CreateDataDTO createDataDTO) throws BadRequestParametersException;
 
-    List<Data> getNonDeletedData();
+    List<DataDTO> getNonDeletedData();
 
-    List<Data> getDeletedData();
+    List<DataDTO> getDeletedData();
+
+    RestMessageDTO revertData(Long id);
 }

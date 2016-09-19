@@ -3,6 +3,7 @@ package com.partofa.service.impl;
 import com.partofa.domain.Data;
 import com.partofa.domain.User;
 import com.partofa.dto.CreateDataDTO;
+import com.partofa.dto.DataDTO;
 import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.exception.BadRequestParametersException;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -105,13 +107,28 @@ public class DataServiceImpl implements DataService {
 
     @Transactional
     @Override
-    public List<Data> getNonDeletedData() {
-        return dataRepository.findByDelDateIsNull();
+    public List<DataDTO> getNonDeletedData() {
+        List<DataDTO> dataDTOs = new ArrayList<>();
+        dataRepository.findByDelDateIsNull().forEach(data -> dataDTOs.add(new DataDTO(data)));
+        return dataDTOs;
     }
 
     @Transactional
     @Override
-    public List<Data> getDeletedData() {
-        return dataRepository.findByDelDateIsNotNull();
+    public List<DataDTO> getDeletedData() {
+        List<DataDTO> dataDTOs = new ArrayList<>();
+        dataRepository.findByDelDateIsNotNull().forEach(data -> dataDTOs.add(new DataDTO(data)));
+        return dataDTOs;
+    }
+
+
+    @Override
+    public RestMessageDTO revertData(Long id) {
+
+        Data data = dataRepository.findOne(id);
+        data.setDelDate(null);
+        dataRepository.save(data);
+
+        return new RestMessageDTO("Success", true);
     }
 }

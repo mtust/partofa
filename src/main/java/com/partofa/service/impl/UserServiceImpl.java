@@ -71,14 +71,14 @@ public class UserServiceImpl implements UserService {
     public RestMessageDTO signUp(UserRegistrationDTO userRegistrationDTO) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (UserUtil.isNotFilledFieldsExist(userRegistrationDTO)) {
-            throw new RuntimeException("Failed to create user, fill all required fields");
+            throw new RuntimeException("Неможливо створити користувача, заповність всі поля");
         }
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirm())) {
-            throw new RuntimeException("Failed to create user, passwords do not match");
+            throw new RuntimeException("Неможливо створити користувача, паролі не співпадають");
         }
         User existingUser = userRepository.findByEmail(userRegistrationDTO.getEmail());
         if (existingUser != null) {
-            throw new ObjectAlreadyExistException("User already registered");
+            throw new ObjectAlreadyExistException("Такий користувач вже існує");
         }
         String hashedPassword = passwordEncoder.encode(userRegistrationDTO.getPassword());
         User user = new User();
@@ -127,7 +127,10 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User existingUser = userRepository.findByEmail(userRegistrationDTO.getEmail());
         if (existingUser != null) {
-            throw new ObjectAlreadyExistException("User already registered");
+            throw new ObjectAlreadyExistException("Користувач вже існує");
+        }
+        if(!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())){
+            throw new RuntimeException("Неможливо створити користувача, паролі не співпадають");
         }
         String hashedPassword = passwordEncoder.encode(userRegistrationDTO.getPassword());
         User user = new User();

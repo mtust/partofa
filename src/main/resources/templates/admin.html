@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-left">
                 <li id="home"><a class="btn" href="/private/page/home">Головна таблиця</a></li>
-                <li id="myPage"><a class="btn" href="private/page/me">Моя сторінка</a></li>
+                <li id="myPage"><a class="btn" href="private/me">Моя сторінка</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li id="logout"><a href="/logout">Вийти</a></li>
@@ -94,6 +94,10 @@
                     <div class="form-group">
                         <label for="exampleInputPassword1">Пароль</label>
                         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword1">Підтвердіть пароль</label>
+                        <input type="password" class="form-control" id="confirmPassword1" placeholder="Підтвердіть пароль" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="role">Роль:</label>
@@ -261,8 +265,16 @@
         $("#editEmail").val(selectedRow.email)
         $("#editFirstName").val(selectedRow.firstName)
         $("#editLastName").val(selectedRow.lastName)
-        $("#editRole option[text=" + selectedRow.role + "]").attr('selected', 'selected');
-        $("#editIsEnabled option[text=" + selectedRow.status + "]").attr('selected', 'selected');
+        try {
+            $("#editRole option[text=" + selectedRow.role + "]").attr('selected', 'selected');
+        } catch (e){
+            console.log(e);
+        }
+        try {
+            $("#editIsEnabled option[text=" + selectedRow.status + "]").attr('selected', 'selected');
+        } catch (e){
+            console.log(e);
+        }
     })
 
     $("#editUserSave").click(function (e)  {
@@ -282,6 +294,7 @@
                 $("#editUserModal").modal('hide')
                 toastr["success"]("Користувача редаговано");
                 $('#userTable').bootstrapTable('refresh');
+
             },
             error : function () {
                 toastr["error"]("Неможливо редагувати користувача");
@@ -302,6 +315,7 @@
                 firstName : $("#firstName").val(),
                 lastName : $("#lastName").val(),
                 password : $("#exampleInputPassword1").val(),
+                confirmPassword : $("confirmPassword1").val(),
                 role : $("#role").val(),
             },
             success : function () {

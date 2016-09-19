@@ -82,7 +82,7 @@ public class WebController extends WebMvcConfigurerAdapter {
 
     }
 
-    @RequestMapping(value = "private/page/me", method = RequestMethod.GET)
+    @RequestMapping(value = {"private/page/private/me", "admin/page/private/me", "private/me" }, method = RequestMethod.GET)
     public String myPage(){
         return "personal";
     }
