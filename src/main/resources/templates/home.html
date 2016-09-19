@@ -70,7 +70,7 @@
                     Додати запис
                 </button>
                 <button id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
-                        data-target="#editDataModal">Редагувати
+                        data-target="#dataEditModal">Редагувати
                 </button>
                 <button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
             </div>
@@ -148,25 +148,25 @@
                 <form id="createData">
                     <div class="form-group">
                         <label for="addSubjectName">Найменування суб’єкта господарювання</label>
-                        <input type="" class="form-control" id="addSubjectName" required="required"/>
+                        <input type="" class="form-control" id="addSubjectName" name="addSubjectName" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="addAdress">Адреса</label>
-                        <input class="form-control" id="addAdress" placeholder="Адреса" required="required"/>
+                        <input class="form-control" id="addAdress" name="addAdress" placeholder="Адреса" required="required"/>
 
                     </div>
                     <div class="form-group">
                         <label for="ipn">Код ЄДРПОУ або ІН</label>
-                        <input class="form-control" id="ipn" placeholder="Код ЄДРПОУ або ІН" required="required"/>
+                        <input class="form-control" id="ipn" name="ipn" placeholder="Код ЄДРПОУ або ІН" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="typeD">Вид господарської діяльності</label>
-                        <input type="" class="form-control" id="typeD"
+                        <input type="" class="form-control" id="typeD" name="typeD"
                                placeholder="Вид господарської діяльності" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="addRisk">Ступінь риску:</label>
-                        <select class="form-control" id="addRisk">
+                        <select class="form-control" id="addRisk" name="addRisk" form="createData">
                             <option value="Високий">Високий</option>
                             <option value="Середній">Середній</option>
                             <option value="Низький">Низький</option>
@@ -174,52 +174,133 @@
                     </div>
                     <div class="form-group">
                         <label for="startDateP">Дата початку проведення заходу:</label>
-                            <input id='startDateP' type='text' class="form-control"/>
+                            <input name="startDateP" id='startDateP' type='text' class="form-control"/>
                     </div>
                     <div class="form-group">
                         <label for="addTerm">Ступінь ризику:</label>
-                        <select class="form-control" id="addTerm">
+                        <select name="addTerm" class="form-control" id="addTerm" form="createData">
                             <option value="5 днів">5 днів</option>
                             <option value="15 днів">15 днів</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="addControll">Найменування органу держ. нагляду (контролю)</label>
-                        <input type="" class="form-control" id="addControll"
+                        <input type="" class="form-control" id="addControll" name="addControll"
                                placeholder="Найменування органу держ. нагляду (контролю)"/>
                     </div>
 
                     <div class="form-group">
                         <label for="addRskReason">Підстава призначення ступеня ризику</label>
-                        <input type="" class="form-control" id="addRskReason"
+                        <input type="" class="form-control" id="addRskReason" name="addRskReason"
                                placeholder="Підстава призначення ступеня ризику"/>
                     </div>
                     <div class="form-group">
                         <label for="addResults">Результат перевірки</label>
-                        <input type="" class="form-control" id="addResults"
+                        <input type="" class="form-control" id="addResults" name="addResults"
                                placeholder="Результат перевірки"/>
                     </div>
                     <div class="form-group">
-                        <label for="addzaxid">Вжити заходів редагування</label>
-                        <select class="form-control" id="addzaxid">
+                        <label for="addZaxid">Вжити заходів реагування</label>
+                        <select class="form-control" id="addZaxid" name="addZaxid" form="createData">
                             <option value="суд">суд</option>
                             <option value="штраф">штраф</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="addOrgan">Найменуваня органу держ. нагляду</label>
-                        <input type="" class="form-control" id="addOrgan"
-                               placeholder="Найменуваня органу держ. нагляду"/>
-                    </div>
                     <div>
                         <label for="addComent">Коментар</label>
-                        <input type="" class="form-control" id="addComent" placeholder="Коментар"/>
+                        <input type="" class="form-control" id="addComent" name="addComent" placeholder="Коментар"/>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                <button type="button" id="addUserSave" class="btn btn-primary">Створити</button>
+                <button type="button" id="addDataSave" class="btn btn-primary">Створити</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="dataEditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редагування суб'єкта господарування</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editDataForm">
+                    <div class="form-group">
+                        <label for="editSubjectName">Найменування суб’єкта господарювання</label>
+                        <input type="" class="form-control" id="editSubjectName" name="addSubjectName" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdress">Адреса</label>
+                        <input class="form-control" id="editAdress" name="addAdress" placeholder="Адреса" required="required"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editIpn">Код ЄДРПОУ або ІН</label>
+                        <input class="form-control" id="editIpn" name="ipn" placeholder="Код ЄДРПОУ або ІН" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTypeD">Вид господарської діяльності</label>
+                        <input type="" class="form-control" id="editTypeD" name="typeD"
+                               placeholder="Вид господарської діяльності" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRisk">Ступінь риску:</label>
+                        <select class="form-control" id="editRisk" name="addRisk" form="editDataForm">
+                            <option value="Високий">Високий</option>
+                            <option value="Середній">Середній</option>
+                            <option value="Низький">Низький</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStartDateP">Дата початку проведення заходу:</label>
+                        <input name="startDateP" id='editStartDateP' type='text' class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTerm">Ступінь ризику:</label>
+                        <select name="addTerm" class="form-control" id="editTerm" form="editDataForm">
+                            <option value="5 днів">5 днів</option>
+                            <option value="15 днів">15 днів</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editControll">Найменування органу держ. нагляду (контролю)</label>
+                        <input type="" class="form-control" id="editControll" name="addControll"
+                               placeholder="Найменування органу держ. нагляду (контролю)"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editRskReason">Підстава призначення ступеня ризику</label>
+                        <input type="" class="form-control" id="editRskReason" name="addRskReason"
+                               placeholder="Підстава призначення ступеня ризику"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editResults">Результат перевірки</label>
+                        <input type="" class="form-control" id="editResults" name="addResults"
+                               placeholder="Результат перевірки"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editZaxid">Вжити заходів реагування</label>
+                        <select class="form-control" id="editZaxid" name="addZaxid" form="createData">
+                            <option value="суд">суд</option>
+                            <option value="штраф">штраф</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="editComent">Коментар</label>
+                        <input type="" class="form-control" id="editComent" name="addComent" placeholder="Коментар"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="editDataSave" class="btn btn-primary">Зберегти</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -267,6 +348,8 @@
     }
 
 
+
+
     $(document).ready(function () {
 
         $.ajax({
@@ -279,6 +362,40 @@
             }
         })
     });
+
+
+    $('#addDataSave').on('click', function(){
+        $.ajax({
+           type : 'post',
+            url : '/private/add',
+            data : $('#createData').serialize(),
+            success : function(data){
+                toastr["success"]("Запис створенно");
+                $("#dataAddModal").modal('hide');
+                $('#dataTable').bootstrapTable('refresh');
+            },
+            error : function(data){
+                toastr["error"]("Неможливо створити запис, перевірте правильність введення полів");
+            }
+        });
+    });
+
+    $('#editDataSave').on('click', function(){
+        var id = getIdSelections();
+        $.ajax({
+            type : 'put',
+            url : '/private/edit/' + id,
+            data : $('#editDataForm').serialize(),
+            success : function(data){
+                toastr["success"]("Запис редаговано");
+                $("#dataEditModal").modal('hide');
+                $('#dataTable').bootstrapTable('refresh');
+            },
+            error : function(data){
+                toastr["error"]("Неможливо редагувати запис, перевірте правильність введення полів");
+            }
+        })
+    })
 
 
     $('#dataTable').on('check.bs.table uncheck.bs.table ' +
@@ -314,7 +431,7 @@
                 $('#archiveTable').bootstrapTable('refresh');
             },
             error: function () {
-                toastr["error"]("Неиожливо видалити цей запис");
+                toastr["error"]("Неможливо видалити цей запис");
             }
         })
 

@@ -1,9 +1,13 @@
 package com.partofa.service;
 
 import com.partofa.domain.Data;
+import com.partofa.dto.CreateDataDTO;
+import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
+import com.partofa.exception.BadRequestParametersException;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -14,11 +18,11 @@ public interface DataService {
 
     List<Data> getAllData();
 
-    RestMessageDTO editData(Data data);
+    RestMessageDTO editData(EditDataDTO editDataDTO);
 
     RestMessageDTO deleteData(Long dataId);
 
-    RestMessageDTO createData(Data data);
+    RestMessageDTO createData(CreateDataDTO createDataDTO) throws BadRequestParametersException;
 
     List<Data> getNonDeletedData();
 

@@ -2,10 +2,7 @@ package com.partofa.domain;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -39,6 +36,7 @@ public class Data {
     @Column(name = "control_name")
     private String controlName;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "chp_id")
     private Integer chpId;
@@ -58,6 +56,8 @@ public class Data {
     private BigDecimal keyColumnRev;
     @Column(name = "react_measure")
     private String reactMeasure;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Region region;
 
 
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.sql.Blob;
 
 /**
  * Created by tust on 09.09.2016.
@@ -30,5 +31,8 @@ public class User {
     private Boolean isEnabled;
     @Enumerated(EnumType.ORDINAL)
     private Role role;
+    private Blob photo;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Region region;
 
 }

@@ -2,17 +2,13 @@ package com.partofa.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
- * Created by tust on 18.09.2016.
+ * Created by tust on 19.09.2016.
  */
 @Data
-public class CreateDataDTO {
+public class EditDataDTO {
 
+    private Long id;
     private String addSubjectName;
     private String addAdress;
     private String ipn;

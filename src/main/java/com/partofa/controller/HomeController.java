@@ -2,16 +2,17 @@ package com.partofa.controller;
 
 import com.partofa.domain.Data;
 import com.partofa.domain.User;
+import com.partofa.dto.CreateDataDTO;
+import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.service.DataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -26,37 +27,35 @@ public class HomeController {
     DataService dataService;
 
     @RequestMapping(value = "private/home", method = RequestMethod.GET)
-    public List<Data> homePage(){
+    public List<Data> homePage() {
         log.info("log1");
         return dataService.getAllData();
     }
 
     @RequestMapping(value = "private/home/actualData", method = RequestMethod.GET)
-    public List<Data> getNonDeletedData(){
+    public List<Data> getNonDeletedData() {
         return dataService.getNonDeletedData();
     }
 
     @RequestMapping(value = "private/home/deletedData", method = RequestMethod.GET)
-    public List<Data> getDeletedData(){
+    public List<Data> getDeletedData() {
         return dataService.getDeletedData();
     }
 
-    @RequestMapping(value = {"private/page/private/edit", "private/edit"}, method = RequestMethod.PUT)
-    public RestMessageDTO editData(Data data){
-        return dataService.editData(data);
+    @RequestMapping(value = {"private/page/private/edit/{id}", "private/edit/{id}"}, method = RequestMethod.PUT)
+    public RestMessageDTO editData(EditDataDTO editDataDTO) {
+        return dataService.editData(editDataDTO);
     }
 
     @RequestMapping(value = {"private/page/private/delete", "private/delete"}, method = RequestMethod.DELETE)
-    public RestMessageDTO deleteData(@RequestParam(value = "id") Long dataId){
+    public RestMessageDTO deleteData(@RequestParam(value = "id") Long dataId) {
         return dataService.deleteData(dataId);
     }
 
     @RequestMapping(value = {"private/page/private/add", "private/add"}, method = RequestMethod.POST)
-    public RestMessageDTO createData(Data data){
-        return dataService.createData(data);
+    public RestMessageDTO createData(CreateDataDTO createDataDTO) {
+        return dataService.createData(createDataDTO);
     }
-
-
 
 
 }
