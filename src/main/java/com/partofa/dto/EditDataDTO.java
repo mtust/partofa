@@ -21,5 +21,6 @@ public class EditDataDTO {
     private String addResults;
     private String addComent;
     private String addZaxid;
+    private String editUserRegion;
 
 }

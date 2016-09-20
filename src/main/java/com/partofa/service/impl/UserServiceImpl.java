@@ -1,9 +1,11 @@
 package com.partofa.service.impl;
 
+import com.partofa.domain.Region;
 import com.partofa.domain.Role;
 import com.partofa.domain.User;
 import com.partofa.dto.*;
 import com.partofa.exception.ObjectAlreadyExistException;
+import com.partofa.repository.RegionRepository;
 import com.partofa.repository.UserRepository;
 import com.partofa.security.SecurityUtils;
 import com.partofa.service.UserService;
@@ -37,11 +39,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-//
-//    @Autowired
-//    private AuthenticationManager authManager;
+    @Autowired
+    RegionRepository regionRepository;
+
 
     @Transactional
     @Override
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = new ArrayList<UserDTO>();
         users.forEach(user -> userDTOs.add(
-                new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
+                new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRegion() == null ? "Усі регіони" : user.getRegion().getName(),
                         user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
                         user.getIsEnabled() == true ? "Активний" : "Заблокований")));
         return userDTOs;
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getLoginUserDTO() {
         User user = getLoginUser();
-        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
+        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),  user.getRegion() == null ? "Усі регіони" : user.getRegion().getName(),
                 user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
                 user.getIsEnabled() == true ? "Активний" : "Заблокований");
     }
@@ -155,7 +155,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestMessageDTO editUser(UserEditDTO userEditDTO) {
-
+        Region region = null;
+        if(!userEditDTO.getRegion().equals("all")){
+            region = regionRepository.findOne(Long.parseLong(userEditDTO.getRegion()));
+        }
+        log.info(region.toString());
         User user = userRepository.findOne(userEditDTO.getId());
         log.info("user:" + user);
         log.info("userDTO" + userEditDTO);
@@ -164,7 +168,8 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.getRole(userEditDTO.getRole()));
         user.setIsEnabled(userEditDTO.getIsEnabled());
         user.setFirstName(userEditDTO.getFirstName());
-
+        user.setRegion(region);
+        log.info(user.toString());
         userRepository.save(user);
 
         return new RestMessageDTO("Success", true);

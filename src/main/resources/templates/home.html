@@ -84,6 +84,7 @@
                     <th data-field="id" data-visible="false"></th>
                     <th data-sortable="true" data-field="id">№</th>
                     <th data-sortable="true" data-field="subjectName">Найменування суб'єкта господарювання</th>
+                    <th data-sortable="true" data-field="region">Регіон суб'єкта</th>
                     <th data-sortable="true" data-field="addressWork">Адреса</th>
                     <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ або ІН</th>
                     <th data-sortable="true" data-field="gosWorkType">Вид господарської діяльності</th>
@@ -117,6 +118,7 @@
                     <th data-field="id" data-visible="false"></th>
                     <th data-sortable="true" data-field="id">№</th>
                     <th data-sortable="true" data-field="subjectName">Найменування суб'єкта господарювання</th>
+                    <th data-sortable="true" data-field="region">Регіон суб'єкта</th>
                     <th data-sortable="true" data-field="addressWork">Адреса</th>
                     <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ або ІН</th>
                     <th data-sortable="true" data-field="gosWorkType">Вид господарської діяльності</th>
@@ -154,6 +156,12 @@
                         <label for="addSubjectName">Найменування суб’єкта господарювання</label>
                         <input type="" class="form-control" id="addSubjectName" name="addSubjectName"
                                required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addUserRegion">Регіон </label>
+                        <select class="form-control" id="addUserRegion" name="addUserRegion"  form="createData">
+                        </select>
+
                     </div>
                     <div class="form-group">
                         <label for="addAdress">Адреса</label>
@@ -245,6 +253,12 @@
                                required="required"/>
                     </div>
                     <div class="form-group">
+                        <label for="editUserRegion">Регіон</label>
+                        <select class="form-control" id="editUserRegion" name="editUserRegion"  form="editDataForm">
+                        </select>
+
+                    </div>
+                    <div class="form-group">
                         <label for="editAdress">Адреса</label>
                         <input class="form-control" id="editAdress" name="addAdress" placeholder="Адреса"
                                required="required"/>
@@ -327,6 +341,39 @@
     $(function () {
         $('#startDateP').datepicker();
     });
+
+
+    var regions;
+    (function ($) {
+        $.ajax({
+            type : 'get',
+            url : 'regions',
+            success : function (e) {
+                regions = e;
+                console.log("regions: ");
+                console.log(JSON.stringify(e));
+                $.each(e, function(i, item){
+                    $('#addUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
+                    $('#editUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
+                })
+                $('#addRegion').append($('<option>', {
+                    value: "all",
+                    text: "Усі регіони"
+                }, '</option>'));
+                $('#editUserRegion').append($('<option>', {
+                    value: "all",
+                    text: "Усі регіони"
+                }, '</option>'));
+
+            }
+        });
+    })(jQuery);
 
     //    $('#myTabs a').click(function (e) {
     //        e.preventDefault()
@@ -495,6 +542,11 @@
         try {
             $("#editTerm option[text=" + selectedRow.deadlines + "]").attr('selected', 'selected');
         } catch (e){
+            console.log(e);
+        }
+        try {
+            $("#editUserRegion option[text=" + selectedRow.deadlines + "]").attr('selected', 'selected');
+        } catch (e) {
             console.log(e);
         }
         $("#editControll").val(selectedRow.controlName);

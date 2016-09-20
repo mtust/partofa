@@ -49,7 +49,7 @@ public class DataDTO {
         }
         comment = data.getComment();
         keyColumnRev = data.getKeyColumnRev();
-        region = data.getRegion();
+        region = data.getRegion() == null ? "Усі регіони" : data.getRegion().getName();
     }
 
     private String subjectName;
@@ -70,7 +70,7 @@ public class DataDTO {
     private String comment;
     private BigDecimal keyColumnRev;
     private String reactMeasure;
-    private Region region;
+    private String region;
 
 
 }

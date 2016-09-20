@@ -1,6 +1,7 @@
 package com.partofa.service;
 
 import com.partofa.domain.Data;
+import com.partofa.domain.Region;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
 import com.partofa.dto.EditDataDTO;
@@ -30,4 +31,5 @@ public interface DataService {
     List<DataDTO> getDeletedData();
 
     RestMessageDTO revertData(Long id);
+
 }

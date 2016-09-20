@@ -73,6 +73,7 @@
                     <th data-field="id" data-visible="false"></th>
                     <th data-sortable="true" data-field="firstName">Ім'я</th>
                     <th data-sortable="true" data-field="lastName">Прізвище</th>
+                    <th data-sortable="true" data-field="region">Регіон</th>
                     <th data-sortable="true" data-field="email">Eлектрона пошта</th>
                     <th data-sortable="true" data-field="role">Роль</th>
                     <th data-sortable="true" data-field="status">Статус</th>
@@ -82,18 +83,21 @@
         </div>
         <div role="tabpanel" class="tab-pane active" id="regions">
             <div id="toolbar2">
-                <button id="addRegion" onclick="" class="btn btn-primary" data-toggle="madol"
+                <button id="addRegion" onclick="" class="btn btn-primary" data-toggle="modal"
                         data-target="#addRegionModal">Додати регіон
                 </button>
                 <button id="deleteRegion" onclick="" class="btn btn-default" disabled="disabled">Видалити регіон
                 </button>
             </div>
             <table id="regionTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar2"
-                   data-locale="uk-UA" data-pagination="true" data-url="/admin/regions">
+                   data-locale="uk-UA" data-pagination="true" data-url="/regions">
+                <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-visible="false" ></th>
                     <th data-sortable="true" data-field="name">Регіон</th>
                 </tr>
+                </thead>
             </table>
         </div>
     </div>
@@ -207,6 +211,11 @@
                         <input class="form-control" id="editLastName" placeholder="Прізвище" required="required"/>
                     </div>
                     <div class="form-group">
+                        <label for="editUserRegion">Регіон</label>
+                        <select class="form-control" id="editUserRegion">
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="editRole">Роль:</label>
                         <select class="form-control" id="editRole">
                             <option value="ROLE_USER">Оператор</option>
@@ -243,6 +252,30 @@
             url: 'private/user/is-authenticated',
             success: function (e) {
                 currentUserId = e.id;
+            }
+        });
+    })(jQuery);
+
+    var regions;
+    (function ($) {
+        $.ajax({
+           type : 'get',
+            url : 'regions',
+            success : function (e) {
+               regions = e;
+                console.log("regions: ");
+                console.log(JSON.stringify(e));
+                $.each(e, function(i, item){
+                    $('#editUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
+                })
+                $('#editUserRegion').append($('<option>', {
+                    value: "all",
+                    text: "Усі регіони"
+                }, '</option>'));
+
             }
         });
     })(jQuery);
@@ -364,7 +397,8 @@
                 firstName: $("#editFirstName").val(),
                 lastName: $("#editLastName").val(),
                 role: $("#editRole").val(),
-                isEnabled: $("#editIsEnabled").val()
+                isEnabled: $("#editIsEnabled").val(),
+                region : $("#editUserRegion").val()
             },
             success: function () {
                 $("#editUserModal").modal('hide')
@@ -381,6 +415,25 @@
     })
 
 
+    $("#addRegionSave").click(function(e) {
+        $.ajax({
+            type : "post",
+            url : "/admin/region/add",
+            data : {
+                name : $("#inputRegionName").val()
+            },
+            success : function(data){
+                toastr["success"]("регіон успішно додано");
+                $('#regionTable').bootstrapTable('refresh');
+                $("#addRegionModal").modal('hide')
+            },
+            error : function (error) {
+                toastr["error"]("Неможливо додати регіон");
+            }
+        })
+    })
+
+
     $("#addUserSave").click(function (e) {
         $.ajax({
             type: "post",
@@ -390,16 +443,16 @@
                 firstName: $("#firstName").val(),
                 lastName: $("#lastName").val(),
                 password: $("#exampleInputPassword1").val(),
-                confirmPassword: $("confirmPassword1").val(),
+                confirmPassword: $("#confirmPassword1").val(),
                 role: $("#role").val(),
             },
-            success: function () {
+            success: function (data) {
                 $("#userAddModal").modal('hide')
                 toastr["success"]("Користувача додано");
                 $('#userTable').bootstrapTable('refresh');
             },
-            error: function () {
-                toastr["error"]("Такий користувач уже існує");
+            error: function (data) {
+                toastr["error"]("Такий користувач уже існує\n" + data.responseJSON.message);
             }
 
 

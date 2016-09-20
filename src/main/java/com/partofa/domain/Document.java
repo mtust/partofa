@@ -9,7 +9,7 @@ import java.sql.Blob;
  * Created by tust on 19.09.2016.
  */
 @Entity
-@Table(name = "file")
+@Table(name = "partofa_file")
 @lombok.Data
 public class Document {
 

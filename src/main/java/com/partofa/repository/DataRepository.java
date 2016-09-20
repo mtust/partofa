@@ -1,6 +1,8 @@
 package com.partofa.repository;
 
 import com.partofa.domain.Data;
+import com.partofa.domain.Region;
+import com.partofa.dto.DataDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,4 +21,10 @@ public interface DataRepository extends JpaRepository<Data, Long> {
 
 
     List<Data> findByDelDateIsNotNull();
+
+    List<Data> findByDelDateIsNullAndRegion(Region region);
+
+    List<Data> findByDelDateIsNotNullAndRegion(Region region);
+
+
 }

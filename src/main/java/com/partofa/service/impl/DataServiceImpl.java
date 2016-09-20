@@ -1,6 +1,7 @@
 package com.partofa.service.impl;
 
 import com.partofa.domain.Data;
+import com.partofa.domain.Region;
 import com.partofa.domain.User;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
@@ -8,7 +9,9 @@ import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.exception.BadRequestParametersException;
 import com.partofa.repository.DataRepository;
+import com.partofa.repository.RegionRepository;
 import com.partofa.service.DataService;
+import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,12 @@ public class DataServiceImpl implements DataService {
 
     @Autowired
     DataRepository dataRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RegionRepository regionRepository;
 
     @Transactional
     @Override
@@ -59,6 +68,11 @@ public class DataServiceImpl implements DataService {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");
         }
+        Region region = null;
+        if(!editDataDTO.getEditUserRegion().equals("all")) {
+            region = regionRepository.findOne(Long.parseLong(editDataDTO.getEditUserRegion()));
+        }
+        data.setRegion(region);
         data.setSubjectName(editDataDTO.getAddSubjectName());
         data.setUpdDate(new Date());
         log.info(data.toString());
@@ -95,6 +109,11 @@ public class DataServiceImpl implements DataService {
             data.setStartDate(simpleDateFormat.parse(createDataDTO.getStartDateP()));
             data.setSubjectName(createDataDTO.getAddSubjectName());
             data.setAddDate(new Date());
+            Region region = null;
+            if(!createDataDTO.getAddUserRegion().equals("all")) {
+                region = regionRepository.findOne(Long.parseLong(createDataDTO.getAddUserRegion()));
+            }
+            data.setRegion(region);
 
             log.info(data.toString());
             dataRepository.save(data);
@@ -109,7 +128,13 @@ public class DataServiceImpl implements DataService {
     @Override
     public List<DataDTO> getNonDeletedData() {
         List<DataDTO> dataDTOs = new ArrayList<>();
-        dataRepository.findByDelDateIsNull().forEach(data -> dataDTOs.add(new DataDTO(data)));
+        User user = userService.getLoginUser();
+        Region region = user.getRegion();
+        if(region != null){
+            dataRepository.findByDelDateIsNullAndRegion(region).forEach(dataRegion -> dataDTOs.add(new DataDTO(dataRegion)));
+        } else {
+            dataRepository.findByDelDateIsNull().forEach(data -> dataDTOs.add(new DataDTO(data)));
+        }
         return dataDTOs;
     }
 
@@ -117,7 +142,13 @@ public class DataServiceImpl implements DataService {
     @Override
     public List<DataDTO> getDeletedData() {
         List<DataDTO> dataDTOs = new ArrayList<>();
-        dataRepository.findByDelDateIsNotNull().forEach(data -> dataDTOs.add(new DataDTO(data)));
+        User user = userService.getLoginUser();
+        Region region = user.getRegion();
+        if(region != null){
+            dataRepository.findByDelDateIsNotNullAndRegion(region).forEach(dataRegion -> dataDTOs.add(new DataDTO(dataRegion)));
+        } else {
+            dataRepository.findByDelDateIsNotNull().forEach(data -> dataDTOs.add(new DataDTO(data)));
+        }
         return dataDTOs;
     }
 

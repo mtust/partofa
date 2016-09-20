@@ -14,4 +14,5 @@ public class UserEditDTO {
     private String email;
     private String role;
     private Boolean isEnabled;
+    private String region;
 }

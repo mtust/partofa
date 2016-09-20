@@ -25,5 +25,6 @@ public class CreateDataDTO {
     private String addResults;
     private String addComent;
     private String addZaxid;
+    private String addUserRegion;
 
 }
