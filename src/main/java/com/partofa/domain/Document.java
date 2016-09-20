@@ -11,7 +11,7 @@ import java.sql.Blob;
 @Entity
 @Table(name = "file")
 @lombok.Data
-public class Doument {
+public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

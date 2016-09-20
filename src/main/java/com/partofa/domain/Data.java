@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tust on 09.09.2016.
@@ -58,6 +58,8 @@ public class Data {
     private String reactMeasure;
     @ManyToOne(cascade = CascadeType.ALL)
     private Region region;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Document> documents;
 
 
 }

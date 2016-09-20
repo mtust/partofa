@@ -43,31 +43,92 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+
 <div class="container">
-    <div id="toolbar">
-        <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal" data-target="#userAddModal">Додати користувача</button>
-        <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal" data-target="#editUserModal"  disabled="disabled">Редагувати</button>
-        <button id="deleteUser" onclick="" class="btn btn-default" disabled="disabled" >Видалити користувача</button>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#user" role="tab" data-toggle="tab">Користувачі</a></li>
+        <li role="presentation"><a href="#regions" role="tab" data-toggle="tab">Регіони</a></li>
+    </ul>
+
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="user">
+            <div id="toolbar">
+                <button id="addUser" onclick="" class="btn btn-primary " data-toggle="modal"
+                        data-target="#userAddModal">Додати користувача
+                </button>
+                <button id="editUser" onclick="" class="btn btn-default" data-toggle="modal"
+                        data-target="#editUserModal" disabled="disabled">Редагувати
+                </button>
+                <button id="deleteUser" onclick="" class="btn btn-default" disabled="disabled">Видалити користувача
+                </button>
+            </div>
+            <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
+                   data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
+                <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true">
+                    </th>
+                    <th data-field="id" data-visible="false"></th>
+                    <th data-sortable="true" data-field="firstName">Ім'я</th>
+                    <th data-sortable="true" data-field="lastName">Прізвище</th>
+                    <th data-sortable="true" data-field="email">Eлектрона пошта</th>
+                    <th data-sortable="true" data-field="role">Роль</th>
+                    <th data-sortable="true" data-field="status">Статус</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="regions">
+            <div id="toolbar2">
+                <button id="addRegion" onclick="" class="btn btn-primary" data-toggle="madol"
+                        data-target="#addRegionModal">Додати регіон
+                </button>
+                <button id="deleteRegion" onclick="" class="btn btn-default" disabled="disabled">Видалити регіон
+                </button>
+            </div>
+            <table id="regionTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar2"
+                   data-locale="uk-UA" data-pagination="true" data-url="/admin/regions">
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true" data-field="name">Регіон</th>
+                </tr>
+            </table>
+        </div>
     </div>
-    <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar" data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
-        <thead>
-        <tr>
-            <th data-field = "state" data-checkbox="true">
-            </th>
-            <th data-field="id" data-visible="false"></th>
-            <th data-sortable="true" data-field="firstName">Ім'я</th>
-            <th data-sortable="true" data-field="lastName">Прізвище</th>
-            <th data-sortable="true" data-field="email">Eлектрона пошта</th>
-            <th data-sortable="true" data-field="role">Роль</th>
-            <th data-sortable="true" data-field="status">Статус</th>
-        </tr>
-        </thead>
-    </table>
 
 </div>
 
+<div class="modal fade" id="addRegionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Додавання регіону</h4>
+            </div>
 
-<div class="modal fade"  id="userAddModal" tabindex="-1" role="dialog">
+            <div class="modal-body">
+                <form id="createRegion">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Назва регіону</label>
+                        <input type="email" class="form-control" id="inputRegionName" placeholder="Назва регіону"
+                               required="required"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="addRegionSave" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="userAddModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,24 +141,27 @@
                 <form id="createUser">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Електрона пошта</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1"  placeholder="Електрона пошта" required="required"/>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Електрона пошта"
+                               required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="firstName">Ім'я</label>
-                        <input   class="form-control" id="firstName"  placeholder="Ім'я" required="required"/>
+                        <input class="form-control" id="firstName" placeholder="Ім'я" required="required"/>
 
                     </div>
                     <div class="form-group">
                         <label for="lastName">Прізвище</label>
-                        <input   class="form-control" id="lastName"  placeholder="Прізвище" required="required"/>
+                        <input class="form-control" id="lastName" placeholder="Прізвище" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Пароль</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль" required="required"/>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль"
+                               required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword1">Підтвердіть пароль</label>
-                        <input type="password" class="form-control" id="confirmPassword1" placeholder="Підтвердіть пароль" required="required"/>
+                        <input type="password" class="form-control" id="confirmPassword1"
+                               placeholder="Підтвердіть пароль" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="role">Роль:</label>
@@ -117,8 +181,7 @@
 </div><!-- /.modal -->
 
 
-
-<div class="modal fade"  id="editUserModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -131,16 +194,17 @@
                 <form id="editUserForm">
                     <div class="form-group">
                         <label for="editEmail">Електрона пошта</label>
-                        <input type="email" class="form-control" id="editEmail"  placeholder="Електрона пошта" required="required"/>
+                        <input type="email" class="form-control" id="editEmail" placeholder="Електрона пошта"
+                               required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="editFirstName">Ім'я</label>
-                        <input   class="form-control" id="editFirstName"  placeholder="Ім'я" required="required"/>
+                        <input class="form-control" id="editFirstName" placeholder="Ім'я" required="required"/>
 
                     </div>
                     <div class="form-group">
                         <label for="editLastName">Прізвище</label>
-                        <input   class="form-control" id="editLastName"  placeholder="Прізвище" required="required"/>
+                        <input class="form-control" id="editLastName" placeholder="Прізвище" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="editRole">Роль:</label>
@@ -175,14 +239,13 @@
     (function ($) {
         'use strict';
         $.ajax({
-            type : 'get',
-            url : 'private/user/is-authenticated',
-            success : function(e){
+            type: 'get',
+            url: 'private/user/is-authenticated',
+            success: function (e) {
                 currentUserId = e.id;
             }
         });
     })(jQuery);
-
 
 
     toastr.options = {
@@ -210,6 +273,11 @@
         });
     }
 
+    function getIdSelectionsRegion() {
+        return $.map($('#regionTable').bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
 
 
     $("#deleteUser").click(function () {
@@ -217,8 +285,8 @@
 
         $.ajax({
             type: "delete",
-            url : "/delete/user" + '?' + $.param({"id": ids[0]}),
-            success : function () {
+            url: "/delete/user" + '?' + $.param({"id": ids[0]}),
+            success: function () {
                 toastr["success"]("Користувача успішно видалено");
                 $('#userTable').bootstrapTable('remove', {
                     field: 'id',
@@ -226,7 +294,7 @@
                 });
                 $("#deleteUser").prop('disabled', true);
             },
-            error : function () {
+            error: function () {
                 toastr["error"]("Неиожливо видалити цього користувача");
             }
         })
@@ -237,8 +305,8 @@
     $('#userTable').on('uncheck.bs.table ' +
             ' uncheck-all.bs.table', function () {
 
-            $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
-            $("#editUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+        $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
+        $("#editUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);
 
         // save your data, here just save the current page
         selections = getIdSelections();
@@ -259,6 +327,14 @@
         // push or splice the selections if you want to save all data selections
     });
 
+    $('#regionTable').on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table', function () {
+        $("#deleteRegion").prop('disabled', !$('#regionTable').bootstrapTable('getSelections').length);
+        // save your data, here just save the current page
+        selections = getIdSelectionsRegion();
+        // push or splice the selections if you want to save all data selections
+    });
+
 
     $("#editUser").click(function (e) {
         var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
@@ -267,36 +343,36 @@
         $("#editLastName").val(selectedRow.lastName)
         try {
             $("#editRole option[text=" + selectedRow.role + "]").attr('selected', 'selected');
-        } catch (e){
+        } catch (e) {
             console.log(e);
         }
         try {
             $("#editIsEnabled option[text=" + selectedRow.status + "]").attr('selected', 'selected');
-        } catch (e){
+        } catch (e) {
             console.log(e);
         }
     })
 
-    $("#editUserSave").click(function (e)  {
+    $("#editUserSave").click(function (e) {
         var ids = getIdSelections();
         $.ajax({
             type: "post",
-            url : "/admin/edit/user",
-            data : {
-                id : ids[0],
-                email : $("#editEmail").val(),
-                firstName : $("#editFirstName").val(),
-                lastName : $("#editLastName").val(),
-                role : $("#editRole").val(),
-                isEnabled : $("#editIsEnabled").val()
+            url: "/admin/edit/user",
+            data: {
+                id: ids[0],
+                email: $("#editEmail").val(),
+                firstName: $("#editFirstName").val(),
+                lastName: $("#editLastName").val(),
+                role: $("#editRole").val(),
+                isEnabled: $("#editIsEnabled").val()
             },
-            success : function () {
+            success: function () {
                 $("#editUserModal").modal('hide')
                 toastr["success"]("Користувача редаговано");
                 $('#userTable').bootstrapTable('refresh');
 
             },
-            error : function () {
+            error: function () {
                 toastr["error"]("Неможливо редагувати користувача");
             }
 
@@ -305,25 +381,24 @@
     })
 
 
-
     $("#addUserSave").click(function (e) {
         $.ajax({
             type: "post",
-            url : "/admin/create/user",
-            data : {
-                email : $("#exampleInputEmail1").val(),
-                firstName : $("#firstName").val(),
-                lastName : $("#lastName").val(),
-                password : $("#exampleInputPassword1").val(),
-                confirmPassword : $("confirmPassword1").val(),
-                role : $("#role").val(),
+            url: "/admin/create/user",
+            data: {
+                email: $("#exampleInputEmail1").val(),
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
+                password: $("#exampleInputPassword1").val(),
+                confirmPassword: $("confirmPassword1").val(),
+                role: $("#role").val(),
             },
-            success : function () {
+            success: function () {
                 $("#userAddModal").modal('hide')
                 toastr["success"]("Користувача додано");
                 $('#userTable').bootstrapTable('refresh');
             },
-            error : function () {
+            error: function () {
                 toastr["error"]("Такий користувач уже існує");
             }
 
