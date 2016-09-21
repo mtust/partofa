@@ -65,7 +65,7 @@ public class HomeController {
         return dataService.createData(createDataDTO);
     }
 
-    @RequestMapping(value = {"admin/revert", "private/page/admin/revert"}, method = RequestMethod.POST)
+    @RequestMapping(value = "revert", method = RequestMethod.POST)
     public RestMessageDTO revertData(@RequestParam(value = "id") Long id){
         return dataService.revertData(id);
     }

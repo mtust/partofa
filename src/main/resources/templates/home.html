@@ -477,8 +477,10 @@
     $("#revert").click( function(){
         $.ajax({
            type : 'post',
-            url : 'admin/revert',
-            data : getIdArchiveSelections()[0],
+            url : '/revert',
+            data : {
+               id : getIdArchiveSelections()[0]
+            },
             success : function(data){
                 toastr["success"]("Дані успішно відновленно");
                 $("#revert").prop('disabled', true);

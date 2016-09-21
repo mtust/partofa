@@ -43,9 +43,207 @@
 </nav>
 
 <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
 
 
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span id="userFirstName"></span><span> </span><span id="userLastName"></span></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 " align="center"><img alt="Фотографія користувача" id="myPhoto"
+                                                                            class="img-circle img-responsive"/></div>
+
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+
+                                <tr>
+                                    <td>Ім'я:</td>
+                                    <td id="myFirstName"></td>
+                                </tr>
+                                <tr>
+                                    <td>Прізвище:</td>
+                                    <td id="myLastName"></td>
+                                </tr>
+                                <tr>
+                                    <td>Роль:</td>
+                                    <td id="myRole"></td>
+                                </tr>
+                                <tr>
+                                    <td>Регіон:</td>
+                                    <td id="myRegion"></td>
+                                </tr>
+                                <tr>
+                                    <td>Електрона пошта:</td>
+                                    <td id="myEmail"></td>
+                                </tr>
+                                <tr>
+                                    <td>Статус:</td>
+                                    <td id="myStatus"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button id="editMyInfo" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#editMyInfoModal">Редагувати інформацію</button>
+                    <button  id="changePassword" class="btn btn-primary" data-toggle="modal" data-target="#changePasswordModal">Змінтити пароль</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редагування персональних даних</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="myPassword">Введіть пароль</label>
+                        <input type="password" class="form-control" id="myPassword"
+                               required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="myNewPassword">Введіть новий пароль</label>
+                        <input type="password" class="form-control" id="myNewPassword"  required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="myNewPasswordConfirm">Підтвердіть новий пароль</label>
+                        <input type="password" class="form-control" id="myNewPasswordConfirm"
+                               required="required"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="changePasswordSave" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editMyInfoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редагування персональних даних</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="editMyInfoForm">
+                    <div class="form-group">
+                        <label for="editMyFirstName">Ім'я</label>
+                        <input type="text" class="form-control" id="editMyFirstName"
+                               required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editMyLastName">Прізвище</label>
+                        <input class="form-control" id="editMyLastName" placeholder="Прізвище" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editMyEmail">Електрона пошта</label>
+                        <input type="email" class="form-control" id="editMyEmail" placeholder="Електрона пошта"
+                               required="required"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="editMyInfoSave" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
+
+<script>
+
+    (function ($) {
+        $.ajax({
+            type : 'get',
+            url : '/me',
+            success : function (data) {
+               // $("#myPhoto").attr("src",data.photo);
+
+                $("#myFirstName").text(data.firstName)
+                $("#myLastName").text(data.lastName)
+                $("#myRole").text(data.role)
+                $("#myEmail").text(data.email)
+                $("#myRegion").text(data.region)
+                $("#myStatus").text(data.status)
+
+                $("#editMyLastName").val(data.lastName)
+                $("#editMyFirstName").val(data.firstName)
+                $("#editMyEmail").val(data.email)
+
+            },
+            error : function (data) {
+
+            }
+        })
+    })(jQuery);
+
+
+    $("#editMyInfoSave").click(function () {
+        $.ajax({
+            type : 'post',
+            url : '/edit/me',
+            data : {
+                lastName : $("#editMyLastName").val(),
+                firstName : $("#editMyFirstName").val(),
+                email : $("#editMyEmail").val()
+            },
+            success : function (data) {
+                toastr["success"]("Ваші дані успішно оновлено");
+            },
+            error : function(data){
+                toastr["error"]("Помилка редагування\n" + data.responseJSON.message);
+            }
+
+        })
+    })
+
+
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
+
 </html>
+

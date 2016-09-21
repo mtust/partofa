@@ -3,6 +3,8 @@ package com.partofa.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.File;
+
 /**
  * Created by tust on 11.09.2016.
  */

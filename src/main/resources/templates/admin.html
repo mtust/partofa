@@ -117,8 +117,8 @@
             <div class="modal-body">
                 <form id="createRegion">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Назва регіону</label>
-                        <input type="email" class="form-control" id="inputRegionName" placeholder="Назва регіону"
+                        <label for="inputRegionName">Назва регіону</label>
+                        <input type="text" class="form-control" id="inputRegionName" placeholder="Назва регіону"
                                required="required"/>
                     </div>
                 </form>
@@ -350,6 +350,8 @@
             'check-all.bs.table ', function () {
 
         selections = getIdSelections();
+        $("#deleteUser").prop('disabled', true);
+        $("#editUser").prop('disabled', true);
         var selectedRow = $('#userTable').bootstrapTable('getSelections')[0]
         if (currentUserId != selectedRow.id) {
             $("#deleteUser").prop('disabled', !$('#userTable').bootstrapTable('getSelections').length);

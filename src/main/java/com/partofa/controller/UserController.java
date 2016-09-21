@@ -38,7 +38,7 @@ public class UserController {
         return  userService.createUser(userCreateDTO);
     }
 
-    @RequestMapping(value = {"admin/page/admin/edit/user","admin/edit/user", "me"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"admin/page/admin/edit/user","admin/edit/user"}, method = RequestMethod.POST)
     public RestMessageDTO editUser(UserEditDTO userEditDTO){
         return  userService.editUser(userEditDTO);
     }
@@ -73,6 +73,12 @@ public class UserController {
             return "error";
         }
 
+    }
+
+
+    @RequestMapping(value = {"me"}, method = RequestMethod.GET)
+    public UserDTO getMe(){
+        return userService.getLoginUserDTO();
     }
 
 
