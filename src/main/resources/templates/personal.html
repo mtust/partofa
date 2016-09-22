@@ -179,12 +179,12 @@
 
 <script>
 
-    (function ($) {
+    function fillMyData(){
         $.ajax({
             type : 'get',
             url : '/me',
             success : function (data) {
-               // $("#myPhoto").attr("src",data.photo);
+                // $("#myPhoto").attr("src",data.photo);
 
                 $("#myFirstName").text(data.firstName)
                 $("#myLastName").text(data.lastName)
@@ -202,7 +202,31 @@
 
             }
         })
+    }
+
+    (function ($) {
+       fillMyData()
     })(jQuery);
+
+
+    $("#changePasswordSave").click(function () {
+        $.ajax({
+            type : 'post',
+            url : '/edit/password',
+            data : {
+                password : $("#myPassword").val(),
+                newPassword : $("#myNewPassword").val(),
+                newPasswordConfirm : $("#myNewPasswordConfirm").val()
+            },
+            success : function(data) {
+                toastr["success"]("Ваш пароль успішно зміненно");
+                $("#changePasswordModal").modal('hide')
+            },
+            error : function(data) {
+                toastr["error"]("Помилка зміни пароля: \n" + data.responseJSON.message);
+            }
+        })
+    })
 
 
     $("#editMyInfoSave").click(function () {
@@ -216,9 +240,11 @@
             },
             success : function (data) {
                 toastr["success"]("Ваші дані успішно оновлено");
+                $("#editMyInfoModal").modal('hide')
+                fillMyData()
             },
             error : function(data){
-                toastr["error"]("Помилка редагування\n" + data.responseJSON.message);
+                toastr["error"]("Помилка редагування: \n" + data.responseJSON.message);
             }
 
         })

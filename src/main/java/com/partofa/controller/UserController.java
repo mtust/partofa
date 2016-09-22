@@ -93,6 +93,16 @@ public class UserController {
         return userService.getLoginUserDTO();
     }
 
+    @RequestMapping(value = "edit/me", method = RequestMethod.POST)
+    public RestMessageDTO editMyInfo(UserEditDTO userEditDTO){
+       return userService.editUserMe(userEditDTO);
+    }
+
+    @RequestMapping(value = "edit/password", method = RequestMethod.POST)
+    public RestMessageDTO changePassword(ChangePasswordDTO changePasswordDTO){
+        return userService.changePassword(changePasswordDTO);
+    }
+
 
 
 }

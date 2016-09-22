@@ -32,4 +32,9 @@ public interface UserService {
 
     RestMessageDTO editUser(UserEditDTO userEditDTO);
 
+    RestMessageDTO editUserMe(UserEditDTO userEditDTO);
+
+    RestMessageDTO changePassword(ChangePasswordDTO changePasswordDTO);
+
+
 }

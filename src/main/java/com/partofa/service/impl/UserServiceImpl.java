@@ -175,4 +175,44 @@ public class UserServiceImpl implements UserService {
 
         return new RestMessageDTO("Success", true);
     }
+
+    @Override
+    public RestMessageDTO editUserMe(UserEditDTO userEditDTO) {
+        User user = getLoginUser();
+        User userForVelidation = userRepository.findByEmail(userEditDTO.getEmail());
+        if(userForVelidation != null && user.getId() != userForVelidation.getId()){
+            new RuntimeException("Користувач з такою електронною адресою вже інсує");
+        }
+
+        if(!user.getEmail().equals(userEditDTO.getEmail())) {
+            user.setEmail(userEditDTO.getEmail());
+            SecurityUtils.getAuthentication().setAuthenticated(true);
+        }
+        user.setFirstName(userEditDTO.getFirstName());
+        user.setLastName(userEditDTO.getLastName());
+        userRepository.save(user);
+
+
+
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO changePassword(ChangePasswordDTO changePasswordDTO) {
+        User user = getLoginUser();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if(!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getNewPasswordConfirm())){
+            throw new RuntimeException("паролі не співпадають");
+        }
+        log.info("Зміни: " + changePasswordDTO.toString());
+        log.info("пароль користувача: " + user.getPassword());
+        log.info("пароль введений:" + passwordEncoder.encode(changePasswordDTO.getPassword()));
+        if(!user.getPassword().equals(passwordEncoder.encode(changePasswordDTO.getPassword()))){
+            throw new RuntimeException("неправельний пароль");
+        }
+        String hashedPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+        return new RestMessageDTO("Success", true);
+    }
 }
