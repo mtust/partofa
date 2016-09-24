@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User getLoginUser() {
-        String  userLogin = SecurityUtils.getCurrentUserLogin();
+        String userLogin = SecurityUtils.getCurrentUserLogin();
         return userRepository.findByEmail(userLogin);
 
     }
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getLoginUserDTO() {
         User user = getLoginUser();
-        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),  user.getRegion() == null ? "Усі регіони" : user.getRegion().getName(),
+        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRegion() == null ? "Усі регіони" : user.getRegion().getName(),
                 user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
                 user.getIsEnabled() == true ? "Активний" : "Заблокований");
     }
@@ -138,7 +139,7 @@ public class UserServiceImpl implements UserService {
         if (existingUser != null) {
             throw new ObjectAlreadyExistException("Користувач вже існує");
         }
-        if(!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())){
+        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())) {
             throw new RuntimeException("Неможливо створити користувача, паролі не співпадають");
         }
         String hashedPassword = passwordEncoder.encode(userRegistrationDTO.getPassword());
@@ -165,7 +166,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestMessageDTO editUser(UserEditDTO userEditDTO) {
         Region region = null;
-        if(!userEditDTO.getRegion().equals("all")){
+        if (!userEditDTO.getRegion().equals("all")) {
             region = regionRepository.findOne(Long.parseLong(userEditDTO.getRegion()));
         }
         log.info(region.toString());
@@ -201,7 +202,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
 
-
         return new RestMessageDTO("Success", true);
     }
 
@@ -209,13 +209,13 @@ public class UserServiceImpl implements UserService {
     public RestMessageDTO changePassword(ChangePasswordDTO changePasswordDTO) {
         User user = getLoginUser();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getNewPasswordConfirm())){
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getNewPasswordConfirm())) {
             throw new RuntimeException("паролі не співпадають");
         }
         log.info("Зміни: " + changePasswordDTO.toString());
         log.info("пароль користувача: " + user.getPassword());
         log.info("пароль введений:" + passwordEncoder.encode(changePasswordDTO.getPassword()));
-        if(!BCrypt.checkpw(changePasswordDTO.getPassword(), user.getPassword())){
+        if (!BCrypt.checkpw(changePasswordDTO.getPassword(), user.getPassword())) {
             throw new RuntimeException("неправельний пароль");
         }
         String hashedPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
@@ -246,8 +246,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public byte[] getUserPhoto() throws SQLException, IOException {
         User user = getLoginUser();
-        if(user.getPhoto() == null){
-            return IOUtils.toByteArray("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR");
+        if (user.getPhoto() == null) {
+            return IOUtils.toByteArray(new URL("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR").openStream());
         }
         log.info(user.toString());
         InputStream is = user.getPhoto().getFile().getBinaryStream();

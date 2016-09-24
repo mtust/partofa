@@ -46,27 +46,6 @@
             transition:all .4s ease-in-out
         }
 
-        .hovereffect img {
-            display:block;
-            position:relative;
-            -webkit-transition:all .4s linear;
-            transition:all .4s linear;
-        }
-
-        .hovereffect h2 {
-            text-transform:uppercase;
-            color:#fff;
-            text-align:center;
-            position:relative;
-            font-size:17px;
-            background:rgba(0,0,0,0.6);
-            -webkit-transform:translatey(-100px);
-            -ms-transform:translatey(-100px);
-            transform:translatey(-100px);
-            -webkit-transition:all .2s ease-in-out;
-            transition:all .2s ease-in-out;
-            padding:10px;
-        }
 
         .hovereffect a.info {
             text-decoration:none;
@@ -129,7 +108,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="container">
+<div class="container" style="height: 50%">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
 
@@ -146,7 +125,7 @@
                                 <div class="hovereffect" style="">
                                     <img alt="Фотографія користувача" id="myPhoto"
                                          src="/get/photo"
-                                         class="img-circle img-responsive"/>
+                                         class="img-responsive"/>
                                     <div class="overlay">
                                         <h2></h2>
                                         <a id="openPhotoInput" class="info">Змінити фотографію</a>
@@ -418,7 +397,7 @@
             if (files) if (files.length) {
                 var fr = new FileReader();
                 fr.readAsDataURL(files[0]);
-                ("#myPhoto").attr("src", fr.result);
+                $("#myPhoto").attr("src", fr.result);
             }
 
     }
