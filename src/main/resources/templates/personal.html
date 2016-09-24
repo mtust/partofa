@@ -23,6 +23,93 @@
     <!-- Latest compiled and minified Locales -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
     <style>
+        .hovereffect {
+            width:100%;
+            height:100%;
+            float:left;
+            overflow:hidden;
+            position:relative;
+            text-align:center;
+            cursor:default;
+        }
+
+        .hovereffect .overlay {
+            width:100%;
+            height:100%;
+            position:absolute;
+            overflow:hidden;
+            top:0;
+            left:0;
+            opacity:0;
+            background-color:rgba(0,0,0,0.5);
+            -webkit-transition:all .4s ease-in-out;
+            transition:all .4s ease-in-out
+        }
+
+        .hovereffect img {
+            display:block;
+            position:relative;
+            -webkit-transition:all .4s linear;
+            transition:all .4s linear;
+        }
+
+        .hovereffect h2 {
+            text-transform:uppercase;
+            color:#fff;
+            text-align:center;
+            position:relative;
+            font-size:17px;
+            background:rgba(0,0,0,0.6);
+            -webkit-transform:translatey(-100px);
+            -ms-transform:translatey(-100px);
+            transform:translatey(-100px);
+            -webkit-transition:all .2s ease-in-out;
+            transition:all .2s ease-in-out;
+            padding:10px;
+        }
+
+        .hovereffect a.info {
+            text-decoration:none;
+            display:inline-block;
+            text-transform:uppercase;
+            color:#fff;
+            border:1px solid #fff;
+            background-color:transparent;
+            opacity:0;
+            filter:alpha(opacity=0);
+            -webkit-transition:all .2s ease-in-out;
+            transition:all .2s ease-in-out;
+            margin:50px 0 0;
+            padding:7px 14px;
+        }
+
+        .hovereffect a.info:hover {
+            box-shadow:0 0 5px #fff;
+        }
+
+        .hovereffect:hover img {
+            -ms-transform:scale(1.2);
+            -webkit-transform:scale(1.2);
+            transform:scale(1.2);
+        }
+
+        .hovereffect:hover .overlay {
+            opacity:1;
+            filter:alpha(opacity=100);
+        }
+
+        .hovereffect:hover h2,.hovereffect:hover a.info {
+            opacity:1;
+            filter:alpha(opacity=100);
+            -ms-transform:translatey(0);
+            -webkit-transform:translatey(0);
+            transform:translatey(0);
+        }
+
+        .hovereffect:hover a.info {
+            -webkit-transition-delay:.2s;
+            transition-delay:.2s;
+        }
 
     </style>
 </head>
@@ -49,12 +136,26 @@
 
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><span id="userFirstName"></span><span> </span><span id="userLastName"></span></h3>
+                    <h3 class="panel-title"><span id="userFirstName"></span><span> </span><span
+                            id="userLastName"></span></h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center"><img alt="Фотографія користувача" id="myPhoto"
-                                                                            class="img-circle img-responsive"/></div>
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                <div class="hovereffect" style="">
+                                    <img alt="Фотографія користувача" id="myPhoto"
+                                         src="/get/photo"
+                                         class="img-circle img-responsive"/>
+                                    <div class="overlay">
+                                        <h2></h2>
+                                        <a id="openPhotoInput" class="info">Змінити фотографію</a>
+
+                                    </div>
+                                </div>
+                        </div>
+
+                        <input hidden="hidden" style="visibility: hidden" id="photoUpload" name="photo" type="file"/>
 
                         <div class=" col-md-9 col-lg-9 ">
                             <table class="table table-user-information">
@@ -92,8 +193,12 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <button id="editMyInfo" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#editMyInfoModal">Редагувати інформацію</button>
-                    <button  id="changePassword" class="btn btn-primary" data-toggle="modal" data-target="#changePasswordModal">Змінтити пароль</button>
+                    <button id="editMyInfo" onclick="" class="btn btn-primary" data-toggle="modal"
+                            data-target="#editMyInfoModal">Редагувати інформацію
+                    </button>
+                    <button id="changePassword" class="btn btn-primary" data-toggle="modal"
+                            data-target="#changePasswordModal">Змінтити пароль
+                    </button>
                 </div>
 
             </div>
@@ -121,7 +226,7 @@
                     </div>
                     <div class="form-group">
                         <label for="myNewPassword">Введіть новий пароль</label>
-                        <input type="password" class="form-control" id="myNewPassword"  required="required"/>
+                        <input type="password" class="form-control" id="myNewPassword" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="myNewPasswordConfirm">Підтвердіть новий пароль</label>
@@ -160,11 +265,11 @@
                         <label for="editMyLastName">Прізвище</label>
                         <input class="form-control" id="editMyLastName" placeholder="Прізвище" required="required"/>
                     </div>
-                    <div class="form-group">
-                        <label for="editMyEmail">Електрона пошта</label>
-                        <input type="email" class="form-control" id="editMyEmail" placeholder="Електрона пошта"
-                               required="required"/>
-                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<label for="editMyEmail">Електрона пошта</label>-->
+                    <!--<input type="email" class="form-control" id="editMyEmail" placeholder="Електрона пошта"-->
+                    <!--required="required"/>-->
+                    <!--</div>-->
                 </form>
             </div>
             <div class="modal-footer">
@@ -179,11 +284,26 @@
 
 <script>
 
-    function fillMyData(){
+
+    function getPhoto(){
         $.ajax({
-            type : 'get',
-            url : '/me',
+          type : 'get',
+            url : '/get/photo',
             success : function (data) {
+
+              //  $("#myPhoto").attr("src", "/viewimage?id=" + data);
+            },
+            error : function(data) {
+                console.log("can't load image")
+            }
+        })
+    }
+
+    function fillMyData() {
+        $.ajax({
+            type: 'get',
+            url: '/me',
+            success: function (data) {
                 // $("#myPhoto").attr("src",data.photo);
 
                 $("#myFirstName").text(data.firstName)
@@ -198,31 +318,32 @@
                 $("#editMyEmail").val(data.email)
 
             },
-            error : function (data) {
+            error: function (data) {
 
             }
         })
     }
 
     (function ($) {
-       fillMyData()
+        fillMyData()
+      //  getPhoto()
     })(jQuery);
 
 
     $("#changePasswordSave").click(function () {
         $.ajax({
-            type : 'post',
-            url : '/edit/password',
-            data : {
-                password : $("#myPassword").val(),
-                newPassword : $("#myNewPassword").val(),
-                newPasswordConfirm : $("#myNewPasswordConfirm").val()
+            type: 'post',
+            url: '/edit/password',
+            data: {
+                password: $("#myPassword").val(),
+                newPassword: $("#myNewPassword").val(),
+                newPasswordConfirm: $("#myNewPasswordConfirm").val()
             },
-            success : function(data) {
+            success: function (data) {
                 toastr["success"]("Ваш пароль успішно зміненно");
                 $("#changePasswordModal").modal('hide')
             },
-            error : function(data) {
+            error: function (data) {
                 toastr["error"]("Помилка зміни пароля: \n" + data.responseJSON.message);
             }
         })
@@ -231,25 +352,78 @@
 
     $("#editMyInfoSave").click(function () {
         $.ajax({
-            type : 'post',
-            url : '/edit/me',
-            data : {
-                lastName : $("#editMyLastName").val(),
-                firstName : $("#editMyFirstName").val(),
-                email : $("#editMyEmail").val()
+            type: 'post',
+            url: '/edit/me',
+            data: {
+                lastName: $("#editMyLastName").val(),
+                firstName: $("#editMyFirstName").val(),
+                // email : $("#editMyEmail").val()
             },
-            success : function (data) {
+            success: function (data) {
                 toastr["success"]("Ваші дані успішно оновлено");
                 $("#editMyInfoModal").modal('hide')
                 fillMyData()
             },
-            error : function(data){
+            error: function (data) {
                 toastr["error"]("Помилка редагування: \n" + data.responseJSON.message);
             }
 
         })
     })
 
+    $("#openPhotoInput").click(function() {
+        $("#photoUpload").click();
+    })
+
+    $("#photoUpload").on("change", function(evt) {
+        debugger
+//        var form = new FormData();
+        var $input = $("#photoUpload");
+//        form.append("photo", $input.prop('files')[0])
+//        $.ajax({
+//            type : 'post',
+//            url : '/private/me/edit/photo',
+//            enctype: 'multipart/form-data',
+//            processData: false,
+//            contentType: 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p',
+//            data : {
+//                photo : form
+//            },
+//            success : function(data) {
+//                toastr["success"]("Фотографію зміненно");
+//                $("#myPhoto").attr("src", $input.prop('files')[0]);
+//            },
+//            error :  function(data) {
+//                toastr["error"]("Помилка зміни фотографії: \n" + data.responseJSON.message);
+//            }
+//        })
+
+        var formData = new FormData();
+
+
+// HTML file input, chosen by user
+        formData.append("photo", $("#photoUpload").prop('files')[0]);
+
+// JavaScript file-like object
+
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "/private/me/edit/photo");
+        request.send(formData);
+        var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+
+        // FileReader support
+        if (FileReader) {
+            if (files) if (files.length) {
+                var fr = new FileReader();
+                fr.readAsDataURL(files[0]);
+                ("#myPhoto").attr("src", fr.result);
+            }
+
+    }
+
+    });
 
 
     toastr.options = {

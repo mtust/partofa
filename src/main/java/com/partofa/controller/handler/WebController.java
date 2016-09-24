@@ -5,14 +5,20 @@ import com.partofa.domain.User;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import javax.sql.DataSource;
 
 /**
  * Created by tust on 10.09.2016.
@@ -46,6 +52,14 @@ public class WebController extends WebMvcConfigurerAdapter {
     }
 
 
+    @Bean
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(500000000);
+        return multipartResolver;
+    }
+
+
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String getHomePage() {
         User user = null;
@@ -55,7 +69,7 @@ public class WebController extends WebMvcConfigurerAdapter {
             log.info("anonymus user");
         }
         if (user != null) {
-            log.info(user.toString());
+   //         log.info(user.toString());
             if (user.getRole().equals(Role.ROLE_USER)) {
                 return "home";
             } else if (user.getRole().equals(Role.ROLE_ADMIN)) {

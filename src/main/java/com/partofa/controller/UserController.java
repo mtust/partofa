@@ -5,13 +5,21 @@ import com.partofa.dto.*;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -24,6 +32,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+
 
 
 
@@ -101,6 +111,18 @@ public class UserController {
     @RequestMapping(value = "edit/password", method = RequestMethod.POST)
     public RestMessageDTO changePassword(ChangePasswordDTO changePasswordDTO){
         return userService.changePassword(changePasswordDTO);
+    }
+
+    @RequestMapping(value = {"photo/edit", "private/me/edit/photo"}, headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    public RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo) throws IOException {
+        log.info(photo.toString());
+        return userService.changePhoto(photo);
+    }
+
+    @RequestMapping(value = "get/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getPhoto() throws IOException, SQLException {
+        return userService.getUserPhoto();
     }
 
 

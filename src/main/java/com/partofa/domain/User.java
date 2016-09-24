@@ -31,7 +31,8 @@ public class User {
     private Boolean isEnabled;
     @Enumerated(EnumType.ORDINAL)
     private Role role;
-    private Blob photo;
+    @OneToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    private Document photo;
     @ManyToOne(cascade = CascadeType.ALL)
     private Region region;
 

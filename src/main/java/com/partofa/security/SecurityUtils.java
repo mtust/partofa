@@ -40,6 +40,11 @@ public final class SecurityUtils {
     public static Authentication getAuthentication() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return securityContext.getAuthentication();
+
+    }
+
+    public static void setAuthentication(Authentication authentication){
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     /**

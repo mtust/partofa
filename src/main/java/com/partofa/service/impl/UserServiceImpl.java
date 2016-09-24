@@ -1,30 +1,35 @@
 package com.partofa.service.impl;
 
+import com.partofa.domain.Document;
 import com.partofa.domain.Region;
 import com.partofa.domain.Role;
 import com.partofa.domain.User;
 import com.partofa.dto.*;
 import com.partofa.exception.ObjectAlreadyExistException;
+import com.partofa.repository.DocumentRepository;
 import com.partofa.repository.RegionRepository;
 import com.partofa.repository.UserRepository;
 import com.partofa.security.SecurityUtils;
 import com.partofa.service.UserService;
 import com.partofa.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.el.stream.Stream;
+import org.apache.commons.io.IOUtils;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RegionRepository regionRepository;
+
+    @Autowired
+    DocumentRepository documentRepository;
 
 
     @Transactional
@@ -179,15 +187,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestMessageDTO editUserMe(UserEditDTO userEditDTO) {
         User user = getLoginUser();
-        User userForVelidation = userRepository.findByEmail(userEditDTO.getEmail());
-        if(userForVelidation != null && user.getId() != userForVelidation.getId()){
-            new RuntimeException("Користувач з такою електронною адресою вже інсує");
-        }
-
-        if(!user.getEmail().equals(userEditDTO.getEmail())) {
-            user.setEmail(userEditDTO.getEmail());
-            SecurityUtils.getAuthentication().setAuthenticated(true);
-        }
+//        User userForVelidation = userRepository.findByEmail(userEditDTO.getEmail());
+//        if(userForVelidation != null && user.getId() != userForVelidation.getId()){
+//            new RuntimeException("Користувач з такою електронною адресою вже інсує");
+//        }
+//
+//        if(!user.getEmail().equals(userEditDTO.getEmail())) {
+//            user.setEmail(userEditDTO.getEmail());
+//            SecurityUtils.getAuthentication().setAuthenticated(true);
+//        }
         user.setFirstName(userEditDTO.getFirstName());
         user.setLastName(userEditDTO.getLastName());
         userRepository.save(user);
@@ -207,12 +215,42 @@ public class UserServiceImpl implements UserService {
         log.info("Зміни: " + changePasswordDTO.toString());
         log.info("пароль користувача: " + user.getPassword());
         log.info("пароль введений:" + passwordEncoder.encode(changePasswordDTO.getPassword()));
-        if(!user.getPassword().equals(passwordEncoder.encode(changePasswordDTO.getPassword()))){
+        if(!BCrypt.checkpw(changePasswordDTO.getPassword(), user.getPassword())){
             throw new RuntimeException("неправельний пароль");
         }
         String hashedPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
         user.setPassword(hashedPassword);
         userRepository.save(user);
         return new RestMessageDTO("Success", true);
+    }
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Override
+    @Transactional
+    public RestMessageDTO changePhoto(MultipartFile photo) throws IOException {
+        User user = getLoginUser();
+        log.info("user: " + user);
+        Session session = sessionFactory.getCurrentSession();
+        LobCreator lobCreator = Hibernate.getLobCreator(session);
+        Blob blob = lobCreator.createBlob(photo.getBytes());
+        Document document = new Document();
+        document.setFile(blob);
+        //documentRepository.save(document);
+        user.setPhoto(document);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    @Transactional
+    public byte[] getUserPhoto() throws SQLException, IOException {
+        User user = getLoginUser();
+        if(user.getPhoto() == null){
+            return IOUtils.toByteArray("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR");
+        }
+        log.info(user.toString());
+        InputStream is = user.getPhoto().getFile().getBinaryStream();
+        return IOUtils.toByteArray(is);
     }
 }
