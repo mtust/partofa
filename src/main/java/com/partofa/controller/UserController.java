@@ -92,7 +92,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = {"admin/page/admin/delete/user", "admin/delete/user"}, method = RequestMethod.DELETE)
+    @RequestMapping(value = "delete/user", method = RequestMethod.DELETE)
     public RestMessageDTO deleteUser(@RequestParam(value = "id") Long userId){
         log.info("userID for delete:" + userId);
         return userService.deleteUser(userId);
