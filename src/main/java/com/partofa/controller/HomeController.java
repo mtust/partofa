@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.QueryParam;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -69,4 +71,10 @@ public class HomeController {
     public RestMessageDTO revertData(@RequestParam(value = "id") Long id){
         return dataService.revertData(id);
     }
+
+    @RequestMapping(value= "private/home/import/file", method = RequestMethod.POST)
+    public RestMessageDTO importData(@RequestParam(value = "id") String id, @RequestParam("file") MultipartFile excelFile) throws IOException {
+        return dataService.importData(id, excelFile);
+    }
+
 }

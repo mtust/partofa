@@ -13,15 +13,23 @@ import com.partofa.repository.RegionRepository;
 import com.partofa.service.DataService;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -160,6 +168,24 @@ public class DataServiceImpl implements DataService {
         data.setDelDate(null);
         dataRepository.save(data);
 
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO importData(String id, MultipartFile excelFile) throws IOException {
+
+        InputStream file = excelFile.getInputStream();
+        HSSFWorkbook workbook = new HSSFWorkbook(file);
+        HSSFSheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        while (rowIterator.hasNext()){
+            Row row = rowIterator.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while(cellIterator.hasNext()){
+                Cell cell = cellIterator.next();
+                //    switch ()
+            }
+        }
         return new RestMessageDTO("Success", true);
     }
 }

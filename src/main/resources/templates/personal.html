@@ -389,16 +389,10 @@
         var request = new XMLHttpRequest();
         request.open("POST", "/private/me/edit/photo");
         request.send(formData);
-        var tgt = evt.target || window.event.srcElement,
-                files = tgt.files;
-
-        // FileReader support
-        if (FileReader) {
-            if (files) if (files.length) {
-                var fr = new FileReader();
-                fr.readAsDataURL(files[0]);
-                $("#myPhoto").attr("src", fr.result);
-            }
+        if ($("#photoUpload").prop('files')[0]) if ($("#photoUpload").prop('files')[0].length) {
+            var fr = new FileReader();
+            fr.readAsDataURL($("#photoUpload").prop('files')[0]);
+            $("#myPhoto").attr("src", fr.result);
 
     }
 

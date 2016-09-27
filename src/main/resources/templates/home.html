@@ -23,6 +23,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
 
     <!-- Latest compiled and minified Locales -->
@@ -73,9 +76,18 @@
                         data-target="#dataEditModal">Редагувати
                 </button>
                 <button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
+                <input id="importDataInput" name="file" type="file" hidden="hidden"/>
+                <div>
+                    <button  id="importData" class="btn btn-default">Імпортувати дані</button>
+                </div>
             </div>
             <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
-                   data-locale="uk-UA"
+                   data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]" data-search="true"
+                   data-show-export="true" data-export-types="['excel', 'csv']"
+                   data-export-options='{
+            "fileName": "SubjectyGospodarjuvanya",
+            "ignoreColumn": []
+          }'
                    data-pagination="true" data-url="/private/home/actualData">
                 <thead>
                 <tr>
@@ -558,6 +570,21 @@
         $("#editComent").val(selectedRow.comment);
 
     });
+
+    $("#importData").click(function(){
+        $("#importDataInput").click()
+    })
+
+    $("#importDataInput").on("change", function(evt){
+        var $input = $("#importDataInput");
+        var formData = new FormData();
+        formData.append("file", $("#importDataInput").prop('files')[0]);
+        var request = new XMLHttpRequest();
+        request.open("POST", "/private/home/import/file");
+        request.send(formData);
+
+
+    })
 
 
 </script>
