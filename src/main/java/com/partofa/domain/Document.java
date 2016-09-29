@@ -12,12 +12,13 @@ import java.sql.Blob;
 @Table(name = "partofa_file")
 @lombok.Data
 public class Document {
-//
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-//
-//    private String name;
 
-    private Blob file;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Lob
+	private Blob file;
+
+	
 }

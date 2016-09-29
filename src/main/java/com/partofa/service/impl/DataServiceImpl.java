@@ -1,6 +1,7 @@
 package com.partofa.service.impl;
 
 import com.partofa.domain.Data;
+import com.partofa.domain.Document;
 import com.partofa.domain.Region;
 import com.partofa.domain.User;
 import com.partofa.dto.CreateDataDTO;
@@ -9,14 +10,25 @@ import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.exception.BadRequestParametersException;
 import com.partofa.repository.DataRepository;
+import com.partofa.repository.DocumentRepository;
 import com.partofa.repository.RegionRepository;
+import com.partofa.repository.UserRepository;
+import com.partofa.security.SecurityUtils;
 import com.partofa.service.DataService;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +51,9 @@ public class DataServiceImpl implements DataService {
 
     @Autowired
     RegionRepository regionRepository;
+    
+    @Autowired
+    DocumentRepository documentRepository;
 
     @Transactional
     @Override
@@ -162,4 +177,37 @@ public class DataServiceImpl implements DataService {
 
         return new RestMessageDTO("Success", true);
     }
+    
+    @Autowired
+    private SessionFactory sessionFactory;
+    
+    @Autowired
+    UserRepository userRepository;
+    
+    @Transactional
+    public User getLoginUser() {
+        String userLogin = SecurityUtils.getCurrentUserLogin();
+        return userRepository.findByEmail(userLogin);
+
+    }
+    
+    @Transactional
+    public RestMessageDTO setDocument(MultipartFile file, Long idData) throws IOException{
+    	log.info("inside DataServiceIMPL setDocument");
+    	User user = getLoginUser();
+        log.info("user: " + user);
+    	Session session = sessionFactory.getCurrentSession();
+    	Data data = dataRepository.findOne(idData);
+        LobCreator lobCreator = Hibernate.getLobCreator(session);
+        Blob blob = lobCreator.createBlob(file.getBytes());
+        Document document = new Document();
+        document.setFile(blob);
+        documentRepository.save(document);
+        List <Document> list = data.getDocuments();
+        list.add(document);
+        data.setDocuments(list);
+        return new RestMessageDTO("Success", true);
+    
+    }
+    
 }
