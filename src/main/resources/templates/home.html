@@ -173,7 +173,6 @@
 								останнсього реагування</th>
 							<th data-sortable="true" data-field="delDate">Дата видалення</th>
 							<th data-sortable="true" data-field="comment">Коментар</th>
-
 							<th data-field="format">Документи</th>
 						</tr>
 					</thead>
@@ -183,20 +182,74 @@
 	</div>
 
 
-	<!-- ADD DOCUMENT TO DATA -->
-	<form method="POST" id="addDocument" enctype="multipart/form-data">
-		File to upload: <input type="file" name="file"></input> Name: <input
-			 id="nameDocument" name="nameDocument"></input> Id: <input
-			 id="id" name="id"></input>
+<!-- ========================================nazik============================= -->
 
+	<!-- не працюють кнопки при виборі чекбоксу , перевірити метод видалення-->
+	<button class="btn btn-primary" data-toggle="modal"
+		data-target=".bs-example-modal-lg">DOCUMENTS</button>
 
-		<button type="submit" class="btn btn-success" id="addDocumentSave">Add
-			Doc</button>
+	<div role="tabpanel" class="tab-pane active" id="documents">
+		<div class="modal fade bs-example-modal-lg" tabindex="-1"
+			role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div id="toolbarDoc">
+						<button onclick="" class="btn btn-primary" data-toggle="modal"
+							data-target="#addDocumentModal">Додати документ</button>
+						<button id="downloadDocument" onclick="" class="btn btn-default"
+							data-toggle="modal" disabled="disabled">Скачати</button>
+						<button id="delDocument" onclick="" class="btn btn-default"
+							disabled="disabled">Видалити</button>
+					</div>
+					<table id="documentsTable" data-single-select="true"
+						data-toggle="table" data-toolbar="#toolbarDoc" data-locale="uk-UA"
+						data-pagination="true" data-url="/private/home/actualDocuments">
+						<thead>
+							<tr>
+								<th data-field="state" data-checkbox="true"></th>
+								<th data-field="id" data-visible="false"></th>
+								<th data-sortable="true" data-field="id">№</th>
+								<th data-sortable="true" data-field="name">Name Document</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
 
-	</form>
+			</div>
+		</div>
+	</div>
 
+	<div class="modal fade" id="addDocumentModal" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Додавання документу</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="addDocument" enctype="multipart/form-data">
+						File to upload: <input type="file" name="file"></input> Id: <input
+							id="id" name="id"></input>
+						<button type="submit" class="btn btn-success" id="addDocumentSave">Add
+							Doc</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Закрити</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 
-
+<!-- ================================================================================ -->
 
 	<div class="modal fade" id="dataAddModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -422,6 +475,8 @@
 		$('#startDateP').datepicker();
 	});
 
+	
+
 	var regions;
 	(function($) {
 		$.ajax({
@@ -490,34 +545,8 @@
 			}
 		})
 	});
-	
-	function format(index, row) { 
-		return '<a>Документи</a>'; 
-		}
-	
-// 	ADD DOCUMENT TO DATA
-	$( '#addDocument' )
-	  .submit( function( e ) {
-	    $.ajax( {
-	      url: '/private/home/addDocument',
-	      type: 'POST',
-	      data: new FormData( this ),
-	      processData: false,
-	      contentType: false,
-	      success : function(data) {
-				toastr["success"]("Документ додано!");
-				$('#dataTable').bootstrapTable(
-						'refresh');
-	      },
-	      error : function(data) {
-				toastr["error"]
-						("Помилка відправлення документу\n"
-								+ data.responseJSON.message);
-			}
-	    } );
-	    e.preventDefault();
-	  } );
 
+	
 
 	$('#addDataSave')
 			.on(
@@ -707,5 +736,64 @@
 				$("#editComent").val(selectedRow.comment);
 
 			});
+// 	======================================NAZIK=====================
+	
+	function format(value, row, index, field) {
+		return '<a onclick="openDocumentModal(id)">Документи</a>';
+	}
+
+	// 	ADD DOCUMENT TO DATA
+	$('#addDocument').submit(
+			function(e) {
+				$.ajax({
+					url : '/private/home/addDocument',
+					type : 'POST',
+					data : new FormData(this),
+					processData : false,
+					contentType : false,
+					success : function(data) {
+						toastr["success"]("Документ додано!");
+						$('#documentsTable').bootstrapTable('refresh');
+					},
+					error : function(data) {
+						toastr["error"]("Помилка відправлення документу\n"
+								+ data.responseJSON.message);
+					}
+				});
+				e.preventDefault();
+			});
+	
+	$("#delDocument").click(function() {
+		var ids = getIdSelections();
+
+		$.ajax({
+			type : 'delete',
+			url : '/private/deleteDocument' + '?' + $.param({
+				'id' : ids[0]
+			}),
+			success : function() {
+				toastr["success"]("Дані успішно видалено");
+				$('#delDocument').bootstrapTable('remove', {
+					field : 'id',
+					values : ids
+				});
+				$("#delDocument").prop('disabled', true);
+				$('#documentsTable').bootstrapTable('refresh');
+
+			},
+			error : function() {
+				toastr["error"]("Неможливо видалити цей запис");
+			}
+		})
+
+	});
+	
+// 	$(#downloadDocument){
+	// 		var ids = getdocumentSelections();
+	// 		$.fileDownload(ids)
+	//     .done(function () { alert('File download a success!'); })
+	//     .fail(function () { alert('File download failed!'); });
+
+	// 	};
 </script>
 </html>

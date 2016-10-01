@@ -3,6 +3,7 @@ package com.partofa.controller;
 import com.partofa.domain.Data;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
+import com.partofa.dto.DocumentDTO;
 import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.service.DataService;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -67,11 +69,23 @@ public class HomeController {
 
 	@RequestMapping(value = {
 			"private/home/addDocument" }, headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-	public RestMessageDTO SetDocumentById(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") Long id,
-			@RequestParam(value = "nameDocument") String name) throws IOException {
+	public RestMessageDTO SetDocumentById(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") Long id) throws IOException {
 		log.info("Inside controller SetDocument");
 		Long size = file.getSize();
 		log.info("I HAVE A NEW FILE WITH SiZE " + size + " Name " + file.getOriginalFilename()  + " id " + id);
 		return dataService.setDocument(file, id);
+	}
+	//передати ід дати в яку додаєм обєкт
+	@RequestMapping(value = "private/home/actualDocuments", method = RequestMethod.GET)
+	public List<DocumentDTO> getDocuments() throws SQLException, IOException{
+		log.info("Inside controller getDocuments");
+		log.info(dataService.getDocuments(1L).size() + " to string List");
+		return dataService.getDocuments(1L);
+	}
+	
+	@RequestMapping(value = { "private/page/private/deleteDocument", "private/deleteDocument" }, method = RequestMethod.DELETE)
+	public RestMessageDTO deleteDocuments(@RequestParam(value = "id") Long documentId) {
+		log.info("HOME CONTROLLER HAVE DELETE DOCUMENT WITH ID " + documentId);
+		return dataService.delDocument(documentId);
 	}
 }
