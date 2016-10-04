@@ -3,6 +3,7 @@ package com.partofa.controller;
 import com.partofa.domain.Data;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
+import com.partofa.dto.DocumentDTO;
 import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.service.DataService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -21,50 +23,70 @@ import java.util.List;
 @Slf4j
 public class HomeController {
 
+	@Autowired
+	DataService dataService;
 
-    @Autowired
-    DataService dataService;
+	@RequestMapping(value = "private/home", method = RequestMethod.GET)
+	public List<Data> homePage() {
+		log.info("log1");
+		return dataService.getAllData();
+	}
 
+	@RequestMapping(value = "private/home/actualData", method = RequestMethod.GET)
+	public List<DataDTO> getNonDeletedData() {
+		return dataService.getNonDeletedData();
+	}
 
-    @RequestMapping(value = "private/home", method = RequestMethod.GET)
-    public List<Data> homePage() {
-        log.info("log1");
-        return dataService.getAllData();
-    }
+	@RequestMapping(value = "private/home/deletedData", method = RequestMethod.GET)
+	public List<DataDTO> getDeletedData() {
+		return dataService.getDeletedData();
+	}
 
-    @RequestMapping(value = "private/home/actualData", method = RequestMethod.GET)
-    public List<DataDTO> getNonDeletedData() {
-        return dataService.getNonDeletedData();
-    }
+	@RequestMapping(value = { "private/page/private/edit", "private/edit" }, method = RequestMethod.POST)
+	public RestMessageDTO editData(EditDataDTO editDataDTO) {
+		log.info("edit put:");
+		// log.info("createDataDTO" + createDataDTO.toString());
+		// log.info("id: " + id);
+		log.info(editDataDTO.toString());
+		return dataService.editData(editDataDTO);
+	}
 
-    @RequestMapping(value = "private/home/deletedData", method = RequestMethod.GET)
-    public List<DataDTO> getDeletedData() {
-        return dataService.getDeletedData();
-    }
+	@RequestMapping(value = { "private/page/private/delete", "private/delete" }, method = RequestMethod.DELETE)
+	public RestMessageDTO deleteData(@RequestParam(value = "id") Long dataId) {
+		return dataService.deleteData(dataId);
+	}
 
-    @RequestMapping(value = {"private/page/private/edit", "private/edit"}, method = RequestMethod.POST)
-    public RestMessageDTO editData(EditDataDTO editDataDTO) {
-        log.info("edit put:");
-//        log.info("createDataDTO" + createDataDTO.toString());
-//        log.info("id: " + id);
-        log.info(editDataDTO.toString());
-        return dataService.editData(editDataDTO);
-    }
+	@RequestMapping(value = { "private/page/private/add", "private/add" }, method = RequestMethod.POST)
+	public RestMessageDTO createData(CreateDataDTO createDataDTO) {
+		return dataService.createData(createDataDTO);
+	}
 
-    @RequestMapping(value = {"private/page/private/delete", "private/delete"}, method = RequestMethod.DELETE)
-    public RestMessageDTO deleteData(@RequestParam(value = "id") Long dataId) {
-        return dataService.deleteData(dataId);
-    }
+	@RequestMapping(value = "revert", method = RequestMethod.POST)
+	public RestMessageDTO revertData(@RequestParam(value = "id") Long id) {
+		return dataService.revertData(id);
+	}
 
-    @RequestMapping(value = {"private/page/private/add", "private/add"}, method = RequestMethod.POST)
-    public RestMessageDTO createData(CreateDataDTO createDataDTO) {
-        return dataService.createData(createDataDTO);
-    }
+	@RequestMapping(value = {
+			"private/home/addDocument" }, headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+	public RestMessageDTO SetDocumentById(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") Long id) throws IOException {
+		log.info("Inside controller SetDocument");
+		Long size = file.getSize();
+		log.info("I HAVE A NEW FILE WITH SiZE " + size + " Name " + file.getOriginalFilename()  + " id " + id);
+		return dataService.setDocument(file, id);
+	}
 
-    @RequestMapping(value = "revert", method = RequestMethod.POST)
-    public RestMessageDTO revertData(@RequestParam(value = "id") Long id){
-        return dataService.revertData(id);
-    }
+	@RequestMapping(value = "private/home/actualDocuments", method = RequestMethod.GET)
+	public List<DocumentDTO> getDocuments() throws SQLException, IOException{
+		log.info("Inside controller getDocuments");
+		log.info(dataService.getDocuments(1L).size() + " to string List");
+		return dataService.getDocuments(1L);
+	}
+	
+	@RequestMapping(value = { "private/page/private/deleteDocument", "private/deleteDocument" }, method = RequestMethod.DELETE)
+	public RestMessageDTO deleteDocuments(@RequestParam(value = "id") Long documentId) {
+		log.info("HOME CONTROLLER HAVE DELETE DOCUMENT WITH ID " + documentId);
+		return dataService.delDocument(documentId);
+	}
 
     @RequestMapping(value= "private/home/import/file",headers = "content-type=multipart/form-data", method = RequestMethod.POST)
     public RestMessageDTO importData(@RequestParam("file") MultipartFile excelFile) throws IOException {

@@ -58,8 +58,8 @@ public class Data {
     private String reactMeasure;
     @ManyToOne(cascade = CascadeType.ALL)
     private Region region;
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private List<Document> documents;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Document> documents;
 
 
 }
