@@ -1,22 +1,16 @@
 package com.partofa.controller;
 
 import com.partofa.domain.Data;
-import com.partofa.domain.Region;
-import com.partofa.domain.User;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
 import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.service.DataService;
-import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.util.List;
 
@@ -72,9 +66,9 @@ public class HomeController {
         return dataService.revertData(id);
     }
 
-    @RequestMapping(value= "private/home/import/file", method = RequestMethod.POST)
-    public RestMessageDTO importData(@RequestParam(value = "id") String id, @RequestParam("file") MultipartFile excelFile) throws IOException {
-        return dataService.importData(id, excelFile);
+    @RequestMapping(value= "private/home/import/file",headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    public RestMessageDTO importData(@RequestParam("file") MultipartFile excelFile) throws IOException {
+        return dataService.importData(excelFile);
     }
 
 }

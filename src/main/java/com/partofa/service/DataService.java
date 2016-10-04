@@ -1,7 +1,6 @@
 package com.partofa.service;
 
 import com.partofa.domain.Data;
-import com.partofa.domain.Region;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
 import com.partofa.dto.EditDataDTO;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -34,6 +32,6 @@ public interface DataService {
 
     RestMessageDTO revertData(Long id);
 
-    RestMessageDTO importData(String id, MultipartFile excelFile) throws IOException;
+    RestMessageDTO importData(MultipartFile excelFile) throws IOException;
 
 }

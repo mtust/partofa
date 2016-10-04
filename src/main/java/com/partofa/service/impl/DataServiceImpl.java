@@ -8,6 +8,7 @@ import com.partofa.dto.DataDTO;
 import com.partofa.dto.EditDataDTO;
 import com.partofa.dto.RestMessageDTO;
 import com.partofa.exception.BadRequestParametersException;
+import com.partofa.exception.GeneralServiceException;
 import com.partofa.repository.DataRepository;
 import com.partofa.repository.RegionRepository;
 import com.partofa.service.DataService;
@@ -15,8 +16,11 @@ import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.openxml4j.exceptions.OLE2NotOfficeXmlFileException;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +52,8 @@ public class DataServiceImpl implements DataService {
     @Autowired
     RegionRepository regionRepository;
 
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
     @Transactional
     @Override
     public List<Data> getAllData() {
@@ -60,7 +66,7 @@ public class DataServiceImpl implements DataService {
     public RestMessageDTO editData(EditDataDTO editDataDTO) {
         log.info(editDataDTO.toString());
         Data data = dataRepository.findOne(editDataDTO.getId());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
         data.setAddressWork(editDataDTO.getAddAdress());
         data.setCheckResult(editDataDTO.getAddResults());
         data.setComment(editDataDTO.getAddComent());
@@ -102,7 +108,7 @@ public class DataServiceImpl implements DataService {
     @Override
     public RestMessageDTO createData(CreateDataDTO createDataDTO) throws BadRequestParametersException {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
             log.info(createDataDTO.toString());
             Data data = new Data();
             data.setAddressWork(createDataDTO.getAddAdress());
@@ -172,20 +178,87 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public RestMessageDTO importData(String id, MultipartFile excelFile) throws IOException {
+    @Transactional
+    public RestMessageDTO importData(MultipartFile excelFile) throws IOException {
 
-        InputStream file = excelFile.getInputStream();
-        HSSFWorkbook workbook = new HSSFWorkbook(file);
-        HSSFSheet sheet = workbook.getSheetAt(0);
-        Iterator<Row> rowIterator = sheet.iterator();
-        while (rowIterator.hasNext()){
-            Row row = rowIterator.next();
-            Iterator<Cell> cellIterator = row.cellIterator();
-            while(cellIterator.hasNext()){
-                Cell cell = cellIterator.next();
-                //    switch ()
+        try (InputStream file = excelFile.getInputStream()){
+
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            if(rowIterator.hasNext()){
+                rowIterator.next();
             }
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                Data data = new Data();
+                data.setSubjectName(row.getCell(1).toString());
+                data.setRegion(row.getCell(2).toString().equalsIgnoreCase("Усі регіони")
+                ? null : regionRepository.findByName(row.getCell(2).toString()));
+                data.setAddressWork(row.getCell(3).toString());
+                data.setIpnPassport(row.getCell(4).toString());
+                data.setGosWorkType(row.getCell(5).toString());
+              //  data.setRiscDesc(row.getCell(6).toString());
+                System.out.println(data.toString());
+                if(row.getCell(7).getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(row.getCell(7))) {
+                    data.setStartDate(row.getCell(7).getDateCellValue());
+                } else {
+                    data.setStartDate(simpleDateFormat.parse(row.getCell(7).toString()));
+                }
+                data.setDeadlines(row.getCell(8).toString());
+                data.setRiscDesc(row.getCell(9).toString());
+                data.setCheckResult(row.getCell(10).toString());
+                data.setReactMeasure(row.getCell(11).toString());
+                data.setControlName(row.getCell(12).toString());
+                if(row.getCell(13).getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(row.getCell(13))) {
+                    data.setAddDate(row.getCell(13).getDateCellValue());
+                } else {
+                    try {
+                        data.setAddDate(simpleDateFormat.parse(row.getCell(13).toString()));
+                    } catch (ParseException e) {
+                        data.setAddDate(new Date());
+                        log.warn(e.getMessage() + "\n" + e.getStackTrace().toString());
+                    }
+                }
+                if(row.getCell(14).getCellType() == Cell.CELL_TYPE_NUMERIC &&  DateUtil.isCellDateFormatted(row.getCell(14))) {
+                    data.setUpdDate(row.getCell(14).getDateCellValue());
+                } else {
+                    try {
+                        data.setUpdDate(simpleDateFormat.parse(row.getCell(14).toString()));
+                    } catch (ParseException e) {
+                        log.warn(e.getMessage() + "\n" + e.getStackTrace().toString());
+                    }
+                }
+                data.setComment(row.getCell(15).toString());
+
+
+//                while (cellIterator.hasNext()) {
+//                    Cell cell = cellIterator.next();
+//                    switch (cell.getCellType()) {
+//                        case Cell.CELL_TYPE_NUMERIC:
+//                            System.out.print(cell.getNumericCellValue() + "\t");
+//                            break;
+//                        case Cell.CELL_TYPE_STRING:
+//                            System.out.print(cell.getStringCellValue() + "\t");
+//                            break;
+//                    }
+//                }
+//                System.out.println();
+                System.out.println(data.toString());
+                dataRepository.save(data);
+            }
+        } catch (OLE2NotOfficeXmlFileException e ){
+            log.error(e.getMessage());
+            e.printStackTrace();
+            new GeneralServiceException("Неможливо імпортувати файл, використовуйте новішу версію Microsoft Excel (2003 або новіше)");
+        } catch (ParseException e){
+            log.error(e.getMessage());
+            e.printStackTrace();
+            new GeneralServiceException("Невірний формат дат (використовуйте формат дд.мм.рррр)");
         }
-        return new RestMessageDTO("Success", true);
+
+            return new RestMessageDTO("Success", true);
+
     }
 }
