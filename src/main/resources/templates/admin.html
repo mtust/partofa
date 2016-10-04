@@ -65,6 +65,7 @@
                 </button>
             </div>
             <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
+                   data-search="true"
                    data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
                 <thead>
                 <tr>
@@ -81,7 +82,7 @@
                 </thead>
             </table>
         </div>
-        <div role="tabpanel" class="tab-pane active" id="regions">
+        <div role="tabpanel" class="tab-pane active" id="regions" style="visibility: hidden">
             <div id="toolbar2">
                 <button id="addRegion" onclick="" class="btn btn-primary" data-toggle="modal"
                         data-target="#addRegionModal">Додати регіон
@@ -279,6 +280,10 @@
             }
         });
     })(jQuery);
+
+    $("#roleTabToggle").click(function(){
+        $("#regions").css("visibility", "visible");
+    })
 
 
     toastr.options = {

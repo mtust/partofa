@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -75,7 +74,7 @@ public class HomeController {
 		log.info("I HAVE A NEW FILE WITH SiZE " + size + " Name " + file.getOriginalFilename()  + " id " + id);
 		return dataService.setDocument(file, id);
 	}
-	//передати ід дати в яку додаєм обєкт
+
 	@RequestMapping(value = "private/home/actualDocuments", method = RequestMethod.GET)
 	public List<DocumentDTO> getDocuments() throws SQLException, IOException{
 		log.info("Inside controller getDocuments");
@@ -88,4 +87,10 @@ public class HomeController {
 		log.info("HOME CONTROLLER HAVE DELETE DOCUMENT WITH ID " + documentId);
 		return dataService.delDocument(documentId);
 	}
+
+    @RequestMapping(value= "private/home/import/file",headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    public RestMessageDTO importData(@RequestParam("file") MultipartFile excelFile) throws IOException {
+        return dataService.importData(excelFile);
+    }
+
 }

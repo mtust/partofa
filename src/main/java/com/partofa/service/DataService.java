@@ -1,7 +1,6 @@
 package com.partofa.service;
 
 import com.partofa.domain.Data;
-import com.partofa.domain.Region;
 import com.partofa.dto.CreateDataDTO;
 import com.partofa.dto.DataDTO;
 import com.partofa.dto.DocumentDTO;
@@ -36,6 +35,7 @@ public interface DataService {
 
     RestMessageDTO revertData(Long id);
 
+    RestMessageDTO importData(MultipartFile excelFile) throws IOException;
     RestMessageDTO setDocument(MultipartFile file, Long idData) throws IOException;
     
     List<DocumentDTO> getDocuments(Long idData) throws SQLException, IOException;

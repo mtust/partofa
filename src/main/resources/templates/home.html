@@ -36,7 +36,10 @@
 	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js">
 	
 </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
 
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.0.0/base64.min.js"></script>
 
 <!-- Latest compiled and minified Locales -->
 <script
@@ -83,18 +86,26 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="home">
 				<div id="toolbar">
-					<button id="addData" onclick="" class="btn btn-primary"
-						data-toggle="modal" data-target="#dataAddModal">Додати
-						запис</button>
-					<button id="editData" onclick="" class="btn btn-default"
-						data-toggle="modal" disabled="disabled"
-						data-target="#dataEditModal">Редагувати</button>
-					<button id="deleteData" onclick="" class="btn btn-default"
-						disabled="disabled">Видалити</button>
+					<button id="addData" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#dataAddModal">
+						Додати запис
+					</button>
+					<button id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
+							data-target="#dataEditModal">Редагувати
+					</button>
+					<button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
+					<input id="importDataInput" name="file" type="file" hidden="hidden"/>
+					<div>
+						<button  id="importData" class="btn btn-default">Імпортувати дані</button>
+					</div>
 				</div>
-				<table id="dataTable" data-single-select="true" data-toggle="table"
-					data-toolbar="#toolbar" data-locale="uk-UA" data-pagination="true"
-					data-url="/private/home/actualData">
+				<table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
+					   data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]" data-search="true"
+					   data-show-export="true" data-export-types="['excel', 'csv']"
+					   data-export-options='{
+            "fileName": "SubjectyGospodarjuvanya",
+            "ignoreColumn": []
+          }'
+					   data-pagination="true" data-url="/private/home/actualData">
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
@@ -182,6 +193,7 @@
 	</div>
 
 
+
 <!-- ========================================nazik============================= -->
 
 	<!-- не працюють кнопки при виборі чекбоксу , перевірити метод видалення-->
@@ -232,8 +244,8 @@
 				</div>
 				<div class="modal-body">
 					<form method="POST" id="addDocument" enctype="multipart/form-data">
-						File to upload: <input type="file" name="file"></input> Id: <input
-							id="id" name="id"></input>
+						File to upload: <input type="file" name="file"/> Id: <input
+							id="id" name="id"/>
 						<button type="submit" class="btn btn-success" id="addDocumentSave">Add
 							Doc</button>
 					</form>
@@ -795,5 +807,21 @@
 	//     .fail(function () { alert('File download failed!'); });
 
 	// 	};
+    $("#importData").click(function(){
+        $("#importDataInput").click()
+    })
+
+    $("#importDataInput").on("change", function(evt){
+        var $input = $("#importDataInput");
+        var formData = new FormData();
+        formData.append("file", $("#importDataInput").prop('files')[0]);
+        var request = new XMLHttpRequest();
+        request.open("POST", "/private/home/import/file");
+        request.send(formData);
+
+
+    })
+
+
 </script>
 </html>

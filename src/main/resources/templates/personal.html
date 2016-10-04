@@ -356,49 +356,23 @@
 
     $("#photoUpload").on("change", function(evt) {
         debugger
-//        var form = new FormData();
         var $input = $("#photoUpload");
-//        form.append("photo", $input.prop('files')[0])
-//        $.ajax({
-//            type : 'post',
-//            url : '/private/me/edit/photo',
-//            enctype: 'multipart/form-data',
-//            processData: false,
-//            contentType: 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p',
-//            data : {
-//                photo : form
-//            },
-//            success : function(data) {
-//                toastr["success"]("Фотографію зміненно");
-//                $("#myPhoto").attr("src", $input.prop('files')[0]);
-//            },
-//            error :  function(data) {
-//                toastr["error"]("Помилка зміни фотографії: \n" + data.responseJSON.message);
-//            }
-//        })
+
 
         var formData = new FormData();
 
 
-// HTML file input, chosen by user
         formData.append("photo", $("#photoUpload").prop('files')[0]);
 
-// JavaScript file-like object
 
 
         var request = new XMLHttpRequest();
         request.open("POST", "/private/me/edit/photo");
         request.send(formData);
-        var tgt = evt.target || window.event.srcElement,
-                files = tgt.files;
-
-        // FileReader support
-        if (FileReader) {
-            if (files) if (files.length) {
-                var fr = new FileReader();
-                fr.readAsDataURL(files[0]);
-                $("#myPhoto").attr("src", fr.result);
-            }
+        if ($("#photoUpload").prop('files')[0].get)  {
+            var fr = new FileReader();
+            fr.readAsDataURL($("#photoUpload").prop('files')[0]);
+            $("#myPhoto").attr("src", fr.result);
 
     }
 
