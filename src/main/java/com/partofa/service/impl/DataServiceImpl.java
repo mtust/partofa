@@ -4,11 +4,7 @@ import com.partofa.domain.Data;
 import com.partofa.domain.Document;
 import com.partofa.domain.Region;
 import com.partofa.domain.User;
-import com.partofa.dto.CreateDataDTO;
-import com.partofa.dto.DataDTO;
-import com.partofa.dto.DocumentDTO;
-import com.partofa.dto.EditDataDTO;
-import com.partofa.dto.RestMessageDTO;
+import com.partofa.dto.*;
 import com.partofa.exception.BadRequestParametersException;
 import com.partofa.exception.GeneralServiceException;
 import com.partofa.repository.DataRepository;
@@ -242,7 +238,20 @@ public class DataServiceImpl implements DataService {
 
 	}
 
+	@Override
 	@Transactional
+	public DocumentDTO getDocument(Long id) throws SQLException, IOException {
+		Document document = documentRepository.findOne(id);
+		DocumentDTO documentDTO = new DocumentDTO();
+		documentDTO.setId(document.getId());
+		documentDTO.setName(document.getName());
+		InputStream inputStream = document.getFile().getBinaryStream();
+		documentDTO.setDocument(IOUtils.toByteArray(inputStream));
+		return documentDTO;
+	}
+
+	@Transactional
+	@Override
 	public List<DocumentDTO> getDocuments(Long idData) throws SQLException, IOException {
 		Data data = dataRepository.findOne(idData);
 		List<Document> list = data.getDocuments();
@@ -255,6 +264,22 @@ public class DataServiceImpl implements DataService {
 			documentDTO.setDocument(IOUtils.toByteArray(inputStream));
 			
 			listDTO.add(documentDTO);
+		}
+		return listDTO;
+	}
+
+	@Override
+	@Transactional
+	public List<DocumentNameDTO> getDocumentNames(Long idData) {
+		Data data = dataRepository.findOne(idData);
+		List<Document> list = data.getDocuments();
+		List<DocumentNameDTO> listDTO = new ArrayList<>();
+		for (Document document : list) {
+			DocumentNameDTO documentNameDTO = new DocumentNameDTO();
+			documentNameDTO.setId(document.getId());
+			documentNameDTO.setName(document.getName());
+
+			listDTO.add(documentNameDTO);
 		}
 		return listDTO;
 	}

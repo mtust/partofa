@@ -1,11 +1,7 @@
 package com.partofa.service;
 
 import com.partofa.domain.Data;
-import com.partofa.dto.CreateDataDTO;
-import com.partofa.dto.DataDTO;
-import com.partofa.dto.DocumentDTO;
-import com.partofa.dto.EditDataDTO;
-import com.partofa.dto.RestMessageDTO;
+import com.partofa.dto.*;
 import com.partofa.exception.BadRequestParametersException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +35,11 @@ public interface DataService {
     RestMessageDTO setDocument(MultipartFile file, Long idData) throws IOException;
     
     List<DocumentDTO> getDocuments(Long idData) throws SQLException, IOException;
+
+    List<DocumentNameDTO> getDocumentNames(Long idData);
     
     RestMessageDTO delDocument(Long idDocument);
+
+    DocumentDTO getDocument(Long id)  throws SQLException, IOException;
+
 }

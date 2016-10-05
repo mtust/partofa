@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 @lombok.Data
 public class DocumentDTO {
 
-    Long id;
-    String name;
-    byte [] document;
+    private Long id;
+    private String name;
+    private byte [] document;
 
 
 

@@ -1,848 +1,933 @@
 <html>
 <head>
-<title>Partofa</title>
-<!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous" />
+    <title>Partofa</title>
+    <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous"/>
 
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous" />
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" />
-<link rel="stylesheet"
-	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css" />
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"/>
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
 
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script
+            src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js">
-	
-</script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script
+            src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js">
+
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
 
     <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.0.0/base64.min.js"></script>
 
-<!-- Latest compiled and minified Locales -->
-<script
-	src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script
+            src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
 
-<style>
-#ui-datepicker-div {
-	z-index: 10000 !important;
-}
-	.bs-bars{
-		width: 75%;
-	}
-</style>
+    <style>
+        #ui-datepicker-div {
+            z-index: 10000 !important;
+        }
+
+        .bs-bars {
+            width: 75%;
+        }
+    </style>
 </head>
 <body>
 
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
 
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-left">
-					<li id="adminTab" style="visibility: hidden"><a class="btn"
-						href="/admin/page/users">Адмін панель</a></li>
-					<li id="myPage"><a class="btn" href="private/me">Моя
-							сторінка</a></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li id="logout"><a href="/logout">Вийти</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-	<div class="container">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                <li id="adminTab" style="visibility: hidden"><a class="btn"
+                                                                href="/admin/page/users">Адмін панель</a></li>
+                <li id="myPage"><a class="btn" href="private/me">Моя
+                    сторінка</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="logout"><a href="/logout">Вийти</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<div class="container">
 
 
-		<ul class="nav nav-tabs">
-			<li role="presentation" class="active"><a href="#home"
-				role="tab" data-toggle="tab">Головна</a></li>
-			<li role="presentation"><a href="#archive" role="tab"
-				data-toggle="tab">Архів</a></li>
-		</ul>
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#home"
+                                                  role="tab" data-toggle="tab">Головна</a></li>
+        <li role="presentation"><a href="#archive" role="tab"
+                                   data-toggle="tab">Архів</a></li>
+    </ul>
 
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="home">
-				<div id="toolbar">
-					<button id="addData" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#dataAddModal">
-						Додати запис
-					</button>
-					<button id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
-							data-target="#dataEditModal">Редагувати
-					</button>
-					<button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
-					<input id="importDataInput" name="file" type="file" style="display: none"/>
-					<div>
-						<button  id="importData" class="btn btn-default">Імпортувати дані</button>
-					</div>
-				</div>
-				<table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
-					   data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]" data-search="true"
-					   data-show-export="true" data-export-types="['excel', 'csv']"
-					   data-export-options='{
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            <div id="toolbar">
+                <button id="addData" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#dataAddModal">
+                    Додати запис
+                </button>
+                <button id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
+                        data-target="#dataEditModal">Редагувати
+                </button>
+                <button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
+                <input id="importDataInput" name="file" type="file" style="display: none"/>
+                <div>
+                    <button id="importData" class="btn btn-default">Імпортувати дані</button>
+                </div>
+            </div>
+            <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
+                   data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]" data-search="true"
+                   data-show-export="true" data-export-types="['excel', 'csv']"
+                   data-export-options='{
             "fileName": "SubjectyGospodarjuvanya",
             "ignoreColumn": []
           }'
-					   data-pagination="true" data-url="/private/home/actualData">
-					<thead>
-						<tr>
-							<th data-field="state" data-checkbox="true"></th>
-							<th data-field="id" data-visible="false"></th>
-							<th data-sortable="true" data-field="id">№</th>
-							<th data-sortable="true" data-field="subjectName">Найменування
-								суб'єкта господарювання</th>
-							<th data-sortable="true" data-field="region">Регіон суб'єкта</th>
-							<th data-sortable="true" data-field="addressWork">Адреса</th>
-							<th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
-								або ІН</th>
-							<th data-sortable="true" data-field="gosWorkType">Вид
-								господарської діяльності</th>
-							<th data-sortable="true" data-field="status">Ступінь ризику</th>
-							<th data-sortable="true" data-field="startDate">Дата початку
-								проведення заходу</th>
-							<th data-sortable="true" data-field="deadlines">Строки
-								проведення заходу</th>
-							<th data-sortable="true" data-field="riscDesc">Підстава
-								призначення ризику</th>
-							<th data-sortable="true" data-field="checkResult">Результат
-								перевірки</th>
-							<th data-sortable="true" data-field="reactMeasure">Вжити
-								заходів реагування</th>
-							<th data-sortable="true" data-field="controlName">Найменуваня
-								органу держ. нагляду</th>
-							<th data-sortable="true" data-field="addDate">Дата внесення
-								до реєстру</th>
-							<th data-sortable="true" data-field="updDate">Дата
-								останнсього редагування</th>
-							<th data-formatter="format">Документи</th>
-							<th data-sortable="true" data-field="comment">Коментар</th>
-						</tr>
-					</thead>
-				</table>
+                   data-pagination="true" data-url="/private/home/actualData">
+                <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-visible="false"></th>
+                    <th data-sortable="true" data-field="id">№</th>
+                    <th data-sortable="true" data-field="subjectName">Найменування
+                        суб'єкта господарювання
+                    </th>
+                    <th data-sortable="true" data-field="region">Регіон суб'єкта</th>
+                    <th data-sortable="true" data-field="addressWork">Адреса</th>
+                    <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
+                        або ІН
+                    </th>
+                    <th data-sortable="true" data-field="gosWorkType">Вид
+                        господарської діяльності
+                    </th>
+                    <th data-sortable="true" data-field="status">Ступінь ризику</th>
+                    <th data-sortable="true" data-field="startDate">Дата початку
+                        проведення заходу
+                    </th>
+                    <th data-sortable="true" data-field="deadlines">Строки
+                        проведення заходу
+                    </th>
+                    <th data-sortable="true" data-field="riscDesc">Підстава
+                        призначення ризику
+                    </th>
+                    <th data-sortable="true" data-field="checkResult">Результат
+                        перевірки
+                    </th>
+                    <th data-sortable="true" data-field="reactMeasure">Вжити
+                        заходів реагування
+                    </th>
+                    <th data-sortable="true" data-field="controlName">Найменуваня
+                        органу держ. нагляду
+                    </th>
+                    <th data-sortable="true" data-field="addDate">Дата внесення
+                        до реєстру
+                    </th>
+                    <th data-sortable="true" data-field="updDate">Дата
+                        останнсього редагування
+                    </th>
+                    <th data-formatter="format">Документи</th>
+                    <th data-sortable="true" data-field="comment">Коментар</th>
+                </tr>
+                </thead>
+            </table>
 
-			</div>
-			<div role="tabpanel" class="tab-pane" id="archive">
-				<div id="toolbar2">
-					<button id="revert" style="visibility: hidden"
-						class="btn btn-default" disabled="disabled">Відновити</button>
-				</div>
-				<table id="archiveTable" data-single-select="true"
-					data-toggle="table" data-locale="uk-UA" data-toolbar="#toolbar2"
-					data-pagination="true" data-url="/private/home/deletedData">
-					<thead>
-						<tr>
-							<th data-field="state" data-checkbox="true"></th>
-							<th data-field="id" data-visible="false"></th>
-							<th data-sortable="true" data-field="id">№</th>
-							<th data-sortable="true" data-field="subjectName">Найменування
-								суб'єкта господарювання</th>
-							<th data-sortable="true" data-field="region">Регіон суб'єкта</th>
-							<th data-sortable="true" data-field="addressWork">Адреса</th>
-							<th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
-								або ІН</th>
-							<th data-sortable="true" data-field="gosWorkType">Вид
-								господарської діяльності</th>
-							<th data-sortable="true" data-field="status">Ступінь ризику</th>
-							<th data-sortable="true" data-field="startDate">Дата початку
-								проведення заходу</th>
-							<th data-sortable="true" data-field="deadlines">Строки
-								проведення заходу</th>
-							<th data-sortable="true" data-field="riscDesc">Підстава
-								призначення ризику</th>
-							<th data-sortable="true" data-field="checkResult">Результат
-								перевірки</th>
-							<th data-sortable="true" data-field="reactMeasure">Вжити
-								заходів реагування</th>
-							<th data-sortable="true" data-field="controlName">Найменуваня
-								органу держ. нагляду</th>
-							<th data-sortable="true" data-field="addDate">Дата внесення
-								до реєстру</th>
-							<th data-sortable="true" data-field="updDate">Дата
-								останнсього реагування</th>
-							<th data-sortable="true" data-field="delDate">Дата видалення</th>
-							<th data-sortable="true" data-field="comment">Коментар</th>
-							<th data-field="format">Документи</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-
+        </div>
+        <div role="tabpanel" class="tab-pane" id="archive">
+            <div id="toolbar2">
+                <button id="revert" style="visibility: hidden"
+                        class="btn btn-default" disabled="disabled">Відновити
+                </button>
+            </div>
+            <table id="archiveTable" data-single-select="true"
+                   data-toggle="table" data-locale="uk-UA" data-toolbar="#toolbar2"
+                   data-pagination="true" data-url="/private/home/deletedData">
+                <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-visible="false"></th>
+                    <th data-sortable="true" data-field="id">№</th>
+                    <th data-sortable="true" data-field="subjectName">Найменування
+                        суб'єкта господарювання
+                    </th>
+                    <th data-sortable="true" data-field="region">Регіон суб'єкта</th>
+                    <th data-sortable="true" data-field="addressWork">Адреса</th>
+                    <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
+                        або ІН
+                    </th>
+                    <th data-sortable="true" data-field="gosWorkType">Вид
+                        господарської діяльності
+                    </th>
+                    <th data-sortable="true" data-field="status">Ступінь ризику</th>
+                    <th data-sortable="true" data-field="startDate">Дата початку
+                        проведення заходу
+                    </th>
+                    <th data-sortable="true" data-field="deadlines">Строки
+                        проведення заходу
+                    </th>
+                    <th data-sortable="true" data-field="riscDesc">Підстава
+                        призначення ризику
+                    </th>
+                    <th data-sortable="true" data-field="checkResult">Результат
+                        перевірки
+                    </th>
+                    <th data-sortable="true" data-field="reactMeasure">Вжити
+                        заходів реагування
+                    </th>
+                    <th data-sortable="true" data-field="controlName">Найменуваня
+                        органу держ. нагляду
+                    </th>
+                    <th data-sortable="true" data-field="addDate">Дата внесення
+                        до реєстру
+                    </th>
+                    <th data-sortable="true" data-field="updDate">Дата
+                        останнсього реагування
+                    </th>
+                    <th data-sortable="true" data-field="delDate">Дата видалення</th>
+                    <th data-sortable="true" data-field="comment">Коментар</th>
+                    <th data-field="format">Документи</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
 
 
 <!-- ========================================nazik============================= -->
 
-	<!-- не працюють кнопки при виборі чекбоксу , перевірити метод видалення-->
-	<button class="btn btn-primary" data-toggle="modal"
-		data-target="documentsModal">DOCUMENTS</button>
+<!-- не працюють кнопки при виборі чекбоксу , перевірити метод видалення-->
+<!--<button class="btn btn-primary" data-toggle="modal"-->
+<!--data-target="documentsModal">DOCUMENTS</button>-->
 
 
-		<div class="modal fade" tabindex="-1" id="documentsModal"
-			role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div id="toolbarDoc">
-						<button onclick="" class="btn btn-primary" data-toggle="modal"
-							data-target="#addDocumentModal">Додати документ</button>
-						<button id="downloadDocument" onclick="" class="btn btn-default"
-							data-toggle="modal" disabled="disabled">Скачати</button>
-						<button id="delDocument" onclick="" class="btn btn-default"
-							disabled="disabled">Видалити</button>
-					</div>
-					<table id="documentsTable" data-single-select="true"
-						data-toggle="table" data-toolbar="#toolbarDoc" data-locale="uk-UA"
-						data-pagination="true" data-url="/private/home/actualDocuments">
-						<thead>
-							<tr>
-								<th data-field="state" data-checkbox="true"></th>
-								<th data-field="id" data-visible="false"></th>
-								<th data-sortable="true" data-field="id">№</th>
-								<th data-sortable="true" data-field="name">Name Document</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
+<div class="modal fade" tabindex="-1" id="documentsModal"
+     role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="toolbarDoc">
+                <button onclick="" class="btn btn-primary" data-toggle="modal"
+                        data-target="#addDocumentModal">Додати документ
+                </button>
+                <button id="downloadDocument" onclick="" class="btn btn-default"
+                        data-toggle="modal" disabled="disabled">Скачати
+                </button>
+                <button id="delDocument" onclick="" class="btn btn-default"
+                        disabled="disabled">Видалити
+                </button>
+            </div>
+            <table id="documentsTable" data-single-select="true"
+                   data-toggle="table" data-toolbar="#toolbarDoc" data-locale="uk-UA"
+                   data-pagination="true" data-url="/private/home/actualDocuments">
+                <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-visible="false"></th>
+                    <th data-sortable="true" data-field="id">№</th>
+                    <th data-sortable="true" data-field="name">Назва документу</th>
+                    <!--<th data-field="document" data-visible="false"></th>-->
+                </tr>
+                </thead>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрити
+                </button>
+            </div>
+        </div>
 
-			</div>
-		</div>
+    </div>
+</div>
 
-	<div class="modal fade" id="addDocumentModal" tabindex="-1"
-		role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title">Додавання документу</h4>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-8">
-					Документ:<button id="addChooseFile"  class="btn btn-primary">Вибрати файл</button><span id="addFileName"></span>
-					</div>
-						</div>
-					<div class="row col-md-8">
-						<div class="col-md-8">
-					<form method="POST" id="addDocument" enctype="multipart/form-data">
-						<input style="display: none" id="addFile" type="file" name="file"/>
-						<input style="display: none;"
-							id="idAddDocument" name="id"/>
-						<button type="submit" class="btn btn-success" id="addDocumentSave">Добавити</button>
-					</form>
-					</div>
-						</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Закрити</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
+<div class="modal fade" id="addDocumentModal" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Додавання документу</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <button id="addChooseFile" class="btn btn-primary">Вибрати файл</button>
+                        <span id="addFileName"></span>
+                    </div>
+                </div>
+                <div class="row col-md-8">
+                    <div class="col-md-8">
+                        <form method="POST" id="addDocument" enctype="multipart/form-data">
+                            <input style="display: none" id="addFile" type="file" name="file"/>
+                            <input style="display: none;"
+                                   id="idAddDocument" name="id"/>
+                            <button type="submit" class="btn btn-success" id="addDocumentSave">Добавити</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрити
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <!-- ================================================================================ -->
 
-	<div class="modal fade" id="dataAddModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title">Додавання суб'єкта господарування</h4>
-				</div>
-				<div class="modal-body">
-					<form id="createData">
-						<div class="form-group">
-							<label for="addSubjectName">Найменування суб’єкта
-								господарювання</label> <input type="" class="form-control"
-								id="addSubjectName" name="addSubjectName" required="required" />
-						</div>
-						<div class="form-group">
-							<label for="addUserRegion">Регіон </label> <select
-								class="form-control" id="addUserRegion" name="addUserRegion"
-								form="createData">
-							</select>
+<div class="modal fade" id="dataAddModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Додавання суб'єкта господарування</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createData">
+                    <div class="form-group">
+                        <label for="addSubjectName">Найменування суб’єкта
+                            господарювання</label> <input type="" class="form-control"
+                                                          id="addSubjectName" name="addSubjectName"
+                                                          required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addUserRegion">Регіон </label> <select
+                            class="form-control" id="addUserRegion" name="addUserRegion"
+                            form="createData">
+                    </select>
 
-						</div>
-						<div class="form-group">
-							<label for="addAdress">Адреса</label> <input class="form-control"
-								id="addAdress" name="addAdress" placeholder="Адреса"
-								required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="addAdress">Адреса</label> <input class="form-control"
+                                                                     id="addAdress" name="addAdress"
+                                                                     placeholder="Адреса"
+                                                                     required="required"/>
 
-						</div>
-						<div class="form-group">
-							<label for="ipn">Код ЄДРПОУ або ІН</label> <input
-								class="form-control" id="ipn" name="ipn"
-								placeholder="Код ЄДРПОУ або ІН" required="required" />
-						</div>
-						<div class="form-group">
-							<label for="typeD">Вид господарської діяльності</label> <input
-								type="" class="form-control" id="typeD" name="typeD"
-								placeholder="Вид господарської діяльності" required="required" />
-						</div>
-						<div class="form-group">
-							<label for="addRisk">Ступінь ризику:</label> <select
-								class="form-control" id="addRisk" name="addRisk"
-								form="createData">
-								<option value="Високий">Високий</option>
-								<option value="Середній">Середній</option>
-								<option value="Низький">Низький</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="startDateP">Дата початку проведення заходу:</label> <input
-								name="startDateP" id='startDateP' type='text'
-								class="form-control" />
-						</div>
-						<div class="form-group">
-							<label for="addTerm">Строки проведення заходу:</label> <select
-								name="addTerm" class="form-control" id="addTerm"
-								form="createData">
-								<option value="5 днів">5 днів</option>
-								<option value="15 днів">15 днів</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="addControll">Найменування органу держ.
-								нагляду (контролю)</label> <input type="" class="form-control"
-								id="addControll" name="addControll"
-								placeholder="Найменування органу держ. нагляду (контролю)" />
-						</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ipn">Код ЄДРПОУ або ІН</label> <input
+                            class="form-control" id="ipn" name="ipn"
+                            placeholder="Код ЄДРПОУ або ІН" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="typeD">Вид господарської діяльності</label> <input
+                            type="" class="form-control" id="typeD" name="typeD"
+                            placeholder="Вид господарської діяльності" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addRisk">Ступінь ризику:</label> <select
+                            class="form-control" id="addRisk" name="addRisk"
+                            form="createData">
+                        <option value="Високий">Високий</option>
+                        <option value="Середній">Середній</option>
+                        <option value="Низький">Низький</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDateP">Дата початку проведення заходу:</label> <input
+                            name="startDateP" id='startDateP' type='text'
+                            class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addTerm">Строки проведення заходу:</label> <select
+                            name="addTerm" class="form-control" id="addTerm"
+                            form="createData">
+                        <option value="5 днів">5 днів</option>
+                        <option value="15 днів">15 днів</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addControll">Найменування органу держ.
+                            нагляду (контролю)</label> <input type="" class="form-control"
+                                                              id="addControll" name="addControll"
+                                                              placeholder="Найменування органу держ. нагляду (контролю)"/>
+                    </div>
 
-						<div class="form-group">
-							<label for="addRskReason">Підстава призначення ступеня
-								ризику</label> <input type="" class="form-control" id="addRskReason"
-								name="addRskReason"
-								placeholder="Підстава призначення ступеня ризику" />
-						</div>
-						<div class="form-group">
-							<label for="addResults">Результат перевірки</label> <input
-								type="" class="form-control" id="addResults" name="addResults"
-								placeholder="Результат перевірки" />
-						</div>
-						<div class="form-group">
-							<label for="addZaxid">Вжити заходів реагування</label> <select
-								class="form-control" id="addZaxid" name="addZaxid"
-								form="createData">
-								<option value="суд">суд</option>
-								<option value="штраф">штраф</option>
-							</select>
-						</div>
-						<div>
-							<label for="addComent">Коментар</label> <input type=""
-								class="form-control" id="addComent" name="addComent"
-								placeholder="Коментар" />
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Закрити</button>
-					<button type="button" id="addDataSave" class="btn btn-primary">Створити</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
+                    <div class="form-group">
+                        <label for="addRskReason">Підстава призначення ступеня
+                            ризику</label> <input type="" class="form-control" id="addRskReason"
+                                                  name="addRskReason"
+                                                  placeholder="Підстава призначення ступеня ризику"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addResults">Результат перевірки</label> <input
+                            type="" class="form-control" id="addResults" name="addResults"
+                            placeholder="Результат перевірки"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addZaxid">Вжити заходів реагування</label> <select
+                            class="form-control" id="addZaxid" name="addZaxid"
+                            form="createData">
+                        <option value="суд">суд</option>
+                        <option value="штраф">штраф</option>
+                    </select>
+                    </div>
+                    <div>
+                        <label for="addComent">Коментар</label> <input type=""
+                                                                       class="form-control" id="addComent"
+                                                                       name="addComent"
+                                                                       placeholder="Коментар"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрити
+                </button>
+                <button type="button" id="addDataSave" class="btn btn-primary">Створити</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
-	<div class="modal fade" id="dataEditModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title">Редагування суб'єкта господарування</h4>
-				</div>
-				<div class="modal-body">
-					<form id="editDataForm">
-						<div class="form-group">
-							<label for="editSubjectName">Найменування суб’єкта
-								господарювання</label> <input type="" class="form-control"
-								id="editSubjectName" name="addSubjectName" required="required" />
-						</div>
-						<div class="form-group">
-							<label for="editUserRegion">Регіон</label> <select
-								class="form-control" id="editUserRegion" name="editUserRegion"
-								form="editDataForm">
-							</select>
+<div class="modal fade" id="dataEditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редагування суб'єкта господарування</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editDataForm">
+                    <div class="form-group">
+                        <label for="editSubjectName">Найменування суб’єкта
+                            господарювання</label> <input type="" class="form-control"
+                                                          id="editSubjectName" name="addSubjectName"
+                                                          required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserRegion">Регіон</label> <select
+                            class="form-control" id="editUserRegion" name="editUserRegion"
+                            form="editDataForm">
+                    </select>
 
-						</div>
-						<div class="form-group">
-							<label for="editAdress">Адреса</label> <input
-								class="form-control" id="editAdress" name="addAdress"
-								placeholder="Адреса" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdress">Адреса</label> <input
+                            class="form-control" id="editAdress" name="addAdress"
+                            placeholder="Адреса" required="required"/>
 
-						</div>
-						<div class="form-group">
-							<label for="editIpn">Код ЄДРПОУ або ІН</label> <input
-								class="form-control" id="editIpn" name="ipn"
-								placeholder="Код ЄДРПОУ або ІН" required="required" />
-						</div>
-						<div class="form-group">
-							<label for="editTypeD">Вид господарської діяльності</label> <input
-								type="" class="form-control" id="editTypeD" name="typeD"
-								placeholder="Вид господарської діяльності" required="required" />
-						</div>
-						<div class="form-group">
-							<label for="editRisk">Ступінь ризику:</label> <select
-								class="form-control" id="editRisk" name="addRisk"
-								form="editDataForm">
-								<option value="Високий">Високий</option>
-								<option value="Середній">Середній</option>
-								<option value="Низький">Низький</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="editStartDateP">Дата початку проведення
-								заходу:</label> <input name="startDateP" id='editStartDateP' type='text'
-								class="form-control" />
-						</div>
-						<div class="form-group">
-							<label for="editTerm">Строки проведення заходу:</label> <select
-								name="addTerm" class="form-control" id="editTerm"
-								form="editDataForm">
-								<option value="5 днів">5 днів</option>
-								<option value="15 днів">15 днів</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="editControll">Найменування органу держ.
-								нагляду (контролю)</label> <input type="" class="form-control"
-								id="editControll" name="addControll"
-								placeholder="Найменування органу держ. нагляду (контролю)" />
-						</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editIpn">Код ЄДРПОУ або ІН</label> <input
+                            class="form-control" id="editIpn" name="ipn"
+                            placeholder="Код ЄДРПОУ або ІН" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTypeD">Вид господарської діяльності</label> <input
+                            type="" class="form-control" id="editTypeD" name="typeD"
+                            placeholder="Вид господарської діяльності" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRisk">Ступінь ризику:</label> <select
+                            class="form-control" id="editRisk" name="addRisk"
+                            form="editDataForm">
+                        <option value="Високий">Високий</option>
+                        <option value="Середній">Середній</option>
+                        <option value="Низький">Низький</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStartDateP">Дата початку проведення
+                            заходу:</label> <input name="startDateP" id='editStartDateP' type='text'
+                                                   class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTerm">Строки проведення заходу:</label> <select
+                            name="addTerm" class="form-control" id="editTerm"
+                            form="editDataForm">
+                        <option value="5 днів">5 днів</option>
+                        <option value="15 днів">15 днів</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editControll">Найменування органу держ.
+                            нагляду (контролю)</label> <input type="" class="form-control"
+                                                              id="editControll" name="addControll"
+                                                              placeholder="Найменування органу держ. нагляду (контролю)"/>
+                    </div>
 
-						<div class="form-group">
-							<label for="editRskReason">Підстава призначення ступеня
-								ризику</label> <input type="" class="form-control" id="editRskReason"
-								name="addRskReason"
-								placeholder="Підстава призначення ступеня ризику" />
-						</div>
-						<div class="form-group">
-							<label for="editResults">Результат перевірки</label> <input
-								type="" class="form-control" id="editResults" name="addResults"
-								placeholder="Результат перевірки" />
-						</div>
-						<div class="form-group">
-							<label for="editZaxid">Вжити заходів реагування</label> <select
-								class="form-control" id="editZaxid" name="addZaxid"
-								form="createData">
-								<option value="суд">суд</option>
-								<option value="штраф">штраф</option>
-							</select>
-						</div>
-						<div>
-							<label for="editComent">Коментар</label> <input type=""
-								class="form-control" id="editComent" name="addComent"
-								placeholder="Коментар" />
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Закрити</button>
-					<button type="button" id="editDataSave" class="btn btn-primary">Зберегти</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
+                    <div class="form-group">
+                        <label for="editRskReason">Підстава призначення ступеня
+                            ризику</label> <input type="" class="form-control" id="editRskReason"
+                                                  name="addRskReason"
+                                                  placeholder="Підстава призначення ступеня ризику"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editResults">Результат перевірки</label> <input
+                            type="" class="form-control" id="editResults" name="addResults"
+                            placeholder="Результат перевірки"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editZaxid">Вжити заходів реагування</label> <select
+                            class="form-control" id="editZaxid" name="addZaxid"
+                            form="createData">
+                        <option value="суд">суд</option>
+                        <option value="штраф">штраф</option>
+                    </select>
+                    </div>
+                    <div>
+                        <label for="editComent">Коментар</label> <input type=""
+                                                                        class="form-control" id="editComent"
+                                                                        name="addComent"
+                                                                        placeholder="Коментар"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрити
+                </button>
+                <button type="button" id="editDataSave" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 </body>
 <script>
-	$.datepicker.setDefaults($.datepicker.regional['uk']);
+    $.datepicker.setDefaults($.datepicker.regional['uk']);
 
-	$(function() {
-		$('#startDateP').datepicker();
-	});
-
-	
-
-	var regions;
-	(function($) {
-		$.ajax({
-			type : 'get',
-			url : 'regions',
-			success : function(e) {
-				regions = e;
-				console.log("regions: ");
-				console.log(JSON.stringify(e));
-				$.each(e, function(i, item) {
-					$('#addUserRegion').append($('<option>', {
-						value : item.id,
-						text : item.name
-					}, '</option>'));
-					$('#editUserRegion').append($('<option>', {
-						value : item.id,
-						text : item.name
-					}, '</option>'));
-				})
-				$('#addRegion').append($('<option>', {
-					value : "all",
-					text : "Усі регіони"
-				}, '</option>'));
-				$('#editUserRegion').append($('<option>', {
-					value : "all",
-					text : "Усі регіони"
-				}, '</option>'));
-
-			}
-		});
-	})(jQuery);
-
-	//    $('#myTabs a').click(function (e) {
-	//        e.preventDefault()
-	//        $(this).tab('show')
-	//    })
-
-	toastr.options = {
-		"closeButton" : false,
-		"debug" : false,
-		"newestOnTop" : false,
-		"progressBar" : false,
-		"positionClass" : "toast-top-right",
-		"preventDuplicates" : false,
-		"onclick" : null,
-		"showDuration" : "300",
-		"hideDuration" : "1000",
-		"timeOut" : "5000",
-		"extendedTimeOut" : "1000",
-		"showEasing" : "swing",
-		"hideEasing" : "linear",
-		"showMethod" : "fadeIn",
-		"hideMethod" : "fadeOut"
-	}
-
-	$(document).ready(function() {
-
-		$.ajax({
-			type : "get",
-			url : "/getCurrentUserRole",
-			success : function(data) {
-				if (data === "ROLE_ADMIN") {
-					$("#adminTab").css("visibility", "visible");
-					$("#revert").css("visibility", "visible");
-				}
-			}
-		})
-	});
-
-	
-
-	$('#addDataSave')
-			.on(
-					'click',
-					function() {
-						$
-								.ajax({
-									type : 'post',
-									url : '/private/add',
-									data : $('#createData').serialize(),
-									success : function(data) {
-										toastr["success"]("Запис створенно");
-										$("#dataAddModal").modal('hide');
-										$('#dataTable').bootstrapTable(
-												'refresh');
-									},
-									error : function(data) {
-										toastr["error"]
-												("Неможливо створити запис, перевірте правильність введення полів\n"
-														+ data.responseJSON.message);
-									}
-								});
-					});
-
-	$('#editDataSave')
-			.on(
-					'click',
-					function() {
-						var ids = getIdSelections();
-						$('#editDataForm')
-								.append(
-										'<input type="hidden" name="id" value="' + ids[0] + '"/> ');
-						$
-								.ajax({
-									type : 'post',
-									url : '/private/edit',
-									data : $('#editDataForm').serialize(),
-									success : function(data) {
-										toastr["success"]("Запис редаговано");
-										$("#dataEditModal").modal('hide');
-										$('#editDataForm')[0].reset();
-										$('#dataTable').bootstrapTable(
-												'refresh');
-
-									},
-									error : function(data) {
-										toastr["error"]
-												("Неможливо редагувати запис, перевірте правильність введення полів");
-									}
-								})
-					})
-
-	$('#dataTable')
-			.on(
-					'check.bs.table uncheck.bs.table '
-							+ 'check-all.bs.table uncheck-all.bs.table',
-					function() {
-						$("#deleteData")
-								.prop(
-										'disabled',
-										!$('#dataTable').bootstrapTable(
-												'getSelections').length);
-						$("#editData")
-								.prop(
-										'disabled',
-										!$('#dataTable').bootstrapTable(
-												'getSelections').length);
-						// save your data, here just save the current page
-						selections = getIdSelections();
-						// push or splice the selections if you want to save all data selections
-					});
-
-	$('#archiveTable').on(
-			'check.bs.table uncheck.bs.table '
-					+ 'check-all.bs.table uncheck-all.bs.table',
-			function() {
-				$("#revert")
-						.prop(
-								'disabled',
-								!$('#archiveTable').bootstrapTable(
-										'getSelections').length);
-			});
-
-	function getIdArchiveSelections() {
-		return $.map($('#archiveTable').bootstrapTable('getSelections'),
-				function(row) {
-					return row.id
-				});
-	}
-
-	$("#revert").click(function() {
-		$.ajax({
-			type : 'post',
-			url : '/revert',
-			data : {
-				id : getIdArchiveSelections()[0]
-			},
-			success : function(data) {
-				toastr["success"]("Дані успішно відновленно");
-				$("#revert").prop('disabled', true);
-				$('#dataTable').bootstrapTable('refresh');
-				$('#archiveTable').bootstrapTable('refresh');
-			},
-			error : function(error) {
-				toastr["error"]("Неможливо відновити дані");
-			}
-		});
-	})
-
-	function getIdSelections() {
-		return $.map($('#dataTable').bootstrapTable('getSelections'), function(
-				row) {
-			return row.id
-		});
-	}
-
-	$("#deleteData")
-			.click(
-					function() {
-						var ids = getIdSelections();
-
-						$
-								.ajax({
-									type : "delete",
-									url : "/private/delete" + '?' + $.param({
-										"id" : ids[0]
-									}),
-									success : function() {
-										toastr["success"]
-												("Дані успішно видалено та перенесено у архів");
-										$('#deleteData').bootstrapTable(
-												'remove', {
-													field : 'id',
-													values : ids
-												});
-										$("#deleteData").prop('disabled', true);
-										$('#dataTable').bootstrapTable(
-												'refresh');
-										$('#archiveTable').bootstrapTable(
-												'refresh');
-									},
-									error : function() {
-										toastr["error"]
-												("Неможливо видалити цей запис");
-									}
-								})
-
-					});
-
-	$('#myTable').on('click', '.clickable-row', function(event) {
-		$(this).addClass('active').siblings().removeClass('active');
-	});
-
-	$("#editData").click(
-			function() {
-				var selectedRow = $('#dataTable').bootstrapTable(
-						'getSelections')[0];
-				$("#editSubjectName").val(selectedRow.subjectName);
-				$("#editAdress").val(selectedRow.addressWork);
-				$("#editIpn").val(selectedRow.ipnPassport);
-				$("#editTypeD").val(selectedRow.gosWorkType);
-				try {
-					$("#editRisk option[text=" + selectedRow.status + "]")
-							.attr('selected', 'selected');
-				} catch (e) {
-					console.log(e);
-				}
-				$("#editStartDateP").val(selectedRow.startDate);
-				try {
-					$("#editTerm option[text=" + selectedRow.deadlines + "]")
-							.attr('selected', 'selected');
-				} catch (e) {
-					console.log(e);
-				}
-				try {
-					$(
-							"#editUserRegion option[text="
-									+ selectedRow.deadlines + "]").attr(
-							'selected', 'selected');
-				} catch (e) {
-					console.log(e);
-				}
-				$("#editControll").val(selectedRow.controlName);
-				$("#editRskReason").val(selectedRow.riscDesc);
-				$("#editResults").val(selectedRow.checkResult);
-				$("#editZaxid").val(selectedRow.reactMeasure);
-				$("#editComent").val(selectedRow.comment);
-
-			});
-// 	======================================NAZIK=====================
-	
-	function format(value, row, index, field) {
-		var html = [];
-		html.push("<a id="+index+" onclick=" + 'openDocumentModal(this) '+ "> Документи </a>");
-		return html.join('');
-	}
+    $(function () {
+        $('#startDateP').datepicker();
+    });
 
 
-	function openDocumentModal(el){
-		var id = $($("#dataTable tr")[parseInt(el.id, 10) + 1].getElementsByTagName("td")[1]).text();
-		$("#documentsModal").modal('toggle');
-		$("#documentsModal").modal('show');
-		$("#idAddDocument").val(id);
-		console.log(id);
-	}
+    function saveByteArray(reportName, byte) {
+        var blob = new Blob([byte]);
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        var timeNow = new Date();
+        var month = timeNow.getMonth() + 1;
+        var fileName = reportName;
+        link.download = fileName;
+        link.click();
+    };
+
+    var regions;
+    (function ($) {
+        $.ajax({
+            type: 'get',
+            url: 'regions',
+            success: function (e) {
+                regions = e;
+                console.log("regions: ");
+                console.log(JSON.stringify(e));
+                $.each(e, function (i, item) {
+                    $('#addUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
+                    $('#editUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
+                })
+                $('#addRegion').append($('<option>', {
+                    value: "all",
+                    text: "Усі регіони"
+                }, '</option>'));
+                $('#editUserRegion').append($('<option>', {
+                    value: "all",
+                    text: "Усі регіони"
+                }, '</option>'));
+
+            }
+        });
+    })(jQuery);
+
+    //    $('#myTabs a').click(function (e) {
+    //        e.preventDefault()
+    //        $(this).tab('show')
+    //    })
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "get",
+            url: "/getCurrentUserRole",
+            success: function (data) {
+                if (data === "ROLE_ADMIN") {
+                    $("#adminTab").css("visibility", "visible");
+                    $("#revert").css("visibility", "visible");
+                }
+            }
+        })
+    });
 
 
-	// 	ADD DOCUMENT TO DATA
-	$('#addDocument').submit(
-			function(e) {
-				$.ajax({
-					url : '/private/home/addDocument',
-					type : 'POST',
-					data : new FormData(this),
-					processData : false,
-					contentType : false,
-					success : function(data) {
-						toastr["success"]("Документ додано!");
-						$('#documentsTable').bootstrapTable('refresh');
-					},
-					error : function(data) {
-						toastr["error"]("Помилка відправлення документу\n"
-								+ data.responseJSON.message);
-					}
-				});
-				e.preventDefault();
-			});
-	
-	$("#delDocument").click(function() {
-		var ids = getIdSelections();
+    $('#addDataSave')
+            .on(
+                    'click',
+                    function () {
+                        $
+                                .ajax({
+                                    type: 'post',
+                                    url: '/private/add',
+                                    data: $('#createData').serialize(),
+                                    success: function (data) {
+                                        toastr["success"]("Запис створенно");
+                                        $("#dataAddModal").modal('hide');
+                                        $('#dataTable').bootstrapTable(
+                                                'refresh');
+                                    },
+                                    error: function (data) {
+                                        toastr["error"]
+                                        ("Неможливо створити запис, перевірте правильність введення полів\n"
+                                                + data.responseJSON.message);
+                                    }
+                                });
+                    });
 
-		$.ajax({
-			type : 'delete',
-			url : '/private/deleteDocument' + '?' + $.param({
-				'id' : ids[0]
-			}),
-			success : function() {
-				toastr["success"]("Дані успішно видалено");
-				$('#delDocument').bootstrapTable('remove', {
-					field : 'id',
-					values : ids
-				});
-				$("#delDocument").prop('disabled', true);
-				$('#documentsTable').bootstrapTable('refresh');
+    $('#editDataSave')
+            .on(
+                    'click',
+                    function () {
+                        var ids = getIdSelections();
+                        $('#editDataForm')
+                                .append(
+                                        '<input type="hidden" name="id" value="' + ids[0] + '"/> ');
+                        $
+                                .ajax({
+                                    type: 'post',
+                                    url: '/private/edit',
+                                    data: $('#editDataForm').serialize(),
+                                    success: function (data) {
+                                        toastr["success"]("Запис редаговано");
+                                        $("#dataEditModal").modal('hide');
+                                        $('#editDataForm')[0].reset();
+                                        $('#dataTable').bootstrapTable(
+                                                'refresh');
 
-			},
-			error : function() {
-				toastr["error"]("Неможливо видалити цей запис");
-			}
-		})
+                                    },
+                                    error: function (data) {
+                                        toastr["error"]
+                                        ("Неможливо редагувати запис, перевірте правильність введення полів");
+                                    }
+                                })
+                    })
 
-	});
-	
-// 	$(#downloadDocument){
-	// 		var ids = getdocumentSelections();
-	// 		$.fileDownload(ids)
-	//     .done(function () { alert('File download a success!'); })
-	//     .fail(function () { alert('File download failed!'); });
+    $('#dataTable')
+            .on(
+                    'check.bs.table uncheck.bs.table '
+                    + 'check-all.bs.table uncheck-all.bs.table',
+                    function () {
+                        $("#deleteData")
+                                .prop(
+                                        'disabled',
+                                        !$('#dataTable').bootstrapTable(
+                                                'getSelections').length);
+                        $("#editData")
+                                .prop(
+                                        'disabled',
+                                        !$('#dataTable').bootstrapTable(
+                                                'getSelections').length);
+                        // save your data, here just save the current page
+                        selections = getIdSelections();
+                        // push or splice the selections if you want to save all data selections
+                    });
 
-	// 	};
+    $('#archiveTable').on(
+            'check.bs.table uncheck.bs.table '
+            + 'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $("#revert")
+                        .prop(
+                                'disabled',
+                                !$('#archiveTable').bootstrapTable(
+                                        'getSelections').length);
+            });
 
-	$("#addChooseFile").click(function(){
-		$("#addFile").click();
-	})
+    function getIdArchiveSelections() {
+        return $.map($('#archiveTable').bootstrapTable('getSelections'),
+                function (row) {
+                    return row.id
+                });
+    }
 
-	$("#addFile").on("change", function(evt){
-		$("#addFileName").text($("#addFile").val());
-	})
+    function getIdDocumentSelections() {
+        return $.map($('#documentsTable').bootstrapTable('getSelections'),
+                function (row) {
+                    return row.id
+                });
+    }
 
-    $("#importData").click(function(){
+
+    $('#documentsTable').on(
+            'check.bs.table uncheck.bs.table '
+            + 'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $("#delDocument")
+                        .prop(
+                                'disabled',
+                                !$('#documentsTable').bootstrapTable(
+                                        'getSelections').length);
+
+                $("#downloadDocument")
+                        .prop(
+                                'disabled',
+                                !$('#documentsTable').bootstrapTable(
+                                        'getSelections').length);
+            });
+
+    $("#revert").click(function () {
+        $.ajax({
+            type: 'post',
+            url: '/revert',
+            data: {
+                id: getIdArchiveSelections()[0]
+            },
+            success: function (data) {
+                toastr["success"]("Дані успішно відновленно");
+                $("#revert").prop('disabled', true);
+                $('#dataTable').bootstrapTable('refresh');
+                $('#archiveTable').bootstrapTable('refresh');
+            },
+            error: function (error) {
+                toastr["error"]("Неможливо відновити дані");
+            }
+        });
+    })
+
+    function getIdSelections() {
+        return $.map($('#dataTable').bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+
+    $("#deleteData")
+            .click(
+                    function () {
+                        var ids = getIdSelections();
+
+                        $
+                                .ajax({
+                                    type: "delete",
+                                    url: "/private/delete" + '?' + $.param({
+                                        "id": ids[0]
+                                    }),
+                                    success: function () {
+                                        toastr["success"]
+                                        ("Дані успішно видалено та перенесено у архів");
+                                        $('#deleteData').bootstrapTable(
+                                                'remove', {
+                                                    field: 'id',
+                                                    values: ids
+                                                });
+                                        $("#deleteData").prop('disabled', true);
+                                        $('#dataTable').bootstrapTable(
+                                                'refresh');
+                                        $('#archiveTable').bootstrapTable(
+                                                'refresh');
+                                    },
+                                    error: function () {
+                                        toastr["error"]
+                                        ("Неможливо видалити цей запис");
+                                    }
+                                })
+
+                    });
+
+    $('#myTable').on('click', '.clickable-row', function (event) {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+
+    $("#editData").click(
+            function () {
+                var selectedRow = $('#dataTable').bootstrapTable(
+                        'getSelections')[0];
+                $("#editSubjectName").val(selectedRow.subjectName);
+                $("#editAdress").val(selectedRow.addressWork);
+                $("#editIpn").val(selectedRow.ipnPassport);
+                $("#editTypeD").val(selectedRow.gosWorkType);
+                try {
+                    $("#editRisk option[text=" + selectedRow.status + "]")
+                            .attr('selected', 'selected');
+                } catch (e) {
+                    console.log(e);
+                }
+                $("#editStartDateP").val(selectedRow.startDate);
+                try {
+                    $("#editTerm option[text=" + selectedRow.deadlines + "]")
+                            .attr('selected', 'selected');
+                } catch (e) {
+                    console.log(e);
+                }
+                try {
+                    $(
+                            "#editUserRegion option[text="
+                            + selectedRow.deadlines + "]").attr(
+                            'selected', 'selected');
+                } catch (e) {
+                    console.log(e);
+                }
+                $("#editControll").val(selectedRow.controlName);
+                $("#editRskReason").val(selectedRow.riscDesc);
+                $("#editResults").val(selectedRow.checkResult);
+                $("#editZaxid").val(selectedRow.reactMeasure);
+                $("#editComent").val(selectedRow.comment);
+
+            });
+    // 	======================================NAZIK=====================
+
+    function format(value, row, index, field) {
+        var html = [];
+        html.push("<a id=" + index + " onclick=" + 'openDocumentModal(this) ' + "> Документи </a>");
+        return html.join('');
+    }
+
+
+    function openDocumentModal(el) {
+        var id = $($("#dataTable tr")[parseInt(el.id, 10) + 1].getElementsByTagName("td")[1]).text();
+        $("#documentsModal").modal('toggle');
+        $("#documentsModal").modal('show');
+        $("#idAddDocument").val(id);
+        $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id });
+        console.log(id);
+    }
+
+
+    // 	ADD DOCUMENT TO DATA
+    $('#addDocument').submit(
+            function (e) {
+                $.ajax({
+                    url: '/private/home/addDocument',
+                    type: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        toastr["success"]("Документ додано!");
+                        var id = $("#idAddDocument").val();
+                        $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id });
+                    },
+                    error: function (data) {
+                        toastr["error"]("Помилка відправлення документу\n"
+                                + data.responseJSON.message);
+                    }
+                });
+                e.preventDefault();
+            });
+
+    $("#delDocument").click(function () {
+        var ids = getIdDocumentSelections();
+
+        $.ajax({
+            type: 'delete',
+            url: '/private/deleteDocument' + '?' + $.param({
+                'id': ids[0]
+            }),
+            success: function () {
+                toastr["success"]("Документ успішно видалено");
+                $('#delDocument').bootstrapTable('remove', {
+                    field: 'id',
+                    values: ids
+                });
+                $("#delDocument").prop('disabled', true);
+                $("#downloadDocument").prop('disabled', true);
+                var id = $("#idAddDocument").val();
+                $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id });
+
+            },
+            error: function () {
+                toastr["error"]("Неможливо видалити цей запис");
+            }
+        })
+
+    });
+
+     	$("#downloadDocument").click(function(){
+     		var ids = getIdDocumentSelections();
+            $.ajax({
+                type : 'get',
+                url : '/private/download/file/' + ids[0],
+                success : function(data){
+                    debugger
+                    var repornName = data.name;
+                    var byte = data.document;
+                    saveByteArray(repornName, byte);
+                }
+            })
+
+     	})
+
+    $("#addChooseFile").click(function () {
+        $("#addFile").click();
+    })
+
+    $("#addFile").on("change", function (evt) {
+        $("#addFileName").text($("#addFile").val());
+    })
+
+    $("#importData").click(function () {
         $("#importDataInput").click()
     })
 
-    $("#importDataInput").on("change", function(evt){
+    $("#importDataInput").on("change", function (evt) {
         var $input = $("#importDataInput");
         var formData = new FormData();
         formData.append("file", $("#importDataInput").prop('files')[0]);

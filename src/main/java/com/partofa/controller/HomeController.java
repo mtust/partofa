@@ -1,17 +1,14 @@
 package com.partofa.controller;
 
 import com.partofa.domain.Data;
-import com.partofa.dto.CreateDataDTO;
-import com.partofa.dto.DataDTO;
-import com.partofa.dto.DocumentDTO;
-import com.partofa.dto.EditDataDTO;
-import com.partofa.dto.RestMessageDTO;
+import com.partofa.dto.*;
 import com.partofa.service.DataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -76,10 +73,22 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "private/home/actualDocuments", method = RequestMethod.GET)
-	public List<DocumentDTO> getDocuments() throws SQLException, IOException{
+	public List<DocumentNameDTO> getDocuments() throws SQLException, IOException{
 		log.info("Inside controller getDocuments");
 		//log.info(dataService.getDocuments(1L).size() + " to string List");
-		return dataService.getDocuments(1L);
+		return dataService.getDocumentNames(1L);
+	}
+
+	@RequestMapping(value = "private/home/actualDocuments/{id}", method = RequestMethod.GET)
+	public List<DocumentNameDTO> getDocumentsByDataId(@PathVariable  Long id)throws SQLException, IOException{
+		log.info("Inside controller getDocuments: " + id);
+		return dataService.getDocumentNames(id);
+	}
+
+	@RequestMapping(value =  "private/download/file/{id}", method = RequestMethod.GET)
+	public DocumentDTO getDocumentForDownload(@PathVariable Long id) throws IOException, SQLException {
+		log.info("Inside controller getDocument: " + id);
+		return dataService.getDocument(id);
 	}
 	
 	@RequestMapping(value = { "private/page/private/deleteDocument", "private/deleteDocument" }, method = RequestMethod.DELETE)
