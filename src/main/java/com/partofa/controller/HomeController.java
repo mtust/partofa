@@ -78,7 +78,7 @@ public class HomeController {
 	@RequestMapping(value = "private/home/actualDocuments", method = RequestMethod.GET)
 	public List<DocumentDTO> getDocuments() throws SQLException, IOException{
 		log.info("Inside controller getDocuments");
-		log.info(dataService.getDocuments(1L).size() + " to string List");
+		//log.info(dataService.getDocuments(1L).size() + " to string List");
 		return dataService.getDocuments(1L);
 	}
 	

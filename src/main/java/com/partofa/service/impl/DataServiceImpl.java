@@ -231,6 +231,9 @@ public class DataServiceImpl implements DataService {
 		document.setName(file.getOriginalFilename());
 		documentRepository.save(document);
 		List<Document> list = data.getDocuments();
+		if(list == null){
+			list = new ArrayList<>();
+		}
 		list.add(document);
 		data.setDocuments(list);
 		dataRepository.save(data);

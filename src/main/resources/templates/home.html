@@ -49,6 +49,9 @@
 #ui-datepicker-div {
 	z-index: 10000 !important;
 }
+	.bs-bars{
+		width: 75%;
+	}
 </style>
 </head>
 <body>
@@ -93,7 +96,7 @@
 							data-target="#dataEditModal">Редагувати
 					</button>
 					<button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
-					<input id="importDataInput" name="file" type="file" hidden="hidden"/>
+					<input id="importDataInput" name="file" type="file" style="display: none"/>
 					<div>
 						<button  id="importData" class="btn btn-default">Імпортувати дані</button>
 					</div>
@@ -136,9 +139,8 @@
 								до реєстру</th>
 							<th data-sortable="true" data-field="updDate">Дата
 								останнсього редагування</th>
-							<th data-sortable="true" data-field="comment">Коментар</th>
-
 							<th data-formatter="format">Документи</th>
+							<th data-sortable="true" data-field="comment">Коментар</th>
 						</tr>
 					</thead>
 				</table>
@@ -198,10 +200,10 @@
 
 	<!-- не працюють кнопки при виборі чекбоксу , перевірити метод видалення-->
 	<button class="btn btn-primary" data-toggle="modal"
-		data-target=".bs-example-modal-lg">DOCUMENTS</button>
+		data-target="documentsModal">DOCUMENTS</button>
 
-	<div role="tabpanel" class="tab-pane active" id="documents">
-		<div class="modal fade bs-example-modal-lg" tabindex="-1"
+
+		<div class="modal fade" tabindex="-1" id="documentsModal"
 			role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -229,7 +231,6 @@
 
 			</div>
 		</div>
-	</div>
 
 	<div class="modal fade" id="addDocumentModal" tabindex="-1"
 		role="dialog">
@@ -243,12 +244,21 @@
 					<h4 class="modal-title">Додавання документу</h4>
 				</div>
 				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-8">
+					Документ:<button id="addChooseFile"  class="btn btn-primary">Вибрати файл</button><span id="addFileName"></span>
+					</div>
+						</div>
+					<div class="row col-md-8">
+						<div class="col-md-8">
 					<form method="POST" id="addDocument" enctype="multipart/form-data">
-						File to upload: <input type="file" name="file"/> Id: <input
-							id="id" name="id"/>
-						<button type="submit" class="btn btn-success" id="addDocumentSave">Add
-							Doc</button>
+						<input style="display: none" id="addFile" type="file" name="file"/>
+						<input style="display: none;"
+							id="idAddDocument" name="id"/>
+						<button type="submit" class="btn btn-success" id="addDocumentSave">Добавити</button>
 					</form>
+					</div>
+						</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -751,8 +761,20 @@
 // 	======================================NAZIK=====================
 	
 	function format(value, row, index, field) {
-		return '<a onclick="openDocumentModal(id)">Документи</a>';
+		var html = [];
+		html.push("<a id="+index+" onclick=" + 'openDocumentModal(this) '+ "> Документи </a>");
+		return html.join('');
 	}
+
+
+	function openDocumentModal(el){
+		var id = $($("#dataTable tr")[parseInt(el.id, 10) + 1].getElementsByTagName("td")[1]).text();
+		$("#documentsModal").modal('toggle');
+		$("#documentsModal").modal('show');
+		$("#idAddDocument").val(id);
+		console.log(id);
+	}
+
 
 	// 	ADD DOCUMENT TO DATA
 	$('#addDocument').submit(
@@ -807,6 +829,15 @@
 	//     .fail(function () { alert('File download failed!'); });
 
 	// 	};
+
+	$("#addChooseFile").click(function(){
+		$("#addFile").click();
+	})
+
+	$("#addFile").on("change", function(evt){
+		$("#addFileName").text($("#addFile").val());
+	})
+
     $("#importData").click(function(){
         $("#importDataInput").click()
     })
