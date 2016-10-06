@@ -356,6 +356,21 @@
 
     $("#photoUpload").on("change", function(evt) {
         debugger
+        var url = $(this).val();
+        var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+        if ((ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg"))
+        {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            }
+            reader.readAsDataURL($("#photoUpload").prop('files')[0]);
+        }
+        else
+        {
+            $('#img').attr('src', '/assets/no_preview.png');
+        }
         var $input = $("#photoUpload");
 
 
@@ -369,12 +384,7 @@
         var request = new XMLHttpRequest();
         request.open("POST", "/private/me/edit/photo");
         request.send(formData);
-        if ($("#photoUpload").prop('files')[0].get)  {
-            var fr = new FileReader();
-            fr.readAsDataURL($("#photoUpload").prop('files')[0]);
-            $("#myPhoto").attr("src", fr.result);
 
-    }
 
     });
 

@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Partofa</title>
     <!-- Angulars Material CSS now available via Google CDN; version 0.8 used here -->
@@ -41,10 +41,13 @@
     <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.0.0/base64.min.js"></script>
 
+    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+
     <!-- Latest compiled and minified Locales -->
     <script
             src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fileDownload/1.4.2/jquery.fileDownload.min.js"></script>
     <style>
         #ui-datepicker-div {
             z-index: 10000 !important;
@@ -531,7 +534,7 @@
 
 
 </body>
-<script>
+<script type="text/javascript" th:inline="javascript">
     $.datepicker.setDefaults($.datepicker.regional['uk']);
 
     $(function () {
@@ -548,7 +551,8 @@
         var fileName = reportName;
         link.download = fileName;
         link.click();
-    };
+    }
+    ;
 
     var regions;
     (function ($) {
@@ -717,6 +721,8 @@
     }
 
 
+
+
     $('#documentsTable').on(
             'check.bs.table uncheck.bs.table '
             + 'check-all.bs.table uncheck-all.bs.table',
@@ -846,7 +852,7 @@
         $("#documentsModal").modal('toggle');
         $("#documentsModal").modal('show');
         $("#idAddDocument").val(id);
-        $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id });
+        $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id});
         console.log(id);
     }
 
@@ -863,7 +869,7 @@
                     success: function (data) {
                         toastr["success"]("Документ додано!");
                         var id = $("#idAddDocument").val();
-                        $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id });
+                        $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id});
                     },
                     error: function (data) {
                         toastr["error"]("Помилка відправлення документу\n"
@@ -890,7 +896,7 @@
                 $("#delDocument").prop('disabled', true);
                 $("#downloadDocument").prop('disabled', true);
                 var id = $("#idAddDocument").val();
-                $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id });
+                $("#documentsTable").bootstrapTable('refresh', {url: '/private/home/actualDocuments/' + id});
 
             },
             error: function () {
@@ -900,20 +906,63 @@
 
     });
 
-     	$("#downloadDocument").click(function(){
-     		var ids = getIdDocumentSelections();
-            $.ajax({
-                type : 'get',
-                url : '/private/download/file/' + ids[0],
-                success : function(data){
-                    debugger
-                    var repornName = data.name;
-                    var byte = data.document;
-                    saveByteArray(repornName, byte);
-                }
-            })
+    $("#downloadDocument").click(function () {
+        var ids = getIdDocumentSelections();
+//        $.fileDownload('/private/download/file/' + ids[0], {
+//            successCallback: function (url) {
+//
+//                alert('You just got a file download dialog or ribbon for this URL :' + url);
+//            },
+//            failCallback: function (html, url) {
+//
+//                alert('Your file download just failed for this URL:' + url + '\r\n' +
+//                        'Here was the resulting error HTML: \r\n' + html
+//                );
+//            }
+//        });
+        $.ajax({
+            type: 'get',
+            url: '/private/download/file/' + ids[0],
+            success: function (data) {
+                debugger
+                var repornName = data.name;
+//                var byte = _base64ToArrayBuffer(data.document)
+//                var byte = data.document;
+//                saveByteArray(repornName, byte);
 
-     	})
+
+
+                var byteString = atob(data.document);
+
+                // separate out the mime component
+
+                // write the bytes of the string to an ArrayBuffer
+                var ab = new ArrayBuffer(byteString.length);
+                var ia = new Uint8Array(ab);
+                $.each(byteString.split(''), function(i, item){
+                    ia[i] = byteString.charCodeAt(i);
+                })
+
+                // write the ArrayBuffer to a blob, and you're done
+                var bb = new Blob([ab]);
+                saveByteArray(repornName, bb);
+                return bb;
+
+            }
+        })
+
+    })
+
+
+    function _base64ToArrayBuffer(dataURI) {
+
+
+
+
+
+    }
+
+
 
     $("#addChooseFile").click(function () {
         $("#addFile").click();
