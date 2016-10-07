@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/static/**", "/css/**","/js/**", "/public/**").permitAll()
+                .antMatchers("/resources/**",  "/css/**","/js/**", "/public/**").permitAll()
                 .antMatchers("/private/**").authenticated()
                 .antMatchers("/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.getParamName())
                 .and()
