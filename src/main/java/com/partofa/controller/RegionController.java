@@ -33,4 +33,9 @@ public class RegionController {
         return regionService.createRegion(name);
     }
 
+    @RequestMapping(value = "admin/region/delete", method = RequestMethod.DELETE)
+    public RestMessageDTO deleteRegion(@RequestParam(value = "id") Long id){
+        return regionService.deleteRegion(id);
+    }
+
 }

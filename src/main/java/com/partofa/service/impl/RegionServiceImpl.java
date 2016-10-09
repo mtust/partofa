@@ -33,4 +33,11 @@ public class RegionServiceImpl implements RegionService {
         regionRepository.save(region);
         return new RestMessageDTO("Success", true);
     }
+
+
+    @Override
+    public RestMessageDTO deleteRegion(Long id){
+        regionRepository.delete(id);
+        return new RestMessageDTO("Success", true);
+    }
 }

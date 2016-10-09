@@ -48,7 +48,7 @@
 
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="#user" role="tab" data-toggle="tab">Користувачі</a></li>
-        <li role="presentation"><a href="#regions" role="tab" data-toggle="tab">Регіони</a></li>
+        <li role="presentation"><a href="#regions" id="regionTabButton" role="tab" data-toggle="tab">Регіони</a></li>
     </ul>
 
 
@@ -281,7 +281,7 @@
         });
     })(jQuery);
 
-    $("#roleTabToggle").click(function(){
+    $("#regionTabButton").click(function(){
         $("#regions").css("visibility", "visible");
     })
 
@@ -465,6 +465,23 @@
 
         })
     })
+
+
+    $("#deleteRegion").click(function(){
+        var id = getIdSelectionsRegion()[0];
+        $.ajax({
+            type : "delete",
+            url : "/admin/region/delete"  + '?' + $.param({"id": id}),
+            success: function(data) {
+                $('#regionTable').bootstrapTable('refresh');
+            },
+            error : function (data){
+                toastr["error"]("Неможливо видалати регіон\n" + data.responseJSON.message);
+            }
+        })
+
+
+    });
 
 
 </script>
