@@ -356,21 +356,6 @@
 
     $("#photoUpload").on("change", function(evt) {
         debugger
-        var url = $(this).val();
-        var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
-        if ((ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg"))
-        {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#img').attr('src', e.target.result);
-            }
-            reader.readAsDataURL($("#photoUpload").prop('files')[0]);
-        }
-        else
-        {
-            $('#img').attr('src', '/assets/no_preview.png');
-        }
         var $input = $("#photoUpload");
 
 
@@ -384,6 +369,16 @@
         var request = new XMLHttpRequest();
         request.open("POST", "/private/me/edit/photo");
         request.send(formData);
+
+        request.onload = function(oEvent) {
+            if (request.status == 200) {
+                $("#myPhoto").attr("src", "/get/photo");
+            } else {
+                oastr["error"]("Помилка загрузки фото: \n" + data.responseJSON.message);
+            }
+        };
+
+
 
 
     });

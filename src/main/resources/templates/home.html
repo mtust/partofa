@@ -48,6 +48,7 @@
             src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fileDownload/1.4.2/jquery.fileDownload.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js"></script>
     <style>
         #ui-datepicker-div {
             z-index: 10000 !important;
@@ -101,18 +102,15 @@
                 </button>
                 <button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
                 <input id="importDataInput" name="file" type="file" style="display: none"/>
-                <div>
-                    <button id="importData" class="btn btn-default">Імпортувати дані</button>
-                </div>
+                <button id="importData" style="margin-left: 3%;" class="btn btn-default">Імпорт з екселю</button>
+                <button id="importDataExample"  class="btn btn-default">Скачати приклад для імпорту</button>
+                <button id="exportData" class="btn btn-default">Експорт в ексель</button>
             </div>
             <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
-                   data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]" data-search="true"
-                   data-show-export="true" data-export-types="['excel', 'csv']"
-                   data-export-options='{
-            "fileName": "SubjectyGospodarjuvanya",
-            "ignoreColumn": []
-          }'
-                   data-pagination="true" data-url="/private/home/actualData">
+                   data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]"
+                   data-show-export="false"
+                   data-pagination="true" data-url="/private/home/actualData"
+                   data-search="true"    >
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
@@ -291,12 +289,12 @@
                             <input style="display: none" id="addFile" type="file" name="file"/>
                             <input style="display: none;"
                                    id="idAddDocument" name="id"/>
-                            <button type="submit" class="btn btn-success" id="addDocumentSave">Добавити</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="submit" form="addDocument" class="pull-left btn btn-success" id="addDocumentSave">Добавити</button>
                 <button type="button" class="btn btn-secondary"
                         data-dismiss="modal">Закрити
                 </button>
@@ -531,7 +529,6 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
 
 </body>
 <script>
@@ -983,9 +980,38 @@
         var request = new XMLHttpRequest();
         request.open("POST", "/private/home/import/file");
         request.send(formData);
-
-
     })
+
+
+    $.fn.tableExport.xlsx = {
+        defaultClass: "xlsx",
+        buttonContent: "Export to xlsx",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        fileExtension: ".xlsx"
+    };
+
+
+    $(function () {
+        var $table = $('#dataTable');
+        $('#exportData').click(function () {
+            $table.tableExport({
+                type: 'xlsx',
+                escape: false,
+                fileName: "subject",
+            });
+        });
+    });
+
+    $("#importDataExample").click(function(){
+        $.fileDownload('file:///C:/Users/tust/Downloads/приклад.xlsx');
+    })
+
+
+//    $('#dataTable').bootstrapTable({
+//        exportOptions: {
+//            fileName: 'subjecty'
+//        }
+//    });
 
 
 </script>

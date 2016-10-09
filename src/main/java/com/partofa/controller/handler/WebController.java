@@ -47,6 +47,7 @@ public class WebController extends WebMvcConfigurerAdapter {
                 "classpath:/static/css/");
         registry.addResourceHandler("js/**").addResourceLocations(
                 "classpath:/static/js/");
+        registry.addResourceHandler("file:///C:/Users/tust/Downloads/приклад.xlsx");
 //        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 
 
