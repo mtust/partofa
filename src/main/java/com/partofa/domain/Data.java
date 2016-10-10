@@ -58,7 +58,7 @@ public class Data {
     private String reactMeasure;
     @ManyToOne(cascade = CascadeType.ALL)
     private Region region;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval=true)
     private List<Document> documents;
 
 

@@ -227,6 +227,7 @@
 <!--data-target="documentsModal">DOCUMENTS</button>-->
 
 
+
 <div class="modal fade" tabindex="-1" id="documentsModal"
      role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -238,7 +239,7 @@
                 <button id="downloadDocument" onclick="" class="btn btn-default"
                         data-toggle="modal" disabled="disabled">Скачати
                 </button>
-                <button id="delDocument" onclick="" class="btn btn-default"
+                <button id="delDocumentSureOpen" onclick="" class="btn btn-default"
                         disabled="disabled">Видалити
                 </button>
             </div>
@@ -305,6 +306,32 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+
+
+<div class="modal fade" tabindex="-1" id="delDocumentSure"
+     role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Ви впевненні, що хочете видалити документ</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="pull-left btn btn-primary"
+                        id="delDocument">Так
+                </button>
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Ні
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <!-- ================================================================================ -->
 
@@ -724,7 +751,7 @@
             'check.bs.table uncheck.bs.table '
             + 'check-all.bs.table uncheck-all.bs.table',
             function () {
-                $("#delDocument")
+                $("#delDocumentSureOpen")
                         .prop(
                                 'disabled',
                                 !$('#documentsTable').bootstrapTable(
@@ -875,6 +902,13 @@
                 });
                 e.preventDefault();
             });
+
+
+    $("#delDocumentSureOpen").click(function() {
+        $("#delDocumentSure").modal('toggle');
+        $("#delDocumentSure").modal('show');
+    });
+
 
     $("#delDocument").click(function () {
         var ids = getIdDocumentSelections();
