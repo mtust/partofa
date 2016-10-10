@@ -374,7 +374,7 @@
             if (request.status == 200) {
                 $("#myPhoto").attr("src", "/get/photo");
             } else {
-                oastr["error"]("Помилка загрузки фото: \n" + data.responseJSON.message);
+                toastr["error"]("Помилка загрузки фото: \n" + data.responseJSON.message);
             }
         };
 

@@ -980,6 +980,14 @@
         var request = new XMLHttpRequest();
         request.open("POST", "/private/home/import/file");
         request.send(formData);
+        request.onload = function(oEvent) {
+            if (request.status == 200) {
+                $('#dataTable').bootstrapTable(
+                        'refresh');
+            } else {
+                toastr["error"]("Помилка загрузки документа: \n" + data.responseJSON.message);
+            }
+        };
     })
 
 
@@ -1003,7 +1011,7 @@
     });
 
     $("#importDataExample").click(function(){
-        $.fileDownload('file:///C:/Users/tust/Downloads/приклад.xlsx');
+        $.fileDownload('https://github.com/mtust/partofa/raw/master/src/main/resources/static/%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4.xlsx');
     })
 
 
