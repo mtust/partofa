@@ -184,7 +184,7 @@
                                     <span id="error" style="align-content: center; color: red"></span>
                                 </div>
                             </div>
-                            <form action="public/user/signup" method="post" id="register-form" role="form"
+                            <form action="/public/user/signup" method="post" id="register-form" role="form"
                                  style="display: none;">
                                 <div class="form-group">
                                     <input type="text" name="firstName" id="firstName" tabindex="1" class="form-control"
@@ -302,7 +302,7 @@
     });
 
     $('#register-form').on('submit', function(e) {
-        (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 800 )
+        (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 8000 )
 
     });
 

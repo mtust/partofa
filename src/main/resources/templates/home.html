@@ -49,6 +49,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fileDownload/1.4.2/jquery.fileDownload.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <style>
         #ui-datepicker-div {
             z-index: 10000 !important;
@@ -110,7 +111,9 @@
                    data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]"
                    data-show-export="false"
                    data-pagination="true" data-url="/private/home/actualData"
-                   data-search="true"    >
+                   data-search="true"
+                   data-filter-control="true"
+                   data-filter-show-clear="true">
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
@@ -119,31 +122,31 @@
                     <th data-sortable="true" data-field="subjectName">Найменування
                         суб'єкта господарювання
                     </th>
-                    <th data-sortable="true" data-field="region">Регіон суб'єкта</th>
+                    <th data-sortable="true" data-field="region" data-filter-control="select">Регіон суб'єкта</th>
                     <th data-sortable="true" data-field="addressWork">Адреса</th>
                     <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
                         або ІН
                     </th>
-                    <th data-sortable="true" data-field="gosWorkType">Вид
+                    <th data-sortable="true" data-field="gosWorkType" data-filter-control="input">Вид
                         господарської діяльності
                     </th>
-                    <th data-sortable="true" data-field="status">Ступінь ризику</th>
-                    <th data-sortable="true" data-field="startDate">Дата початку
+                    <th data-sortable="true" data-field="status" data-filter-control="select">Ступінь ризику</th>
+                    <th data-sortable="true" data-field="startDate" data-filter-control="input">Дата початку
                         проведення заходу
                     </th>
-                    <th data-sortable="true" data-field="deadlines">Строки
+                    <th data-sortable="true" data-field="deadlines" data-filter-control="select">Строки
                         проведення заходу
                     </th>
                     <th data-sortable="true" data-field="riscDesc">Підстава
                         призначення ризику
                     </th>
-                    <th data-sortable="true" data-field="checkResult">Результат
+                    <th data-sortable="true" data-field="checkResult" data-filter-control="input">Результат
                         перевірки
                     </th>
-                    <th data-sortable="true" data-field="reactMeasure">Вжити
+                    <th data-sortable="true" data-field="reactMeasure" data-filter-control="select">Вжити
                         заходів реагування
                     </th>
-                    <th data-sortable="true" data-field="controlName">Найменуваня
+                    <th data-sortable="true" data-field="controlName" data-filter-control="input">Найменуваня
                         органу держ. нагляду
                     </th>
                     <th data-sortable="true" data-field="addDate">Дата внесення
@@ -176,28 +179,28 @@
                     <th data-sortable="true" data-field="subjectName">Найменування
                         суб'єкта господарювання
                     </th>
-                    <th data-sortable="true" data-field="region">Регіон суб'єкта</th>
+                    <th data-sortable="true" data-field="region" data-filter-control="select">Регіон суб'єкта</th>
                     <th data-sortable="true" data-field="addressWork">Адреса</th>
                     <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
                         або ІН
                     </th>
-                    <th data-sortable="true" data-field="gosWorkType">Вид
+                    <th data-sortable="true" data-field="gosWorkType" data-filter-control="input">Вид
                         господарської діяльності
                     </th>
-                    <th data-sortable="true" data-field="status">Ступінь ризику</th>
-                    <th data-sortable="true" data-field="startDate">Дата початку
+                    <th data-sortable="true" data-field="status" data-filter-control="select">Ступінь ризику</th>
+                    <th data-sortable="true" data-field="startDate" data-filter-control="input">Дата початку
                         проведення заходу
                     </th>
-                    <th data-sortable="true" data-field="deadlines">Строки
+                    <th data-sortable="true" data-field="deadlines" data-filter-control="select">Строки
                         проведення заходу
                     </th>
                     <th data-sortable="true" data-field="riscDesc">Підстава
                         призначення ризику
                     </th>
-                    <th data-sortable="true" data-field="checkResult">Результат
+                    <th data-sortable="true" data-field="checkResult" data-filter-control="input">Результат
                         перевірки
                     </th>
-                    <th data-sortable="true" data-field="reactMeasure">Вжити
+                    <th data-sortable="true" data-field="reactMeasure" data-filter-control="select">Вжити
                         заходів реагування
                     </th>
                     <th data-sortable="true" data-field="controlName">Найменуваня
@@ -1030,6 +1033,13 @@
         buttonContent: "Export to xlsx",
         mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         fileExtension: ".xlsx"
+    };
+
+    $.fn.tableExport.ods = {
+        defaultClass: "ods",
+        buttonContent: "Export to ods",
+        mimeType: "application/vnd.oasis.opendocument.spreadsheet",
+        fileExtension: ".ods"
     };
 
 

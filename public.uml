@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>dbc59812-f223-45cd-8944-79e010c14efd.SCHEMA:pertofa.public</OriginalElement>
+  <nodes>
+    <node x="252.5" y="0.0">dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.region</node>
+    <node x="359.125" y="125.0">dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data</node>
+    <node x="191.125" y="301.0">dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.partofa_file</node>
+    <node x="365.125" y="701.5">dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data_documents</node>
+    <node x="0.0" y="624.0">dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.partofa_user</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data_documents" target="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.partofa_file">
+      <point x="-41.25" y="-37.0" />
+      <point x="406.375" y="599.0" />
+      <point x="302.125" y="599.0" />
+      <point x="37.0" y="48.5" />
+    </edge>
+    <edge source="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.partofa_user" target="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.region">
+      <point x="-67.0" y="-114.5" />
+      <point x="67.0" y="599.0" />
+      <point x="110.25" y="599.0" />
+      <point x="110.25" y="100.0" />
+      <point x="284.5" y="100.0" />
+      <point x="-32.0" y="37.5" />
+    </edge>
+    <edge source="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data" target="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.region">
+      <point x="0.0" y="-224.5" />
+      <point x="593.125" y="100.0" />
+      <point x="348.5" y="100.0" />
+      <point x="32.0" y="37.5" />
+    </edge>
+    <edge source="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.partofa_user" target="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.partofa_file">
+      <point x="67.0" y="-114.5" />
+      <point x="201.0" y="599.0" />
+      <point x="228.125" y="599.0" />
+      <point x="-37.0" y="48.5" />
+    </edge>
+    <edge source="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data_documents" target="dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data">
+      <point x="41.25" y="-37.0" />
+      <point x="488.875" y="599.0" />
+      <point x="593.125" y="599.0" />
+      <point x="0.0" y="224.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5922107674684994" x="414.7978723404255" y="606.5" />
+  <SelectedNodes>
+    <node>dbc59812-f223-45cd-8944-79e010c14efd.TABLE:pertofa.public.data</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+
