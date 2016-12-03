@@ -87,6 +87,9 @@
                 <button id="addRegion" onclick="" class="btn btn-primary" data-toggle="modal"
                         data-target="#addRegionModal">Додати регіон
                 </button>
+                <button id="editRegion" onclick="" disabled="disabled" class="btn btn-primary" data-toggle="modal"
+                        data-target="#editRegionModal">Редагувати регіон
+                </button>
                 <button id="deleteRegion" onclick="" class="btn btn-default" disabled="disabled">Видалити регіон
                 </button>
             </div>
@@ -127,6 +130,33 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
                 <button type="button" id="addRegionSave" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editRegionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Додавання регіону</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="editRegionForm">
+                    <div class="form-group">
+                        <label for="editRegionName">Назва регіону</label>
+                        <input type="text" class="form-control" id="editRegionName" placeholder="Назва регіону"
+                               required="required"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" id="editRegionSave" class="btn btn-primary">Зберегти</button>
             </div>
         </div>
     </div>
@@ -370,6 +400,7 @@
     $('#regionTable').on('check.bs.table uncheck.bs.table ' +
             'check-all.bs.table uncheck-all.bs.table', function () {
         $("#deleteRegion").prop('disabled', !$('#regionTable').bootstrapTable('getSelections').length);
+        $("#editRegion").prop('disabled', !$('#regionTable').bootstrapTable('getSelections').length);
         // save your data, here just save the current page
         selections = getIdSelectionsRegion();
         // push or splice the selections if you want to save all data selections
@@ -391,6 +422,11 @@
         } catch (e) {
             console.log(e);
         }
+    })
+
+    $("#editRegion").click(function () {
+        var selectedRow = $('#regionTable').bootstrapTable('getSelections')[0]
+        $("#editRegionName").val(selectedRow.name)
     })
 
     $("#editUserSave").click(function (e) {
@@ -432,10 +468,30 @@
             success : function(data){
                 toastr["success"]("регіон успішно додано");
                 $('#regionTable').bootstrapTable('refresh');
-                $("#addRegionModal").modal('hide')
+                $("#addRegionModal").modal('hide');
+                $("#inputRegionName").val("")
             },
             error : function (error) {
                 toastr["error"]("Неможливо додати регіон");
+                $("#inputRegionName").val("")
+            }
+        })
+    })
+
+    $("#editRegionSave").click(function (e) {
+        $("#editRegionModal").modal('hide')
+        $.ajax({
+            type: "post",
+            url: "/admin/region/edit",
+            data : {
+                id : getIdSelectionsRegion()[0],
+                name : $("#editRegionName").val()
+            },
+            success: function(data) {
+                $('#regionTable').bootstrapTable('refresh');
+            },
+            error : function (data){
+                toastr["error"]("Неможливо редагувати регіон\n" + data.responseJSON.message);
             }
         })
     })

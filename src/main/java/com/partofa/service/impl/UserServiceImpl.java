@@ -169,7 +169,6 @@ public class UserServiceImpl implements UserService {
         if (!userEditDTO.getRegion().equals("all")) {
             region = regionRepository.findOne(Long.parseLong(userEditDTO.getRegion()));
         }
-        log.info(region.toString());
         User user = userRepository.findOne(userEditDTO.getId());
         log.info("user:" + user);
         log.info("userDTO" + userEditDTO);

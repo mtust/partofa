@@ -40,4 +40,12 @@ public class RegionServiceImpl implements RegionService {
         regionRepository.delete(id);
         return new RestMessageDTO("Success", true);
     }
+
+    @Override
+    public RestMessageDTO editRegion(Long id, String name) {
+        Region region = regionRepository.findOne(id);
+        region.setName(name);
+        regionRepository.save(region);
+        return new RestMessageDTO("Success", true);
+    }
 }

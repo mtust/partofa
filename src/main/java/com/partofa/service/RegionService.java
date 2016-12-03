@@ -18,4 +18,5 @@ public interface RegionService {
 
     RestMessageDTO deleteRegion(Long id);
 
+    RestMessageDTO editRegion(Long id, String name);
 }

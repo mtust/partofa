@@ -38,4 +38,9 @@ public class RegionController {
         return regionService.deleteRegion(id);
     }
 
+    @RequestMapping(value = "admin/region/edit", method = RequestMethod.POST)
+    public RestMessageDTO editRegion(@RequestParam(value ="id") Long id, @RequestParam(value = "name") String name){
+        return regionService.editRegion(id, name);
+    }
+
 }
