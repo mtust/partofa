@@ -43,4 +43,7 @@ public interface UserService {
     RestMessageDTO changePhoto(MultipartFile photo) throws IOException;
 
     byte[] getUserPhoto() throws SQLException, IOException;
+
+    RestMessageDTO sendEmailWithPassword(String email);
+
 }

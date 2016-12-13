@@ -19,6 +19,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.LobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +35,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by tust on 09.09.2016.
@@ -50,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     DocumentRepository documentRepository;
+
+    @Autowired
+    private JavaMailSender javaMailService;
 
 
     @Transactional
@@ -252,4 +258,21 @@ public class UserServiceImpl implements UserService {
         InputStream is = user.getPhoto().getFile().getBinaryStream();
         return IOUtils.toByteArray(is);
     }
+
+    @Override
+    public RestMessageDTO sendEmailWithPassword(String email) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        User user = userRepository.findByEmail(email);
+        mailMessage.setTo(email);
+        mailMessage.setSubject("Відновлення паролю");
+        String password = UUID.randomUUID().toString();
+        password = password.substring(0, 6);
+        mailMessage.setText("Ваш новий пароль: " + password);
+        javaMailService.send(mailMessage);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        return new RestMessageDTO("Success", true);
+    }
+
 }

@@ -183,6 +183,9 @@
                                 <div>
                                     <span id="error" style="align-content: center; color: red"></span>
                                 </div>
+                                <div>
+                                    <a style="cursor: default;" id="restorePassword">Відновити пароль</a>
+                                </div>
                             </div>
                             <form action="/public/user/signup" method="post" id="register-form" role="form"
                                  style="display: none;">
@@ -305,6 +308,23 @@
         (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 8000 )
 
     });
+
+    $('#restorePassword').click(function (e) {
+        (toastr["success"]("Вам на пошту надсилається новий пароль!"));
+        $.ajax({
+            type: 'post',
+            url: '/public/password/restore',
+            data : {
+                "email": $("#username").val()
+            },
+            success: function () {
+                (toastr["success"]("Вам на пошту надіслано новий пароль!")).delay(8000);
+            },
+            error: function () {
+                toastr["error"]("Помилка відправлення паролю. Перевірте правильність введеної пошти!");
+            }
+        })
+    })
 
 </script>
 </html>

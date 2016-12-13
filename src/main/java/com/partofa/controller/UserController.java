@@ -33,10 +33,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
-
-
-
     @RequestMapping(value = "admin/users", method = RequestMethod.GET)
     public List<UserDTO> getUsers() {
         return userService.getAllUsers();
@@ -123,6 +119,12 @@ public class UserController {
     @ResponseBody
     public byte[] getPhoto() throws IOException, SQLException {
         return userService.getUserPhoto();
+    }
+
+    @RequestMapping(value = "public/password/restore", method = RequestMethod.POST)
+    @ResponseBody
+    public RestMessageDTO restorePassword(@RequestParam(value = "email") String email){
+        return userService.sendEmailWithPassword(email);
     }
 
 
