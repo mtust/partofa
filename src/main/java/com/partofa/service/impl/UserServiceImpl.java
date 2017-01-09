@@ -83,13 +83,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public RestMessageDTO signUp(UserRegistrationDTO userRegistrationDTO) {
+    public RestMessageDTO signUp(UserRegistrationDTO userRegistrationDTO) throws ObjectAlreadyExistException{
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (UserUtil.isNotFilledFieldsExist(userRegistrationDTO)) {
-            throw new RuntimeException("Неможливо створити користувача, заповність всі поля");
+            throw new ObjectAlreadyExistException("Неможливо створити користувача, заповність всі поля");
         }
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirm())) {
-            throw new RuntimeException("Неможливо створити користувача, паролі не співпадають");
+            throw new ObjectAlreadyExistException("Неможливо створити користувача, паролі не співпадають");
         }
         User existingUser = userRepository.findByEmail(userRegistrationDTO.getEmail());
         if (existingUser != null) {
@@ -171,6 +171,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestMessageDTO editUser(UserEditDTO userEditDTO) {
+
         Region region = null;
         if (!userEditDTO.getRegion().equals("all")) {
             region = regionRepository.findOne(Long.parseLong(userEditDTO.getRegion()));
@@ -184,6 +185,11 @@ public class UserServiceImpl implements UserService {
         user.setIsEnabled(userEditDTO.getIsEnabled());
         user.setFirstName(userEditDTO.getFirstName());
         user.setRegion(region);
+        if(!userEditDTO.getPassword().equals("")) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(userEditDTO.getPassword());
+            user.setPassword(hashedPassword);
+        }
         log.info(user.toString());
         userRepository.save(user);
 

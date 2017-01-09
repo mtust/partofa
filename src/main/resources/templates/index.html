@@ -282,6 +282,8 @@
 //            }
 //        })
 //    })
+
+
     $("#login-submit").click(function(e){
         var dataPost = $("#login-form")
         $.ajax({
@@ -306,7 +308,6 @@
 
     $('#register-form').on('submit', function(e) {
         (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 8000 )
-
     });
 
     $('#restorePassword').click(function (e) {

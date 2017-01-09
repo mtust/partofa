@@ -260,6 +260,10 @@
                             <option value="false">Заблокований</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="editUserPassword">Новий пароль (якщо бажаєте змінити):</label>
+                            <input class="form-control" value="" id="editUserPassword"></input>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -270,6 +274,20 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div class="modal fade" id="deleteUserApr" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                Ви дійсно бажаєте видалити користувача?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="deleteUserYesNo">Так</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Ні</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 <script>
@@ -346,11 +364,13 @@
             return row.id
         });
     }
-
-
     $("#deleteUser").click(function () {
-        var ids = getIdSelections();
+        $("#deleteUserApr").modal('show');
+    });
 
+    $("#deleteUserYesNo").click(function () {
+        var ids = getIdSelections();
+        $("#deleteUserApr").modal('hide');
         $.ajax({
             type: "delete",
             url: "/delete/user" + '?' + $.param({"id": ids[0]}),
@@ -441,7 +461,8 @@
                 lastName: $("#editLastName").val(),
                 role: $("#editRole").val(),
                 isEnabled: $("#editIsEnabled").val(),
-                region : $("#editUserRegion").val()
+                region : $("#editUserRegion").val(),
+                password : $("#editUserPassword").val()
             },
             success: function () {
                 $("#editUserModal").modal('hide')

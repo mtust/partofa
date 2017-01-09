@@ -2,6 +2,7 @@ package com.partofa.controller;
 
 import com.partofa.domain.User;
 import com.partofa.dto.*;
+import com.partofa.exception.ObjectAlreadyExistException;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,13 @@ public class UserController {
     @RequestMapping(name = "public/user/signup", method = RequestMethod.POST)
     public ModelAndView createUser(UserRegistrationDTO userRegistrationDTO){
         log.info(userRegistrationDTO.toString());
-        userService.signUp(userRegistrationDTO);
+        try{
+            userService.signUp(userRegistrationDTO);
+
+        } catch (ObjectAlreadyExistException e){
+            throw new RuntimeException(e.getMessage());
+//            return new ModelAndView("redirect:index").addObject("customMessage", e.getMessage());
+        }
         return new ModelAndView("redirect:index");
     }
 

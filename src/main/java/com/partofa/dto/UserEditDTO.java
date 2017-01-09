@@ -15,4 +15,5 @@ public class UserEditDTO {
     private String role;
     private Boolean isEnabled;
     private String region;
+    private String password;
 }

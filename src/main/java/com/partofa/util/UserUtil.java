@@ -16,4 +16,5 @@ public class UserUtil {
                 Strings.isNullOrEmpty(registrationDTO.getEmail());
     }
 
+
 }
