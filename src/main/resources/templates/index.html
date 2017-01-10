@@ -264,28 +264,6 @@
     });
 
 
-
-//    $("#register-submit").click(function () {
-//        $.ajax({
-//            type : 'post',
-//            url: "/public/user/signup",
-//            data : {
-//                firstName : $("#firstName").val(),
-//                lastName : $("#lastName").val(),
-//                email : $("#email").val(),
-//                password : $("#password").val(),
-//                passwordConfirm : $("#passwordConfirm").val()
-//            }
-//            success : function (data) {
-//                toastr[success]("Ви зареєстрованні")
-//            },
-//            error : function () {
-//                toastr[error]("Помилка")
-//            }
-//        })
-//    })
-
-
     $('#register-form').on('submit', function(e){
         e.preventDefault();
          $.ajax({
@@ -323,10 +301,6 @@
             }
         });
     });
-
- //   $('#register-form').on('submit', function(e) {
-//        (toastr["success"]("Ви зареєструвались. Очікуйте підтвердження від адміністратора")).delay( 8000 )
-//    });
 
     $('#restorePassword').click(function (e) {
         (toastr["success"]("Вам на пошту надсилається новий пароль!"));
