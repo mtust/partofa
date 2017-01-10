@@ -83,17 +83,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public RestMessageDTO signUp(UserRegistrationDTO userRegistrationDTO) throws ObjectAlreadyExistException{
+    public RestMessageDTO signUp(UserRegistrationDTO userRegistrationDTO){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (UserUtil.isNotFilledFieldsExist(userRegistrationDTO)) {
-            throw new ObjectAlreadyExistException("Неможливо створити користувача, заповність всі поля");
+            throw new RuntimeException("Неможливо створити користувача, заповність всі поля");
         }
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirm())) {
-            throw new ObjectAlreadyExistException("Неможливо створити користувача, паролі не співпадають");
+            throw new RuntimeException("Неможливо створити користувача, паролі не співпадають");
         }
         User existingUser = userRepository.findByEmail(userRegistrationDTO.getEmail());
         if (existingUser != null) {
-            throw new ObjectAlreadyExistException("Такий користувач вже існує");
+            throw new RuntimeException("Користувач з такою електронною адресою вже існує");
         }
         String hashedPassword = passwordEncoder.encode(userRegistrationDTO.getPassword());
         User user = new User();

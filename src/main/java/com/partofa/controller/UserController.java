@@ -58,16 +58,11 @@ public class UserController {
 //    }
 
     @RequestMapping(name = "public/user/signup", method = RequestMethod.POST)
-    public ModelAndView createUser(UserRegistrationDTO userRegistrationDTO){
+    public void createUser(UserRegistrationDTO userRegistrationDTO){
         log.info(userRegistrationDTO.toString());
-        try{
-            userService.signUp(userRegistrationDTO);
+        userService.signUp(userRegistrationDTO);
 
-        } catch (ObjectAlreadyExistException e){
-            throw new RuntimeException(e.getMessage());
-//            return new ModelAndView("redirect:index").addObject("customMessage", e.getMessage());
-        }
-        return new ModelAndView("redirect:index");
+        return;
     }
 
 
