@@ -281,4 +281,10 @@ public class UserServiceImpl implements UserService {
         return new RestMessageDTO("Success", true);
     }
 
+    @Override
+    public RestMessageDTO blockUser(Long userId) {
+        User user = userRepository.findOne(userId);
+        user.setIsEnabled(false);
+        return new RestMessageDTO("Success", true);
+    }
 }

@@ -46,4 +46,5 @@ public interface UserService {
 
     RestMessageDTO sendEmailWithPassword(String email);
 
+    RestMessageDTO blockUser(Long userId);
 }

@@ -284,6 +284,21 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="deleteUserYesNo">Так</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" >Ні</button>
+                <button type="button" class="btn btn-secondary" id="blockUser">Заблокувати</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteRegionApr" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                Ви дійсно бажаєте видалити регіон?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="deleteRegionYesNo">Так</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Ні</button>
             </div>
         </div>
     </div>
@@ -332,6 +347,21 @@
     $("#regionTabButton").click(function(){
         $("#regions").css("visibility", "visible");
     })
+
+    $("#blockUser").click(function(){
+       var ids = getIdSelections();
+        $("#deleteUserApr").modal('hide');
+         $.ajax({
+            type: "post",
+            url: "/block/user" + '?' + $.param({"id": ids[0]}),
+            success: function () {
+                toastr["success"]("Користувача успішно заблоковано");
+            },
+            error: function () {
+                toastr["error"]("Неиожливо заблокувати цього користувача");
+            }
+        })
+    });
 
 
     toastr.options = {
@@ -544,8 +574,15 @@
     })
 
 
+
+
     $("#deleteRegion").click(function(){
+        $("#deleteRegionApr").modal('show');
+     });
+
+     $("#deleteRegionYesNo").click(function(){
         var id = getIdSelectionsRegion()[0];
+        $("#deleteRegionApr").modal('hide');
         $.ajax({
             type : "delete",
             url : "/admin/region/delete"  + '?' + $.param({"id": id}),
@@ -556,8 +593,6 @@
                 toastr["error"]("Неможливо видалати регіон\n" + data.responseJSON.message);
             }
         })
-
-
     });
 
 

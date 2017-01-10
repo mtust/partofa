@@ -96,6 +96,11 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
+    @RequestMapping(value = "block/user", method = RequestMethod.POST)
+    public RestMessageDTO blockUser(@RequestParam(value = "id") Long userId){
+        return userService.blockUser(userId);
+    }
+
     @RequestMapping(value = {"admin/page/private/user/is-authenticated", "private/user/is-authenticated"}, method = RequestMethod.GET)
     public UserDTO isUserAuthenticated() {
         return userService.getLoginUserDTO();
