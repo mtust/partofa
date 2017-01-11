@@ -47,6 +47,8 @@ public class DataDTO {
         } else {
             delDate = null;
         }
+        reactMeasure = data.getReactMeasure();
+        status = data.getStatus();
         comment = data.getComment();
         keyColumnRev = data.getKeyColumnRev();
         region = data.getRegion() == null ? "Усі регіони" : data.getRegion().getName();

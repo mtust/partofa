@@ -42,7 +42,7 @@ public class HomeController {
 	@RequestMapping(value = { "private/page/private/edit", "private/edit" }, method = RequestMethod.POST)
 	public RestMessageDTO editData(EditDataDTO editDataDTO) {
 		log.info("edit put:");
-		// log.info("createDataDTO" + createDataDTO.toString());
+		 log.info("createDataDTO" + editDataDTO.toString());
 		// log.info("id: " + id);
 		log.info(editDataDTO.toString());
 		return dataService.editData(editDataDTO);

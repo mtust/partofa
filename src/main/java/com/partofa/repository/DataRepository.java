@@ -26,5 +26,7 @@ public interface DataRepository extends JpaRepository<Data, Long> {
 
     List<Data> findByDelDateIsNotNullAndRegion(Region region);
 
+    List<Data> findByRegionId(Long regionId);
+
 
 }

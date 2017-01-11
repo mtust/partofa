@@ -1,8 +1,11 @@
 package com.partofa.service.impl;
 
 import com.partofa.domain.Region;
+import com.partofa.domain.User;
 import com.partofa.dto.RestMessageDTO;
+import com.partofa.repository.DataRepository;
 import com.partofa.repository.RegionRepository;
+import com.partofa.repository.UserRepository;
 import com.partofa.service.RegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,12 @@ public class RegionServiceImpl implements RegionService {
 
     @Autowired
     RegionRepository regionRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    DataRepository dataRepository;
 
     @Override
     public List<Region> getAllRegions() {
@@ -37,6 +46,14 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public RestMessageDTO deleteRegion(Long id){
+        userRepository.findByRegionId(id).stream().forEach(user -> {
+            user.setRegion(null);
+            userRepository.save(user);
+        });
+        dataRepository.findByRegionId(id).stream().forEach(data -> {
+            data.setRegion(null);
+            dataRepository.save(data);
+        });
         regionRepository.delete(id);
         return new RestMessageDTO("Success", true);
     }

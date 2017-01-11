@@ -463,12 +463,23 @@
         $("#editFirstName").val(selectedRow.firstName)
         $("#editLastName").val(selectedRow.lastName)
         try {
-            $("#editRole option[text=" + selectedRow.role + "]").attr('selected', 'selected');
+            $("#editRole option").filter(function() {
+                return this.text == selectedRow.role;
+            }).attr('selected', true);
         } catch (e) {
             console.log(e);
         }
         try {
-            $("#editIsEnabled option[text=" + selectedRow.status + "]").attr('selected', 'selected');
+            $("#editIsEnabled option").filter(function() {
+                return this.text == selectedRow.status;
+            }).attr('selected', true);
+        } catch (e) {
+            console.log(e);
+        }
+        try {
+            $("#editUserRegion option").filter(function() {
+                return this.text == selectedRow.region;
+            }).attr('selected', true);
         } catch (e) {
             console.log(e);
         }
@@ -590,7 +601,7 @@
                 $('#regionTable').bootstrapTable('refresh');
             },
             error : function (data){
-                toastr["error"]("Неможливо видалати регіон\n" + data.responseJSON.message);
+                toastr["error"]("Неможливо видалати регіон");
             }
         })
     });

@@ -534,7 +534,7 @@
                     <div class="form-group">
                         <label for="editZaxid">Вжити заходів реагування</label> <select
                             class="form-control" id="editZaxid" name="addZaxid"
-                            form="createData">
+                            form="editDataForm">
                         <option value="суд">суд</option>
                         <option value="штраф">штраф</option>
                     </select>
@@ -682,6 +682,7 @@
                         $('#editDataForm')
                                 .append(
                                         '<input type="hidden" name="id" value="' + ids[0] + '"/> ');
+
                         $
                                 .ajax({
                                     type: 'post',
@@ -838,30 +839,39 @@
                 $("#editIpn").val(selectedRow.ipnPassport);
                 $("#editTypeD").val(selectedRow.gosWorkType);
                 try {
-                    $("#editRisk option[text=" + selectedRow.status + "]")
-                            .attr('selected', 'selected');
+                    $("#editRisk option").filter(function() {
+                        return this.text == selectedRow.status;
+                    }).attr('selected', true);
+                } catch (e) {
+                    console.log(e);
+                }
+                   try {
+                    $("#editZaxid option").filter(function() {
+                        return this.text == selectedRow.reactMeasure;
+                    }).attr('selected', true);
                 } catch (e) {
                     console.log(e);
                 }
                 $("#editStartDateP").val(selectedRow.startDate);
                 try {
-                    $("#editTerm option[text=" + selectedRow.deadlines + "]")
-                            .attr('selected', 'selected');
+                     $("#editTerm option").filter(function() {
+                        return this.text == selectedRow.deadlines;
+                    }).attr('selected', true);
+
                 } catch (e) {
                     console.log(e);
                 }
                 try {
-                    $(
-                            "#editUserRegion option[text="
-                            + selectedRow.deadlines + "]").attr(
-                            'selected', 'selected');
+                 $("#editUserRegion option").filter(function() {
+                        return this.text == selectedRow.region;
+                    }).attr('selected', true);
                 } catch (e) {
                     console.log(e);
                 }
                 $("#editControll").val(selectedRow.controlName);
                 $("#editRskReason").val(selectedRow.riscDesc);
                 $("#editResults").val(selectedRow.checkResult);
-                $("#editZaxid").val(selectedRow.reactMeasure);
+                //$("#editZaxid").val(selectedRow.reactMeasure);
                 $("#editComent").val(selectedRow.comment);
 
             });

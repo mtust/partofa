@@ -82,6 +82,7 @@ public class DataServiceImpl implements DataService {
 	@Transactional
 	@Override
 	public RestMessageDTO editData(EditDataDTO editDataDTO) {
+    	log.info("editDataDTO: " + editDataDTO);
 		log.info(editDataDTO.toString());
 		Data data = dataRepository.findOne(editDataDTO.getId());
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -107,7 +108,8 @@ public class DataServiceImpl implements DataService {
 		data.setRegion(region);
 		data.setSubjectName(editDataDTO.getAddSubjectName());
 		data.setUpdDate(new Date());
-		log.info(data.toString());
+		data.setStatus(editDataDTO.getAddRisk());
+		log.info("data:"  + data.toString());
 		dataRepository.save(data);
 		return new RestMessageDTO("Success", true);
 	}
@@ -129,8 +131,12 @@ public class DataServiceImpl implements DataService {
     public RestMessageDTO createData(CreateDataDTO createDataDTO) throws BadRequestParametersException {
         try {
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			if(createDataDTO.getAddZaxid().contains(",")){
+				createDataDTO.setAddZaxid(createDataDTO.getAddZaxid().substring(createDataDTO.getAddZaxid().indexOf("," + 1)));
+			}
             log.info(createDataDTO.toString());
             Data data = new Data();
+            data.setStatus(createDataDTO.getAddRisk());
             data.setAddressWork(createDataDTO.getAddAdress());
             data.setCheckResult(createDataDTO.getAddResults());
             data.setComment(createDataDTO.getAddComent());
