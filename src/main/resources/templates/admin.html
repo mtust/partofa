@@ -65,7 +65,7 @@
                 </button>
             </div>
             <table id="userTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
-                   data-search="true"
+                   data-search="true" data-sort-name="firstName"
                    data-locale="uk-UA" data-pagination="true" data-url="/admin/users">
                 <thead>
                 <tr>
@@ -93,7 +93,7 @@
                 <button id="deleteRegion" onclick="" class="btn btn-default" disabled="disabled">Видалити регіон
                 </button>
             </div>
-            <table id="regionTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar2"
+            <table id="regionTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar2" data-sort-name="name"
                    data-locale="uk-UA" data-pagination="true" data-url="/regions">
                 <thead>
                 <tr>
@@ -268,7 +268,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                <button type="button" id="editUserSave" class="btn btn-primary">Редагувати</button>
+                <button type="button" id="editUserSave" class="btn btn-primary">Зберегти</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -401,6 +401,8 @@
     $("#deleteUserYesNo").click(function () {
         var ids = getIdSelections();
         $("#deleteUserApr").modal('hide');
+        $("#deleteUser").prop('disabled', true);
+        $("#editUser").prop('disabled', true);
         $.ajax({
             type: "delete",
             url: "/delete/user" + '?' + $.param({"id": ids[0]}),
@@ -410,7 +412,6 @@
                     field: 'id',
                     values: ids
                 });
-                $("#deleteUser").prop('disabled', true);
             },
             error: function () {
                 toastr["error"]("Неиожливо видалити цього користувача");
@@ -492,6 +493,8 @@
 
     $("#editUserSave").click(function (e) {
         var ids = getIdSelections();
+        $("#deleteUser").prop('disabled', true);
+        $("#editUser").prop('disabled', true);
         $.ajax({
             type: "post",
             url: "/admin/edit/user",
@@ -560,6 +563,11 @@
 
 
     $("#addUserSave").click(function (e) {
+        if($("#exampleInputPassword1").val() == ""){
+            toastr["error"]("Введіть пароль для користувача");
+        } else if($("#exampleInputPassword1").val() != $("#confirmPassword1").val()){
+            toastr["error"]("Пароль та підтвердження пароля не співпадають");
+        } else {
         $.ajax({
             type: "post",
             url: "/admin/create/user",
@@ -582,6 +590,7 @@
 
 
         })
+        }
     })
 
 

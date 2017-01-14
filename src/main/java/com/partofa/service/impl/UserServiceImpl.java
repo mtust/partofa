@@ -117,6 +117,7 @@ public class UserServiceImpl implements UserService {
                 new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRegion() == null ? "Усі регіони" : user.getRegion().getName(),
                         user.getRole() == Role.ROLE_USER ? "Оператор" : "Адміністратор",
                         user.getIsEnabled() == true ? "Активний" : "Заблокований")));
+
         return userDTOs;
     }
 
