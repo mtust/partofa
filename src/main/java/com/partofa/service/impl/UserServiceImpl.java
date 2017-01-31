@@ -10,6 +10,7 @@ import com.partofa.repository.DocumentRepository;
 import com.partofa.repository.RegionRepository;
 import com.partofa.repository.UserRepository;
 import com.partofa.security.SecurityUtils;
+import com.partofa.service.RegionService;
 import com.partofa.service.UserService;
 import com.partofa.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JavaMailSender javaMailService;
+
+    @Autowired
+    private RegionService regionService;
 
 
     @Transactional
@@ -287,5 +291,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findOne(userId);
         user.setIsEnabled(false);
         return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public List<Region> getUserRegions() {
+        User user = this.getCurrentUser();
+        Region region = user.getRegion();
+        List<Region> regions = new ArrayList<>();
+        if(region != null){
+            regions.add(region);
+        } else {
+            regions = regionService.getAllRegions();
+        }
+        return regions;
     }
 }

@@ -585,7 +585,7 @@
     (function ($) {
         $.ajax({
             type: 'get',
-            url: 'regions',
+            url: '/private/user/regions',
             success: function (e) {
                 regions = e;
                 console.log("regions: ");
@@ -600,18 +600,20 @@
                         text: item.name
                     }, '</option>'));
                 })
-                $('#addRegion').append($('<option>', {
-                    value: "all",
-                    text: "Усі регіони"
-                }, '</option>'));
-                $('#editUserRegion').append($('<option>', {
-                    value: "all",
-                    text: "Усі регіони"
-                }, '</option>'));
+//                $('#addUserRegion').append($('<option>', {
+//                    value: "all",
+//                    text: "Усі регіони"
+//                }, '</option>'));
+//                $('#editUserRegion').append($('<option>', {
+//                    value: "all",
+//                    text: "Усі регіони"
+//                }, '</option>'));
 
             }
         });
     })(jQuery);
+
+
 
     //    $('#myTabs a').click(function (e) {
     //        e.preventDefault()

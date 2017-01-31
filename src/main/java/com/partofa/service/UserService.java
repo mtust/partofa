@@ -1,5 +1,6 @@
 package com.partofa.service;
 
+import com.partofa.domain.Region;
 import com.partofa.domain.User;
 import com.partofa.dto.*;
 import org.springframework.stereotype.Service;
@@ -47,4 +48,6 @@ public interface UserService {
     RestMessageDTO sendEmailWithPassword(String email);
 
     RestMessageDTO blockUser(Long userId);
+
+    List<Region> getUserRegions();
 }

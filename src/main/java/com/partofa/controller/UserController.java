@@ -1,5 +1,6 @@
 package com.partofa.controller;
 
+import com.partofa.domain.Region;
 import com.partofa.domain.User;
 import com.partofa.dto.*;
 import com.partofa.exception.ObjectAlreadyExistException;
@@ -132,6 +133,12 @@ public class UserController {
     @ResponseBody
     public RestMessageDTO restorePassword(@RequestParam(value = "email") String email){
         return userService.sendEmailWithPassword(email);
+    }
+
+    @RequestMapping(value = "private/user/regions", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Region> getUserRegions(){
+        return userService.getUserRegions();
     }
 
 
