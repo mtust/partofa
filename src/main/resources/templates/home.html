@@ -429,7 +429,7 @@
                     </select>
                     </div>
                     <div>
-                        <label for="addComent">Коментар</label> <input type=""
+                        <label for="addComent">Коментар</label> <textarea type=""
                                                                        class="form-control" id="addComent"
                                                                        name="addComent"
                                                                        placeholder="Коментар"/>
@@ -540,7 +540,7 @@
                     </select>
                     </div>
                     <div>
-                        <label for="editComent">Коментар</label> <input type=""
+                        <label for="editComent">Коментар</label> <textarea type=""
                                                                         class="form-control" id="editComent"
                                                                         name="addComent"
                                                                         placeholder="Коментар"/>
@@ -667,6 +667,7 @@
                                         $("#dataAddModal").modal('hide');
                                         $('#dataTable').bootstrapTable(
                                                 'refresh');
+                                        $("#createData").cleanData();
                                     },
                                     error: function (data) {
                                         toastr["error"]
