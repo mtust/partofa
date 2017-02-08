@@ -50,7 +50,7 @@ public class Data {
     private Date updDate;
     @Column(name = "del_date")
     private Date delDate;
-    @Column(name = "commentary")
+    @Column(name = "commentary", length=10485760)
     private String comment;
     @Column(name = "key_column_rev")
     private BigDecimal keyColumnRev;

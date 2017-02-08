@@ -667,7 +667,7 @@
                                         $("#dataAddModal").modal('hide');
                                         $('#dataTable').bootstrapTable(
                                                 'refresh');
-                                        $("#createData").reset();
+                                        $("#createData")[0].reset();
                                     },
                                     error: function (data) {
                                         toastr["error"]
