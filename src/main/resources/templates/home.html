@@ -568,6 +568,10 @@
         $('#startDateP').datepicker();
     });
 
+    $(function () {
+        $('#editStartDateP').datepicker();
+    });
+
 
     function saveByteArray(reportName, byte) {
         var blob = new Blob([byte]);
@@ -657,6 +661,11 @@
             .on(
                     'click',
                     function () {
+                        if($("#addSubjectName").val() == ""){
+                            toastr["error"]
+                            ("Неможливо створити запис. Не заповнено поле:\n\"Найменування суб’єкта господарювання\"");
+                            return;
+                        }
                         $
                                 .ajax({
                                     type: 'post',

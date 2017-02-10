@@ -134,6 +134,9 @@ public class DataServiceImpl implements DataService {
 			if(createDataDTO.getAddZaxid().contains(",")){
 				createDataDTO.setAddZaxid(createDataDTO.getAddZaxid().substring(createDataDTO.getAddZaxid().indexOf("," + 1)));
 			}
+			if(createDataDTO.getAddSubjectName().equals("") || createDataDTO.getAddSubjectName() == null){
+				throw new RuntimeException("Обовязкові поля не заповненні: ");
+			}
             log.info(createDataDTO.toString());
             Data data = new Data();
             data.setStatus(createDataDTO.getAddRisk());
@@ -146,7 +149,9 @@ public class DataServiceImpl implements DataService {
             data.setIpnPassport(createDataDTO.getIpn());
             data.setReactMeasure(createDataDTO.getAddZaxid());
             data.setRiscDesc(createDataDTO.getAddRskReason());
-            data.setStartDate(simpleDateFormat.parse(createDataDTO.getStartDateP()));
+            if(createDataDTO.getStartDateP() != null && createDataDTO.getStartDateP() != "") {
+				data.setStartDate(simpleDateFormat.parse(createDataDTO.getStartDateP()));
+			}
             data.setSubjectName(createDataDTO.getAddSubjectName());
             data.setAddDate(new Date());
             Region region = null;
