@@ -386,10 +386,10 @@
                         <label for="addRisk">Ступінь ризику:</label> <select
                             class="form-control" id="addRisk" name="addRisk"
                             form="createData">
+                        <option value="">Не обрано</option>
                         <option value="Високий">Високий</option>
                         <option value="Середній">Середній</option>
                         <option value="Низький">Низький</option>
-                        <option vale="">-</option>
                     </select>
                     </div>
                     <div class="form-group">
@@ -403,7 +403,6 @@
                             form="createData">
                         <option value="5 днів">5 днів</option>
                         <option value="15 днів">15 днів</option>
-                        <option value="">-</option>
                     </select>
                     </div>
                     <div class="form-group">
@@ -428,9 +427,9 @@
                         <label for="addZaxid">Вжити заходів реагування</label> <select
                             class="form-control" id="addZaxid" name="addZaxid"
                             form="createData">
+                        <option value="">Не обрано</option>
                         <option value="суд">суд</option>
                         <option value="штраф">штраф</option>
-                        <option value="">-</option>
                     </select>
                     </div>
                     <div>
@@ -500,10 +499,10 @@
                         <label for="editRisk">Ступінь ризику:</label> <select
                             class="form-control" id="editRisk" name="addRisk"
                             form="editDataForm">
+                        <option value="">Не обрано</option>
                         <option value="Високий">Високий</option>
                         <option value="Середній">Середній</option>
                         <option value="Низький">Низький</option>
-                        <option value="">-</option>
                     </select>
                     </div>
                     <div class="form-group">
@@ -515,9 +514,9 @@
                         <label for="editTerm">Строки проведення заходу:</label> <select
                             name="addTerm" class="form-control" id="editTerm"
                             form="editDataForm">
+                        <option value="">Не обрано</option>
                         <option value="5 днів">5 днів</option>
                         <option value="15 днів">15 днів</option>
-                        <option value="">-</option>
                     </select>
                     </div>
                     <div class="form-group">
@@ -542,9 +541,9 @@
                         <label for="editZaxid">Вжити заходів реагування</label> <select
                             class="form-control" id="editZaxid" name="addZaxid"
                             form="editDataForm">
-                        <option value="суд">суд</option>
-                        <option value="штраф">штраф</option>
-                        <option value="">-</option>
+                        <option value="">Не обрано</option>
+                        <option value="суд">Суд</option>
+                        <option value="штраф">Штраф</option>
                     </select>
                     </div>
                     <div>
@@ -1063,8 +1062,9 @@
             if (request.status == 200) {
                 $('#dataTable').bootstrapTable(
                         'refresh');
+                toastr["success"]("Дані успішно завантажено");
             } else {
-                toastr["error"]("Помилка загрузки документа: \n" + data.responseJSON.message);
+                toastr["error"]("Помилка загрузки документа: \n" + JSON.parse(request.responseText).message);
             }
         };
     })

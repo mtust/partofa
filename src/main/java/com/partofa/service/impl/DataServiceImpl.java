@@ -282,6 +282,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	@Transactional
 	public List<DocumentNameDTO> getDocumentNames(Long idData) {
+
 		Data data = dataRepository.findOne(idData);
 		List<Document> list = data.getDocuments();
 		List<DocumentNameDTO> listDTO = new ArrayList<>();
@@ -319,8 +320,15 @@ public class DataServiceImpl implements DataService {
                 Iterator<Cell> cellIterator = row.cellIterator();
                 Data data = new Data();
                 data.setSubjectName(row.getCell(1).toString());
-                data.setRegion(row.getCell(2).toString().equalsIgnoreCase("Усі регіони")
-                ? null : regionRepository.findByName(row.getCell(2).toString()));
+				String regionName = row.getCell(2).toString();
+				Region region = regionRepository.findByName(regionName);
+				if(region != null || regionName.equalsIgnoreCase("Усі регіони")){
+                	data.setRegion(row.getCell(2).toString().equalsIgnoreCase("Усі регіони") ? null : region);
+				} else {
+					String errorMessage = "Не вірно вказаний регіон:\nрегіона \"" + regionName + "\" немає в списку регіонів";
+					log.error(errorMessage);
+					throw new RuntimeException(errorMessage);
+				}
                 data.setAddressWork(row.getCell(3).toString());
                 data.setIpnPassport(row.getCell(4).toString());
                 data.setGosWorkType(row.getCell(5).toString());
@@ -357,7 +365,7 @@ public class DataServiceImpl implements DataService {
 //                }
                 data.setAddDate(new Date());
                 data.setUpdDate(new Date());
-                data.setComment(row.getCell(15).toString());
+                data.setComment(row.getCell(13).toString());
 
 
 //                while (cellIterator.hasNext()) {
@@ -372,24 +380,24 @@ public class DataServiceImpl implements DataService {
 //                    }
 //                }
 //                System.out.println();
-                System.out.println(data.toString());
+                log.info("imported data: " + data.toString());
                 dataRepository.save(data);
             }
         } catch (OLE2NotOfficeXmlFileException e ){
             log.error(e.getMessage());
             e.printStackTrace();
-            new GeneralServiceException("Неможливо імпортувати файл, використовуйте новішу версію Microsoft Excel (2003 або новіше)");
+            throw new RuntimeException("Неможливо імпортувати файл, використовуйте новішу версію Microsoft Excel (2003 або новіше)");
         } catch (ParseException e){
             log.error(e.getMessage());
             e.printStackTrace();
-            new GeneralServiceException("Невірний формат дат (використовуйте формат дд.мм.рррр)");
+            throw new RuntimeException("Невірний формат дат (використовуйте формат дд.мм.рррр)");
         } catch (NotOfficeXmlFileException e){
 			log.error(e.getMessage());
 			e.printStackTrace();
-			new GeneralServiceException("Неможливо імпортувати файл, файл не являється документом Microsoft excel");
+			throw new RuntimeException("Неможливо імпортувати файл, файл не являється документом Microsoft excel");
 		} catch (Exception e){
         	log.error(e.getMessage());
-			new GeneralServiceException("Неможливо імпортувати файл");
+			throw new RuntimeException("Неможливо імпортувати файл");
 		}
 
             return new RestMessageDTO("Success", true);
