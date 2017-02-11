@@ -4,12 +4,26 @@ import com.partofa.domain.Data;
 import com.partofa.dto.*;
 import com.partofa.service.DataService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -101,5 +115,24 @@ public class HomeController {
     public RestMessageDTO importData(@RequestParam("file") MultipartFile excelFile) throws IOException {
         return dataService.importData(excelFile);
     }
+
+    @RequestMapping(value = "getExample", method = RequestMethod.POST)
+	@ResponseBody
+	public String getExampleFile(HttpServletRequest request){
+		log.info("getExample");
+		log.info("base path: " + HomeController.class.getClassLoader().getResource("static/приклад.xlsx").getPath());
+		// or this
+		final DefaultResourceLoader loader = new DefaultResourceLoader();
+	//	Resource resource = loader.getResource("classpath:static/images.png");
+		try {
+			//	File myFile = resource.getFile();
+			URL resource = HomeController.class.getClassLoader().getResource("static/приклад.xlsx");
+
+			 return new String(Base64.encodeBase64(IOUtils.toByteArray(resource)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

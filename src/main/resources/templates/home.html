@@ -19,6 +19,7 @@
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
 
+    <script src="@{/js/2.js}" th:src="@{js/2.js}"></script>
 
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -113,13 +114,14 @@
                    data-pagination="true" data-url="/private/home/actualData"
                    data-search="true" data-sort-name="id"
                    data-filter-control="true"
-                   data-filter-show-clear="true">
+                   data-filter-show-clear="true"
+                   >
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-field="id" data-visible="false"></th>
                     <th data-sortable="true" data-field="id">№</th>
-                    <th data-sortable="true" data-field="subjectName">Найменування
+                    <th data-sortable="true" data-field="subjectName" data-filter-control="input">Найменування
                         суб'єкта господарювання
                     </th>
                     <th data-sortable="true" data-field="region" data-filter-control="select">Регіон суб'єкта</th>
@@ -561,7 +563,7 @@
 <!-- /.modal -->
 
 </body>
-<script>
+<script th:inline="javascript">
     $.datepicker.setDefaults($.datepicker.regional['uk']);
 
     $(function () {
@@ -653,8 +655,20 @@
                     $("#revert").css("visibility", "visible");
                 }
             }
-        })
-    });
+        });
+
+    })
+
+    $("#dataTable").on('load-success.bs.table', function (e, data) {
+            var selects = $("#dataTable").find('select');
+            selects.each(function(e){
+
+                if($(this).find('option').length == 1 || $(this).find('option').length == 2){
+                    $(this).hide();
+                }
+            });
+
+    })
 
 
     $('#addDataSave')
@@ -1077,7 +1091,23 @@
     });
 
     $("#importDataExample").click(function(){
-        $.fileDownload('https://github.com/mtust/partofa/raw/master/src/main/resources/static/%D0%BF%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4.xlsx');
+        $.ajax({
+        type: 'post',
+            url: '/getExample',
+        success: function(data){
+            console.log(data);
+            var arr = data;
+            var a = window.document.createElement('a');
+            a.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + arr;
+            a.download = "приклад.xlsx";
+            document.body.appendChild(a)
+            a.click();
+        },
+            error: function (data) {
+                console.log(data);
+                toastr["error"]("Помилка загрузки документа:");
+            }
+        });
     })
 
 
@@ -1086,6 +1116,7 @@
 //            fileName: 'subjecty'
 //        }
 //    });
+
 
 
 </script>

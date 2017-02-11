@@ -336,25 +336,27 @@ public class DataServiceImpl implements DataService {
                 data.setCheckResult(row.getCell(10).toString());
                 data.setReactMeasure(row.getCell(11).toString());
                 data.setControlName(row.getCell(12).toString());
-                if(row.getCell(13).getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(row.getCell(13))) {
-                    data.setAddDate(row.getCell(13).getDateCellValue());
-                } else {
-                    try {
-                        data.setAddDate(simpleDateFormat.parse(row.getCell(13).toString()));
-                    } catch (ParseException e) {
-                        data.setAddDate(new Date());
-                        log.warn(e.getMessage() + "\n" + e.getStackTrace().toString());
-                    }
-                }
-                if(row.getCell(14).getCellType() == Cell.CELL_TYPE_NUMERIC &&  DateUtil.isCellDateFormatted(row.getCell(14))) {
-                    data.setUpdDate(row.getCell(14).getDateCellValue());
-                } else {
-                    try {
-                        data.setUpdDate(simpleDateFormat.parse(row.getCell(14).toString()));
-                    } catch (ParseException e) {
-                        log.warn(e.getMessage() + "\n" + e.getStackTrace().toString());
-                    }
-                }
+//                if(row.getCell(13).getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(row.getCell(13))) {
+//                    data.setAddDate(row.getCell(13).getDateCellValue());
+//                } else {
+//                    try {
+//                        data.setAddDate(simpleDateFormat.parse(row.getCell(13).toString()));
+//                    } catch (ParseException e) {
+//                        data.setAddDate(new Date());
+//                        log.warn(e.getMessage() + "\n" + e.getStackTrace().toString());
+//                    }
+//                }
+//                if(row.getCell(14).getCellType() == Cell.CELL_TYPE_NUMERIC &&  DateUtil.isCellDateFormatted(row.getCell(14))) {
+//                    data.setUpdDate(row.getCell(14).getDateCellValue());
+//                } else {
+//                    try {
+//                        data.setUpdDate(simpleDateFormat.parse(row.getCell(14).toString()));
+//                    } catch (ParseException e) {
+//                        log.warn(e.getMessage() + "\n" + e.getStackTrace().toString());
+//                    }
+//                }
+                data.setAddDate(new Date());
+                data.setUpdDate(new Date());
                 data.setComment(row.getCell(15).toString());
 
 
@@ -385,6 +387,9 @@ public class DataServiceImpl implements DataService {
 			log.error(e.getMessage());
 			e.printStackTrace();
 			new GeneralServiceException("Неможливо імпортувати файл, файл не являється документом Microsoft excel");
+		} catch (Exception e){
+        	log.error(e.getMessage());
+			new GeneralServiceException("Неможливо імпортувати файл");
 		}
 
             return new RestMessageDTO("Success", true);

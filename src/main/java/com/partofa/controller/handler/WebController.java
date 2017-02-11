@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
+import java.io.File;
 
 /**
  * Created by tust on 10.09.2016.
@@ -32,34 +35,7 @@ public class WebController extends WebMvcConfigurerAdapter {
     @Autowired
     UserService userService;
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/index").setViewName("index");
-        registry.addViewController("/home").setViewName("home");
-        registry.addViewController("/").setViewName("index");
-    }
-//
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        log.info("resources");
 
-        registry.addResourceHandler("css/**").addResourceLocations(
-                "classpath:/static/css/");
-        registry.addResourceHandler("js/**").addResourceLocations(
-                "classpath:/static/js/");
-        registry.addResourceHandler("file:///C:/Users/tust/Downloads/приклад.xlsx");
-//        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
-
-
-    }
-
-
-    @Bean
-    public MultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(500000000);
-        return multipartResolver;
-    }
 
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -114,19 +90,5 @@ public class WebController extends WebMvcConfigurerAdapter {
         return this.getHomePage();
     }
 
-
-    @Bean
-    public ViewResolver getViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("templates/");
-//        resolver.setSuffix(".html");
-        return resolver;
-    }
-
-    @Override
-    public void configureDefaultServletHandling(
-            DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
 
 }
