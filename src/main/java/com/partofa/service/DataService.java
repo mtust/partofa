@@ -42,4 +42,5 @@ public interface DataService {
 
     DocumentDTO getDocument(Long id)  throws SQLException, IOException;
 
+    List<DataDTO> getDataById(Long id);
 }

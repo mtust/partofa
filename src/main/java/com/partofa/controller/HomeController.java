@@ -3,6 +3,7 @@ package com.partofa.controller;
 import com.partofa.domain.Data;
 import com.partofa.dto.*;
 import com.partofa.service.DataService;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -41,6 +42,11 @@ public class HomeController {
 	public List<Data> homePage() {
 		log.info("log1");
 		return dataService.getAllData();
+	}
+
+	@RequestMapping(value = "private/home/{id}", method = RequestMethod.GET)
+	public List<DataDTO> getDataById(@PathVariable Long id){
+		return dataService.getDataById(id);
 	}
 
 	@RequestMapping(value = "private/home/actualData", method = RequestMethod.GET)

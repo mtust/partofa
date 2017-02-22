@@ -403,4 +403,14 @@ public class DataServiceImpl implements DataService {
             return new RestMessageDTO("Success", true);
 
     }
+
+	@Override
+	@Transactional
+	public List<DataDTO> getDataById(Long id) {
+		Data data = dataRepository.getOne(id);
+		DataDTO dataDTO = new DataDTO(data);
+		List<DataDTO> dataDTOList = new ArrayList<>();
+		dataDTOList.add(dataDTO);
+		return dataDTOList;
+	}
 }

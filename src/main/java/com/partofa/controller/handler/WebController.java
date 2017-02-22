@@ -2,6 +2,7 @@ package com.partofa.controller.handler;
 
 import com.partofa.domain.Role;
 import com.partofa.domain.User;
+import com.partofa.repository.DataRepository;
 import com.partofa.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -35,6 +38,8 @@ public class WebController extends WebMvcConfigurerAdapter {
     @Autowired
     UserService userService;
 
+    @Autowired
+    DataRepository dataRepository;
 
 
 
@@ -88,6 +93,14 @@ public class WebController extends WebMvcConfigurerAdapter {
     @RequestMapping(value = {"/public/user/index", "/index"}, method = RequestMethod.GET)
     public String getIndexPage() {
         return this.getHomePage();
+    }
+
+    @RequestMapping(value = "private/page/data/{id}", method = RequestMethod.GET)
+    public ModelAndView dataPage(@PathVariable Long id){
+
+        ModelAndView mav = new ModelAndView("subject");
+        mav.addObject("id", id);
+        return mav;
     }
 
 

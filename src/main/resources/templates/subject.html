@@ -1,11 +1,488 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/XSL/Transform">
 <head>
-    <meta charset="UTF-8">
     <title>Partofa</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fileDownload/1.4.2/jquery.fileDownload.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
+    <style></style>
+
 </head>
 <body>
 
 
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                <li id="homePage"><a class="btn" href="/private/page/home">Головна таблиця</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li id="myPage"><a class="btn" href="private/me">Моя
+                    сторінка</a></li>
+                <li id="adminTab" style="visibility: hidden"><a class="btn"
+                                                                href="/admin/page/users">Адмін панель</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="logout"><a href="/logout">Вийти</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+
+<div class="tab-content" style="margin-left: 20%; margin-right: 20%;">
+    <div role="tabpanel" style="height: 1500px;" class="tab-pane active" id="home">
+        <div id="toolbar">
+            <button id="editData" onclick="" class="btn btn-primary"  data-toggle="modal"
+                    data-target="#dataEditModal">Редагувати
+            </button>
+            <button id="deleteData" onclick="" class="btn btn-danger">Видалити</button>
+            <!--<button id="exportData" class="btn btn-default">Експорт в ексель</button>-->
+        </div>
+        <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
+               data-locale="uk-UA"
+               data-show-export="false"
+               data-pagination="false"
+               data-url="/private/home/actualData"
+               data-sort-name="id"
+               data-filter-control="false"
+               data-filter-show-clear="false"
+        >
+            <thead>
+            <tr>
+                <th data-field="id" data-visible="false"></th>
+                <th data-sortable="true" data-field="subjectName" data-filter-control="input">Найменування
+                    суб'єкта господарювання
+                </th>
+                <th data-sortable="true" data-field="region" data-filter-control="select">Регіон суб'єкта</th>
+                <th data-sortable="true" data-field="addressWork">Адреса</th>
+                <th data-sortable="true" data-field="ipnPassport">Код ЄДРПОУ
+                    або ІН
+                </th>
+                <th data-sortable="true" data-field="gosWorkType" data-filter-control="input">Вид
+                    господарської діяльності
+                </th>
+                <th data-sortable="true" data-field="status" data-filter-control="select">Ступінь ризику</th>
+                <th data-sortable="true" data-field="startDate" data-filter-control="input">Дата початку
+                    проведення заходу
+                </th>
+                <th data-sortable="true" data-field="deadlines" data-filter-control="select">Строки
+                    проведення заходу
+                </th>
+                <th data-sortable="true" data-field="riscDesc">Підстава
+                    призначення ризику
+                </th>
+                <th data-sortable="true" data-field="checkResult" data-filter-control="input">Результат
+                    перевірки
+                </th>
+                <th data-sortable="true" data-field="reactMeasure" data-filter-control="select">Вжити
+                    заходів реагування
+                </th>
+                <th data-sortable="true" data-field="controlName" data-filter-control="input">Найменуваня
+                    органу держ. нагляду
+                </th>
+                <th data-sortable="true" data-field="addDate">Дата внесення
+                    до реєстру
+                </th>
+                <th data-sortable="true" data-field="updDate">Дата
+                    останнсього редагування
+                </th>
+                <th data-formatter="format">Документи</th>
+                <th data-sortable="true" data-field="comment" data-cell-style="cellStyle" data-width="200">Коментар</th>
+            </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="dataEditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редагування суб'єкта господарування</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editDataForm">
+                    <div class="form-group">
+                        <label for="editSubjectName">Найменування суб’єкта
+                            господарювання</label> <input type="" class="form-control"
+                                                          id="editSubjectName" name="addSubjectName"
+                                                          required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserRegion">Регіон</label> <select
+                            class="form-control" id="editUserRegion" name="editUserRegion"
+                            form="editDataForm">
+                    </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdress">Адреса</label> <input
+                            class="form-control" id="editAdress" name="addAdress"
+                            placeholder="Адреса" required="required"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="editIpn">Код ЄДРПОУ або ІН</label> <input
+                            class="form-control" id="editIpn" name="ipn"
+                            placeholder="Код ЄДРПОУ або ІН" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTypeD">Вид господарської діяльності</label> <input
+                            type="" class="form-control" id="editTypeD" name="typeD"
+                            placeholder="Вид господарської діяльності" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRisk">Ступінь ризику:</label> <select
+                            class="form-control" id="editRisk" name="addRisk"
+                            form="editDataForm">
+                        <option value="">Не обрано</option>
+                        <option value="Високий">Високий</option>
+                        <option value="Середній">Середній</option>
+                        <option value="Низький">Низький</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStartDateP">Дата початку проведення
+                            заходу:</label> <input name="startDateP" id='editStartDateP' type='text'
+                                                   class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTerm">Строки проведення заходу:</label> <select
+                            name="addTerm" class="form-control" id="editTerm"
+                            form="editDataForm">
+                        <option value="">Не обрано</option>
+                        <option value="5 днів">5 днів</option>
+                        <option value="15 днів">15 днів</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editControll">Найменування органу держ.
+                            нагляду (контролю)</label> <input type="" class="form-control"
+                                                              id="editControll" name="addControll"
+                                                              placeholder="Найменування органу держ. нагляду (контролю)"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editRskReason">Підстава призначення ступеня
+                            ризику</label> <input type="" class="form-control" id="editRskReason"
+                                                  name="addRskReason"
+                                                  placeholder="Підстава призначення ступеня ризику"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editResults">Результат перевірки</label> <input
+                            type="" class="form-control" id="editResults" name="addResults"
+                            placeholder="Результат перевірки"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="editZaxid">Вжити заходів реагування</label> <select
+                            class="form-control" id="editZaxid" name="addZaxid"
+                            form="editDataForm">
+                        <option value="">Не обрано</option>
+                        <option value="суд">Суд</option>
+                        <option value="штраф">Штраф</option>
+                    </select>
+                    </div>
+                    <div>
+                        <label for="editComent">Коментар</label> <textarea type=""
+                                                                           class="form-control" id="editComent"
+                                                                           name="addComent"
+                                                                           placeholder="Коментар"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрити
+                </button>
+                <button type="button" id="editDataSave" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 </body>
+<script th:inline="javascript">
+
+
+
+    var refreshed = false;
+    var head = [];
+
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "get",
+            url: "/getCurrentUserRole",
+            success: function (data) {
+                if (data === "ROLE_ADMIN") {
+                    $("#adminTab").css("visibility", "visible");
+                    $("#revert").css("visibility", "visible");
+                }
+            }
+        });
+
+    })
+
+
+    $("#dataTable").on('load-success.bs.table', function (e, data) {
+
+
+            $("table").each(function () {
+                var $this = $(this);
+                var newrows = [];
+                var headers = $this.find("th");
+                if(headers.length > 0) {
+                    head = headers
+                }
+                $this.find("tr").each(function () {
+                    var i = 0;
+                    var j = 0;
+                    if (j == 0) {
+                        $(this).find("td").each(function () {
+                            i++;
+                            if (newrows[i] === undefined) {
+                                newrows[i] = $("<tr></tr>");
+                            }
+                            newrows[i].append(head[j]);
+                            i++;
+                            if (newrows[i] === undefined) {
+                                newrows[i] = $("<tr></tr>");
+                            }
+                            newrows[i].append($(this));
+                            j++;
+
+                        });
+                    }
+                });
+                $this.find("th").remove();
+                $this.find("tr").remove();
+                $.each(newrows, function () {
+                    $this.append(this);
+                });
+            });
+
+        if(!refreshed) {
+            var id = [[${id}]];
+            var url = "/private/home/" + id;
+            $("#dataTable").bootstrapTable('refresh', {url: url});
+            refreshed = true;
+        }
+
+    })
+
+    $('#editDataSave')
+        .on(
+            'click',
+            function () {
+                changeButtonsStatus();
+                var id = [[${id}]];
+                $('#editDataForm')
+                    .append(
+                        '<input type="hidden" name="id" value="' + id + '"/> ');
+
+                $
+                    .ajax({
+                        type: 'post',
+                        url: '/private/edit',
+                        data: $('#editDataForm').serialize(),
+                        success: function (data) {
+                            toastr["success"]("Запис редаговано");
+                            $("#dataEditModal").modal('hide');
+                            $('#editDataForm')[0].reset();
+                            $('#dataTable').bootstrapTable(
+                                'refresh');
+
+                        },
+                        error: function (data) {
+                            toastr["error"]
+                            ("Неможливо редагувати запис, перевірте правильність введення полів");
+                        }
+                    })
+            })
+
+
+    $("#editData").click(
+        function () {
+            var selectedRow = $('#dataTable').bootstrapTable('getData')[0];
+            $("#editSubjectName").val(selectedRow.subjectName);
+            $("#editAdress").val(selectedRow.addressWork);
+            $("#editIpn").val(selectedRow.ipnPassport);
+            $("#editTypeD").val(selectedRow.gosWorkType);
+            try {
+                $("#editRisk option").filter(function() {
+                    return this.text == selectedRow.status;
+                }).attr('selected', true);
+            } catch (e) {
+                console.log(e);
+            }
+            try {
+                $("#editZaxid option").filter(function() {
+                    return this.text == selectedRow.reactMeasure;
+                }).attr('selected', true);
+            } catch (e) {
+                console.log(e);
+            }
+            $("#editStartDateP").val(selectedRow.startDate);
+            try {
+                $("#editTerm option").filter(function() {
+                    return this.text == selectedRow.deadlines;
+                }).attr('selected', true);
+
+            } catch (e) {
+                console.log(e);
+            }
+            try {
+                $("#editUserRegion option").filter(function() {
+                    return this.text == selectedRow.region;
+                }).attr('selected', true);
+            } catch (e) {
+                console.log(e);
+            }
+            $("#editControll").val(selectedRow.controlName);
+            $("#editRskReason").val(selectedRow.riscDesc);
+            $("#editResults").val(selectedRow.checkResult);
+            //$("#editZaxid").val(selectedRow.reactMeasure);
+            $("#editComent").val(selectedRow.comment);
+
+        });
+
+
+    $("#deleteData")
+        .click(
+            function () {
+                var id = [[${id}]];
+                $
+                    .ajax({
+                        type: "delete",
+                        url: "/private/delete" + '?' + $.param({
+                            "id": id
+                        }),
+                        success: function () {
+                            toastr["success"]
+                            ("Дані успішно видалено та перенесено у архів");
+                            window.location = "/private/page/home";
+                        },
+                        error: function () {
+                            toastr["error"]
+                            ("Неможливо видалити цей запис");
+                        }
+                    })
+
+            });
+
+    var regions;
+    (function ($) {
+        $.ajax({
+            type: 'get',
+            url: '/private/user/regions',
+            success: function (e) {
+                regions = e;
+                console.log("regions: ");
+                console.log(JSON.stringify(e));
+                $.each(e, function (i, item) {
+                    $('#editUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
+                })
+//                $('#addUserRegion').append($('<option>', {
+//                    value: "all",
+//                    text: "Усі регіони"
+//                }, '</option>'));
+//                $('#editUserRegion').append($('<option>', {
+//                    value: "all",
+//                    text: "Усі регіони"
+//                }, '</option>'));
+
+            }
+        });
+    })(jQuery);
+
+    $(function () {
+        var $table = $('#dataTable');
+        var id = [[${id}]];
+        $('#exportData').click(function () {
+            $table.tableExport({
+                type: 'xlsx',
+                escape: false,
+                fileName: "subject" + id,
+            });
+        });
+    });
+
+    $.fn.tableExport.xlsx = {
+        defaultClass: "xlsx",
+        buttonContent: "Export to xlsx",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        fileExtension: ".xlsx"
+    };
+
+    $.fn.tableExport.ods = {
+        defaultClass: "ods",
+        buttonContent: "Export to ods",
+        mimeType: "application/vnd.oasis.opendocument.spreadsheet",
+        fileExtension: ".ods"
+    };
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+
+</script>
+
 </html>

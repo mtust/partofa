@@ -99,14 +99,17 @@
                 <button id="addData" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#dataAddModal">
                     Додати запис
                 </button>
-                <button id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
+                <button id="subjectSee" onclick="" class="btn btn-success" disabled="disabled">Переглянути</button>
+                <button style="margin-left: 10px" id="editData" onclick="" class="btn btn-default" data-toggle="modal" disabled="disabled"
                         data-target="#dataEditModal">Редагувати
                 </button>
-                <button id="deleteData" onclick="" class="btn btn-default" disabled="disabled">Видалити</button>
+                <button style="margin-left: 10px" id="deleteData" onclick="" class="btn btn-danger" disabled="disabled">Видалити</button>
                 <input id="importDataInput" name="file" type="file" style="display: none"/>
-                <button id="importData" style="margin-left: 3%;" class="btn btn-default">Імпорт з екселю</button>
-                <button id="importDataExample"  class="btn btn-default">Скачати приклад для імпорту</button>
-                <button id="exportData" class="btn btn-default">Експорт в ексель</button>
+                <div style="display: block; margin-top: 10px;">
+                    <button id="importData" class="btn btn-default">Імпорт з екселю</button>
+                    <button style="margin-left: 10px" id="importDataExample" class="btn btn-default">Скачати приклад для імпорту</button>
+                    <button style="margin-left: 10px" id="exportData" class="btn btn-default">Експорт в ексель</button>
+                </div>
             </div>
             <table id="dataTable" data-single-select="true" data-toggle="table" data-toolbar="#toolbar"
                    data-locale="uk-UA" data-page-list="[10, 25, 50, 100, ALL]"
@@ -158,7 +161,7 @@
                         останнсього редагування
                     </th>
                     <th data-formatter="format">Документи</th>
-                    <th data-sortable="true" data-field="comment">Коментар</th>
+                    <th data-sortable="true" data-field="comment" data-cell-style="cellStyle" data-width="200">Коментар</th>
                 </tr>
                 </thead>
             </table>
@@ -673,6 +676,8 @@
                 }
             });
 
+        changeButtonsStatus();
+
     })
 
 
@@ -709,6 +714,7 @@
             .on(
                     'click',
                     function () {
+
                         var ids = getIdSelections();
                         $('#editDataForm')
                                 .append(
@@ -725,6 +731,7 @@
                                         $('#editDataForm')[0].reset();
                                         $('#dataTable').bootstrapTable(
                                                 'refresh');
+                                        changeButtonsStatus();
 
                                     },
                                     error: function (data) {
@@ -739,20 +746,31 @@
                     'check.bs.table uncheck.bs.table '
                     + 'check-all.bs.table uncheck-all.bs.table',
                     function () {
-                        $("#deleteData")
-                                .prop(
-                                        'disabled',
-                                        !$('#dataTable').bootstrapTable(
-                                                'getSelections').length);
-                        $("#editData")
-                                .prop(
-                                        'disabled',
-                                        !$('#dataTable').bootstrapTable(
-                                                'getSelections').length);
+                       changeButtonsStatus();
                         // save your data, here just save the current page
                         selections = getIdSelections();
                         // push or splice the selections if you want to save all data selections
                     });
+
+
+    function changeButtonsStatus(){
+        debugger;
+        $("#deleteData")
+            .prop(
+                'disabled',
+                !$('#dataTable').bootstrapTable(
+                    'getSelections').length);
+        $("#editData")
+            .prop(
+                'disabled',
+                !$('#dataTable').bootstrapTable(
+                    'getSelections').length);
+        $("#subjectSee")
+            .prop(
+                'disabled',
+                !$('#dataTable').bootstrapTable(
+                    'getSelections').length);
+    }
 
     $('#archiveTable').on(
             'check.bs.table uncheck.bs.table '
@@ -827,6 +845,7 @@
     $("#deleteData")
             .click(
                     function () {
+
                         var ids = getIdSelections();
 
                         $
@@ -848,6 +867,7 @@
                                                 'refresh');
                                         $('#archiveTable').bootstrapTable(
                                                 'refresh');
+                                        changeButtonsStatus();
                                     },
                                     error: function () {
                                         toastr["error"]
@@ -1117,7 +1137,23 @@
     })
 
 
-//    $('#dataTable').bootstrapTable({
+    $("#subjectSee").click(function(){
+        var ids = getIdSelections();
+        var id = ids[0];
+        window.location = "/private/page/data/" + id;
+    });
+
+
+    function cellStyle(value, row, index) {
+
+        return {
+            css: {"display": "flex",  "overflow-y": "scroll",
+                "max-height":"200px"}
+        };
+    }
+
+
+    //    $('#dataTable').bootstrapTable({
 //        exportOptions: {
 //            fileName: 'subjecty'
 //        }
