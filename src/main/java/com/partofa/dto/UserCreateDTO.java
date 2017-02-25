@@ -14,5 +14,6 @@ public class UserCreateDTO {
     private String password;
     private String confirmPassword;
     private String role;
+    private String region;
 
 }

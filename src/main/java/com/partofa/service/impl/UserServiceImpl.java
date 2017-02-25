@@ -153,6 +153,10 @@ public class UserServiceImpl implements UserService {
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())) {
             throw new RuntimeException("Неможливо створити користувача, паролі не співпадають");
         }
+        Region region = null;
+        if(userRegistrationDTO.getRegion() != null && userRegistrationDTO.getRegion() != "" && !userRegistrationDTO.getRegion().equals("all")){
+            region = regionRepository.findOne(Long.parseLong(userRegistrationDTO.getRegion()));
+        }
         String hashedPassword = passwordEncoder.encode(userRegistrationDTO.getPassword());
         User user = new User();
         user.setEmail(userRegistrationDTO.getEmail());
@@ -161,6 +165,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(hashedPassword);
         user.setRole(Role.getRole(userRegistrationDTO.getRole()));
         user.setIsEnabled(true);
+        user.setRegion(region);
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return new RestMessageDTO("Success", true);

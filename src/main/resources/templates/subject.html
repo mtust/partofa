@@ -29,7 +29,13 @@
 
     <!-- Latest compiled and minified Locales -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-uk-UA.min.js"></script>
-    <style></style>
+    <style>
+
+        td { white-space:pre }
+
+        th { background-color: #d9edf7}
+
+    </style>
 
 </head>
 <body>
@@ -314,7 +320,6 @@
         .on(
             'click',
             function () {
-                changeButtonsStatus();
                 var id = [[${id}]];
                 $('#editDataForm')
                     .append(
@@ -326,11 +331,13 @@
                         url: '/private/edit',
                         data: $('#editDataForm').serialize(),
                         success: function (data) {
+                            refreshed = false;
                             toastr["success"]("Запис редаговано");
                             $("#dataEditModal").modal('hide');
                             $('#editDataForm')[0].reset();
                             $('#dataTable').bootstrapTable(
                                 'refresh');
+
 
                         },
                         error: function (data) {

@@ -189,6 +189,10 @@
                         <input class="form-control" id="lastName" placeholder="Прізвище" required="required"/>
                     </div>
                     <div class="form-group">
+                        <label for="addUserRegion">Регіон</label>
+                        <select class="form-control" id="addUserRegion"></select>
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputPassword1">Пароль</label>
                         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль"
                                required="required"/>
@@ -334,8 +338,16 @@
                         value: item.id,
                         text: item.name
                     }, '</option>'));
+                    $('#addUserRegion').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }, '</option>'));
                 })
                 $('#editUserRegion').append($('<option>', {
+                    value: "all",
+                    text: "Усі регіони"
+                }, '</option>'));
+                $('#addUserRegion').append($('<option>', {
                     value: "all",
                     text: "Усі регіони"
                 }, '</option>'));
@@ -578,11 +590,17 @@
                 password: $("#exampleInputPassword1").val(),
                 confirmPassword: $("#confirmPassword1").val(),
                 role: $("#role").val(),
+                region: $("#addUserRegion").val()
             },
             success: function (data) {
                 $("#userAddModal").modal('hide')
                 toastr["success"]("Користувача додано");
                 $('#userTable').bootstrapTable('refresh');
+                $("#exampleInputEmail1").val("");
+                $("#firstName").val("");
+                $("#lastName").val("");
+                $("#exampleInputPassword1").val("");
+                $("#confirmPassword1").val("");
             },
             error: function (data) {
                 toastr["error"]("Такий користувач уже існує\n" + data.responseJSON.message);
